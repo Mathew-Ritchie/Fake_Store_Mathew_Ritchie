@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import { FaStar } from "react-icons/fa";
 
 export default function FakeStore() {
   const [storeData, setStoreData] = useState();
@@ -22,16 +23,28 @@ export default function FakeStore() {
     fetchStoreData();
   }, []);
 
+  const truncateText = (text, limit) => {
+    if (text.length <= limit) {
+      return text;
+    }
+    return `${text.slice(0, limit)}...`;
+  };
+
   console.log(storeData);
   return (
     <div className="product-container">
       {storeData &&
         storeData.map((item) => (
-          <div className="product-card">
-            <img className="product-img" src={item.image} />
-            <h1 className="product-title">{item.title}</h1>
+          <div key={item.id} className="product-card">
+            <div className="product-img-div">
+              <img className="product-img" src={item.image} />
+            </div>
+            <h1 className="product-title">{truncateText(item.title, 50)}</h1>
             <p>From R {item.price}</p>
-            <p>{`${item.rating.rate}(${item.rating.count})`}</p>
+            <div className="product-rating-div">
+              <FaStar />
+              <p>{`${item.rating.rate}(${item.rating.count})`}</p>
+            </div>
           </div>
         ))}
     </div>

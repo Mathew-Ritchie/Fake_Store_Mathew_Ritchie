@@ -7,19 +7,39 @@
 .product-card {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   border: 1px solid grey;
   border-radius: 2px;
   width: 150px;
+  height: 310px;
   padding: 10px;
 }
 
+.product-img-div {
+  width: 80px;
+  height: 160px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .product-img {
-  width: 100px;
+  width: 80px;
 }
 
 .product-title {
   font-weight: lighter;
   font-size: medium;
+}
+
+.product-rating-div {
+  display: flex;
+  align-items: end;
+  gap: 5px;
+  width: 150px;
+}
+
+.product-rating-div > p {
+  margin: 0;
 }
