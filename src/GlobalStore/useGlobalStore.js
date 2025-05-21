@@ -6,6 +6,7 @@ const useGlobalStore = create((set, get) => ({
   error: null,
   categories: [],
   categoryOption: "",
+  sortOption: "",
   filteredItems: [],
 
   //Fetch the store items from the API and store them in StoreItems.
@@ -19,7 +20,7 @@ const useGlobalStore = create((set, get) => ({
       const data = await res.json();
       set({ storeItems: data, loading: false });
       get().extractAndSetCategories();
-      get().applyFilters();
+      get().applyFiltersAndSort();
     } catch (error) {
       console.error("An error occurred:", error);
       set({ error: "Failed to load store data", loading: false });
@@ -45,17 +46,40 @@ const useGlobalStore = create((set, get) => ({
   //Set categoryOption to changed category
   setCategoryOption: (option) => {
     set({ categoryOption: option });
-    get().applyFilters();
+    get().applyFiltersAndSort();
   },
 
-  applyFilters: () => {
-    const { storeItems, categoryOption } = get();
+  setSortOption: (option) => {
+    set({ sortOption: option });
+    get().applyFiltersAndSort();
+  },
+
+  applyFiltersAndSort: () => {
+    const { storeItems, categoryOption, sortOption } = get();
     let currentFilteredItems = [...storeItems];
     if (categoryOption && categoryOption !== "") {
       currentFilteredItems = currentFilteredItems.filter(
         (item) => item.category === categoryOption
       );
     }
+
+    switch (sortOption) {
+      case "A-Z":
+        currentFilteredItems.sort((a, b) => a.title.localeCompare(b.title));
+        break;
+      case "Z-A":
+        currentFilteredItems.sort((a, b) => b.title.localeCompare(a.title));
+        break;
+      case "Lowest":
+        currentFilteredItems.sort((a, b) => a.price - b.price);
+        break;
+      case "Highest":
+        currentFilteredItems.sort((a, b) => b.price - a.price);
+        break;
+      case "none":
+        break;
+    }
+
     set({ filteredItems: currentFilteredItems });
   },
 }));
