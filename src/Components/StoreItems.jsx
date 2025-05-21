@@ -4,7 +4,7 @@ import "./storeItems.css";
 import { FaStar } from "react-icons/fa";
 
 export default function StoreItems() {
-  const { storeItems, fetchStoreData, loading, error } = useGlobalStore();
+  const { filteredItems, storeItems, fetchStoreData, loading, error } = useGlobalStore();
 
   useEffect(() => {
     fetchStoreData();
@@ -22,8 +22,8 @@ export default function StoreItems() {
     <div className="product-container">
       {loading && <h1>Items loading...</h1>}
       {error && <h1>There was an error loading data, please try again.</h1>}
-      {storeItems &&
-        storeItems.map((item) => (
+      {filteredItems &&
+        filteredItems.map((item) => (
           <div key={item.id} className="product-card">
             <div className="product-img-div">
               <img className="product-img" src={item.image} />
