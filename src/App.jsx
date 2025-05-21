@@ -1,27 +1,33 @@
 import React, { useState, useEffect } from "react";
+import useGlobalStore from "./GlobalStore/useGlobalStore";
 import "./App.css";
 import { FaStar } from "react-icons/fa";
 
 export default function FakeStore() {
-  const [storeData, setStoreData] = useState();
+  // const [storeData, setStoreData] = useState();
+  const { storeItems, fetchStoreData, loading, error } = useGlobalStore();
 
   useEffect(() => {
-    async function fetchStoreData() {
-      try {
-        const response = await fetch("https://fakestoreapi.com/products");
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        // console.log("Data inside fetchStoreData:", data);
-        setStoreData(data);
-      } catch (error) {
-        console.error("An error occurred:", error);
-        throw error;
-      }
-    }
     fetchStoreData();
-  }, []);
+  }, [fetchStoreData]);
+
+  // useEffect(() => {
+  //   async function fetchStoreData() {
+  //     try {
+  //       const response = await fetch("https://fakestoreapi.com/products");
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP error! status: ${response.status}`);
+  //       }
+  //       const data = await response.json();
+  //       // console.log("Data inside fetchStoreData:", data);
+  //       setStoreData(data);
+  //     } catch (error) {
+  //       console.error("An error occurred:", error);
+  //       throw error;
+  //     }
+  //   }
+  //   fetchStoreData();
+  // }, []);
 
   const truncateText = (text, limit) => {
     if (text.length <= limit) {
@@ -30,11 +36,11 @@ export default function FakeStore() {
     return `${text.slice(0, limit)}...`;
   };
 
-  console.log(storeData);
+  console.log(storeItems);
   return (
     <div className="product-container">
-      {storeData &&
-        storeData.map((item) => (
+      {storeItems &&
+        storeItems.map((item) => (
           <div key={item.id} className="product-card">
             <div className="product-img-div">
               <img className="product-img" src={item.image} />
