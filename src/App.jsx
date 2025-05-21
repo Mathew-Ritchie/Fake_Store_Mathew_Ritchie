@@ -4,30 +4,11 @@ import "./App.css";
 import { FaStar } from "react-icons/fa";
 
 export default function FakeStore() {
-  // const [storeData, setStoreData] = useState();
   const { storeItems, fetchStoreData, loading, error } = useGlobalStore();
 
   useEffect(() => {
     fetchStoreData();
   }, [fetchStoreData]);
-
-  // useEffect(() => {
-  //   async function fetchStoreData() {
-  //     try {
-  //       const response = await fetch("https://fakestoreapi.com/products");
-  //       if (!response.ok) {
-  //         throw new Error(`HTTP error! status: ${response.status}`);
-  //       }
-  //       const data = await response.json();
-  //       // console.log("Data inside fetchStoreData:", data);
-  //       setStoreData(data);
-  //     } catch (error) {
-  //       console.error("An error occurred:", error);
-  //       throw error;
-  //     }
-  //   }
-  //   fetchStoreData();
-  // }, []);
 
   const truncateText = (text, limit) => {
     if (text.length <= limit) {
@@ -39,6 +20,8 @@ export default function FakeStore() {
   console.log(storeItems);
   return (
     <div className="product-container">
+      {loading && <h1>Items loading...</h1>}
+      {error && <h1>There was an error loading data, please try again.</h1>}
       {storeItems &&
         storeItems.map((item) => (
           <div key={item.id} className="product-card">
