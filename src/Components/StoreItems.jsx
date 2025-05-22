@@ -18,7 +18,7 @@ export default function StoreItems() {
     return `${text.slice(0, limit)}...`;
   };
 
-  console.log(storeItems);
+  // console.log(storeItems);
   return (
     <div className="product-container">
       {loading && <h1>Items loading...</h1>}
@@ -33,7 +33,7 @@ export default function StoreItems() {
               <h1 className="product-title">{truncateText(item.title, 50)}</h1>
               <p>R {item.price}</p>
               <div className="product-rating-div">
-                <FaStar />
+                <FaStar className="faStar" />
                 <p>{`${item.rating.rate}(${item.rating.count})`}</p>
               </div>
             </div>

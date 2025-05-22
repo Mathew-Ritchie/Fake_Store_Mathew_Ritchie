@@ -8,7 +8,7 @@ export default function CategoryDropDown() {
     setCategoryOption(event.target.value);
   };
 
-  console.log(categories);
+  //   console.log(categories);
 
   return (
     <select

@@ -1,0 +1,28 @@
+.individual-product-info-div {
+  width: 100vw;
+  /* border: 1px solid gray; */
+  padding: 20px;
+}
+
+.individual-product-img-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid grey;
+  padding-bottom: 20px;
+}
+
+.individual-product-title-desc-div {
+  border-bottom: 1px solid grey;
+}
+
+.individual-product-title {
+  font-weight: lighter;
+  font-size: x-large;
+}
+
+.individual-product-price {
+  font-size: x-large;
+  font-weight: bolder;
+  margin-bottom: 0;
+}

@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router";
 import useGlobalStore from "../GlobalStore/useGlobalStore";
+import { FaStar } from "react-icons/fa";
+import "./product-description-card.css";
 
 export default function ProductDescriptionCard() {
   const { productInfo, loading, error, fetchProductInfo } = useGlobalStore();
@@ -13,7 +15,7 @@ export default function ProductDescriptionCard() {
     }
   }, [id]);
 
-  console.log(productInfo);
+  //   console.log(productInfo);
 
   if (loading) {
     return <div>Loading product details...</div>;
@@ -27,19 +29,26 @@ export default function ProductDescriptionCard() {
     return <div>No product data available.</div>;
   }
   return (
-    <div>
-      <h1>{productInfo.title}</h1>
-      <img src={productInfo.image} style={{ width: "150px" }} />
-      <p>{productInfo.description}</p>
-      <p>{productInfo.category}</p>
+    <div className="individual-product-info-div">
+      <div className="individual-product-img-div">
+        <img src={productInfo.image} style={{ width: "150px" }} />
+      </div>
+      <div className="individual-product-title-desc-div">
+        <h1 className="individual-product-title">{productInfo.title}</h1>
+        <p>{productInfo.description}</p>
+      </div>
 
-      <p>${typeof productInfo.price === "number" ? productInfo.price.toFixed(2) : "N/A"}</p>
-
+      <p className="individual-product-price">
+        R{typeof productInfo.price === "number" ? productInfo.price.toFixed(2) : "N/A"}
+      </p>
       {productInfo.rating &&
       typeof productInfo.rating === "object" &&
       productInfo.rating.rate !== undefined &&
       productInfo.rating.count !== undefined ? (
-        <p>{`${productInfo.rating.rate} (${productInfo.rating.count})`}</p>
+        <div className="product-rating-div">
+          <FaStar className="faStar" />
+          <p>{`${productInfo.rating.rate} (${productInfo.rating.count})`}</p>
+        </div>
       ) : (
         <p>Rating: N/A</p>
       )}
