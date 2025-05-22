@@ -1,12 +1,16 @@
 import React from "react";
-import StoreItems from "./Components/StoreItems";
-import Header from "./Components/Header";
+import { BrowserRouter, Routes, Route } from "react-router";
+
+import ProductPage from "./Pages/ProductPage";
+import MainPage from "./Pages/MainPage";
 
 export default function App() {
   return (
-    <div>
-      <Header />
-      <StoreItems />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/item/:id" element={<ProductPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }

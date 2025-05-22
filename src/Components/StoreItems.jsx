@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+// import { Link } from "react-router";
 import useGlobalStore from "../GlobalStore/useGlobalStore";
 import "./storeItems.css";
 import { FaStar } from "react-icons/fa";
