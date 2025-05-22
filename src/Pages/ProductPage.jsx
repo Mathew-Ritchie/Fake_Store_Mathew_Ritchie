@@ -1,4 +1,10 @@
 import React from "react";
-import { useParams } from "react-router";
+import ProductDescriptionCard from "../Components/ProductDescriptionCard";
 
-export default function ProductPage() {}
+export default function ProductPage() {
+  return (
+    <div>
+      <ProductDescriptionCard />
+    </div>
+  );
+}

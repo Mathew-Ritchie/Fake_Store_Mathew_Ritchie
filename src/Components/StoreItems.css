@@ -4,6 +4,11 @@
   gap: 5px;
 }
 
+.product-link {
+  text-decoration: none;
+  color: black;
+}
+
 .product-card {
   display: flex;
   flex-direction: column;
@@ -31,6 +36,7 @@
 .product-title {
   font-weight: lighter;
   font-size: medium;
+  text-decoration: none;
 }
 
 .product-rating-div {
@@ -42,4 +48,5 @@
 
 .product-rating-div > p {
   margin: 0;
+  text-decoration: none;
 }

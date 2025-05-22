@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-// import { Link } from "react-router";
+import { Link } from "react-router";
 import useGlobalStore from "../GlobalStore/useGlobalStore";
 import "./storeItems.css";
 import { FaStar } from "react-icons/fa";
@@ -25,17 +25,19 @@ export default function StoreItems() {
       {error && <h1>There was an error loading data, please try again.</h1>}
       {filteredItems &&
         filteredItems.map((item) => (
-          <div key={item.id} className="product-card">
-            <div className="product-img-div">
-              <img className="product-img" src={item.image} />
+          <Link key={item.id} to={`/item/${item.id}`} className="product-link">
+            <div className="product-card">
+              <div className="product-img-div">
+                <img className="product-img" src={item.image} />
+              </div>
+              <h1 className="product-title">{truncateText(item.title, 50)}</h1>
+              <p>R {item.price}</p>
+              <div className="product-rating-div">
+                <FaStar />
+                <p>{`${item.rating.rate}(${item.rating.count})`}</p>
+              </div>
             </div>
-            <h1 className="product-title">{truncateText(item.title, 50)}</h1>
-            <p>R {item.price}</p>
-            <div className="product-rating-div">
-              <FaStar />
-              <p>{`${item.rating.rate}(${item.rating.count})`}</p>
-            </div>
-          </div>
+          </Link>
         ))}
     </div>
   );

@@ -2,6 +2,7 @@ import { create } from "zustand";
 
 const useGlobalStore = create((set, get) => ({
   storeItems: [],
+  productInfo: {},
   loading: false,
   error: null,
   categories: [],
@@ -21,6 +22,21 @@ const useGlobalStore = create((set, get) => ({
       set({ storeItems: data, loading: false });
       get().extractAndSetCategories();
       get().applyFiltersAndSort();
+    } catch (error) {
+      console.error("An error occurred:", error);
+      set({ error: "Failed to load store data", loading: false });
+    }
+  },
+
+  fetchProductInfo: async (id) => {
+    set({ loading: true, error: null });
+    try {
+      const res = await fetch(`https://fakestoreapi.com/products/${id}`);
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await res.json();
+      set({ productInfo: data, loading: false });
     } catch (error) {
       console.error("An error occurred:", error);
       set({ error: "Failed to load store data", loading: false });
