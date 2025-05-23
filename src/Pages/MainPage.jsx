@@ -1,11 +1,11 @@
 import React from "react";
-import Header from "../Components/Header";
 import StoreItems from "../Components/StoreItems";
+import SortAndFilterHeader from "../Components/SortAndFilterHeader";
 
 export default function MainPage() {
   return (
     <div>
-      <Header />
+      <SortAndFilterHeader />
       <StoreItems />
     </div>
   );

@@ -15,7 +15,7 @@ export default function SortingDropDown() {
       value={sortOption}
       onChange={handleSortChange}
     >
-      <option value="none">Sort By</option>
+      <option value="none">Sort</option>
       <option value="A-Z">A-Z</option>
       <option value="Z-A">Z-A</option>
       <option value="Lowest">Lowest price</option>

@@ -1,0 +1,10 @@
+.main-header-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-header-title {
+  color: rgb(16, 16, 236);
+}

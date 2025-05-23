@@ -1,0 +1,28 @@
+.product-page-header-div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 35px;
+  padding: 0 10px;
+  /* border: 1px solid red; */
+}
+
+.product-page-header-inner-div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 35px;
+  gap: 5px;
+}
+
+.product-page-header-title {
+  padding: 0;
+  margin: 0;
+}
+
+.product-page-header-link {
+}
+
+.back-arrow {
+  font-size: 30px;
+}

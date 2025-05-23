@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import useGlobalStore from "../GlobalStore/useGlobalStore";
 import "./storeItems.css";
 import { FaStar } from "react-icons/fa";
+import truncateText from "../Utilities/utils";
 
 export default function StoreItems() {
   const { filteredItems, storeItems, fetchStoreData, loading, error } = useGlobalStore();
@@ -10,13 +11,6 @@ export default function StoreItems() {
   useEffect(() => {
     fetchStoreData();
   }, [fetchStoreData]);
-
-  const truncateText = (text, limit) => {
-    if (text.length <= limit) {
-      return text;
-    }
-    return `${text.slice(0, limit)}...`;
-  };
 
   // console.log(storeItems);
   return (
