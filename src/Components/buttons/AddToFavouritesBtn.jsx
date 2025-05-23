@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
-import useGlobalStore from "../GlobalStore/useGlobalStore";
+import useGlobalStore from "../../GlobalStore/useGlobalStore";
+import "./add-to-favourites-btn.css";
 
 export default function AddToFavouritesBtn() {
   const { productInfo } = useGlobalStore();
   const [isFavourite, setIsFavourite] = useState(false);
-
-  useEffect(() => {
-    if (productInfo && productInfo.id) {
-      const currentFavourite = JSON.parse(localStorage.getItem("myFakeStoreFavourites") || "[]");
-      const foundInFavourites = currentFavourite.some((item) => item.id === productInfo.id);
-      setIsFavourite(foundInFavourites);
-    }
-  }, [productInfo]);
 
   const handleAddToFavourites = () => {
     if (!productInfo || !productInfo.id) {
@@ -40,7 +33,7 @@ export default function AddToFavouritesBtn() {
 
   return (
     <div>
-      <button onClick={handleAddToFavourites}>
+      <button onClick={handleAddToFavourites} className="favourites-btn">
         {isFavourite ? <IoIosHeart /> : <IoIosHeartEmpty />}
       </button>
     </div>

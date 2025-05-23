@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-
-import useGlobalStore from "../GlobalStore/useGlobalStore";
+import React, { useState, useEffect } from "react";
+import "./add-to-cart-btn.css";
+import useGlobalStore from "../../GlobalStore/useGlobalStore";
 
 export default function AddToCartBtn() {
   const { productInfo } = useGlobalStore();
@@ -29,7 +29,9 @@ export default function AddToCartBtn() {
 
   return (
     <div>
-      <button onClick={handleAddToCart}>Add to cart</button>
+      <button className="add-to-cart-btn" onClick={handleAddToCart}>
+        Add to cart
+      </button>
     </div>
   );
 }

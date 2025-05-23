@@ -1,0 +1,7 @@
+.product-page-footer-div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  justify-content: center;
+  gap: 20px;
+}
