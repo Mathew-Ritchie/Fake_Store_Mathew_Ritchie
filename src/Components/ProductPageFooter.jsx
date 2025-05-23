@@ -1,15 +1,12 @@
 import React from "react";
-import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
-import useGlobalStore from "../GlobalStore/useGlobalStore";
+import AddToCartBtn from "./AddToCartBtn";
+import AddToFavouritesBtn from "./AddToFavouritesBtn";
 
 export default function ProductPageFooter() {
-  const { productInfo } = useGlobalStore();
-
   return (
     <div>
-      <IoIosHeartEmpty />
-      {/* <IoIosHeart /> */}
-      <button>Add to cart</button>
+      <AddToFavouritesBtn />
+      <AddToCartBtn />
     </div>
   );
 }
