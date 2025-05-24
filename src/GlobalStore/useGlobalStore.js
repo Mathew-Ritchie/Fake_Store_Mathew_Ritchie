@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import AddToCartBtn from "../Components/buttons/AddToCartBtn";
 
 const useGlobalStore = create((set, get) => ({
   storeItems: [],
@@ -9,6 +10,7 @@ const useGlobalStore = create((set, get) => ({
   categoryOption: "",
   sortOption: "",
   filteredItems: [],
+  cart: JSON.parse(localStorage.getItem("myFakeStoreCart") || "[]"),
 
   //Fetch the store items from the API and store them in StoreItems.
   fetchStoreData: async () => {
@@ -28,6 +30,7 @@ const useGlobalStore = create((set, get) => ({
     }
   },
 
+  //Fetch Specific products data from API based on ID
   fetchProductInfo: async (id) => {
     set({ loading: true, error: null });
     try {
@@ -65,11 +68,13 @@ const useGlobalStore = create((set, get) => ({
     get().applyFiltersAndSort();
   },
 
+  //Set sortOption to changed category
   setSortOption: (option) => {
     set({ sortOption: option });
     get().applyFiltersAndSort();
   },
 
+  //function to filter by category and sort based on sort case.
   applyFiltersAndSort: () => {
     const { storeItems, categoryOption, sortOption } = get();
     let currentFilteredItems = [...storeItems];
@@ -98,6 +103,36 @@ const useGlobalStore = create((set, get) => ({
 
     set({ filteredItems: currentFilteredItems });
   },
+
+  addToCart: (itemToAdd) =>
+    set((state) => {
+      const newCart = [...state.cart];
+      const existingProductIndex = newCart.findIndex((item) => item.id === itemToAdd.id);
+      if (existingProductIndex > -1) {
+        newCart[existingProductIndex] = {
+          ...newCart[existingProductIndex],
+          quantity: newCart[existingProductIndex].quantity + 1,
+        };
+      } else {
+        newCart.push({ ...itemToAdd, quantity: 1 });
+      }
+
+      localStorage.setItem("myFakeStoreCart", JSON.stringify(newCart));
+      return { cart: newCart };
+    }),
+
+  removeFromCart: (itemId) =>
+    set((state) => {
+      const newCart = state.cart.filter((item) => item.id !== itemId);
+      localStorage.setItem("myFakeStoreCart", JSON.stringify(newCart));
+      return { cart: newCart };
+    }),
+
+  // clearCart: () =>
+  //   set(() => {
+  //     localStorage.removeItem("myFakeStoreCart");
+  //     return { cart: [] };
+  //   }),
 }));
 
 export default useGlobalStore;
