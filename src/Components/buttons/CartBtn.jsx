@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router";
 import { IoCartOutline, IoCartSharp } from "react-icons/io5";
 import "./cart-btn.css";
 import { useEffect, useMemo } from "react";
@@ -16,13 +17,15 @@ export default function Cart() {
   }, [cart]);
 
   return (
-    <div>
-      {cart.length === 0 ? (
-        <IoCartOutline className="cart-icon" />
-      ) : (
-        <IoCartSharp className="cart-icon" />
-      )}
-      {cart.length > 0 && <span className="cart-item-count">{totalQuantity}</span>}
-    </div>
+    <Link to={"/cart"}>
+      <div>
+        {cart.length === 0 ? (
+          <IoCartOutline className="cart-icon" />
+        ) : (
+          <IoCartSharp className="cart-icon" />
+        )}
+        {cart.length > 0 && <span className="cart-item-count">{totalQuantity}</span>}
+      </div>
+    </Link>
   );
 }
