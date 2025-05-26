@@ -6,9 +6,9 @@ This is a side project using fakestoreapi.com. I am fetching the data from the A
 
 ## Setup
 
-npm Istall
+`npm install`
 
-nmp run dev
+`npm run dev`
 
 ## What I have done so far
 
