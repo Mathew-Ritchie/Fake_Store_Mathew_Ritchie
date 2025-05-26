@@ -5,6 +5,8 @@ import "./app.css";
 import ProductPage from "./Pages/ProductPage";
 import MainPage from "./Pages/MainPage";
 import MainHeader from "./Components/Headers_and_Footers/MainHeader";
+import FavouritesPage from "./Pages/FavouritesPage";
+import CartPage from "./Pages/CartPage";
 
 export default function App() {
   return (
@@ -13,6 +15,8 @@ export default function App() {
         <Route path="/" element={<MainHeader />}>
           <Route index element={<MainPage />} />
           <Route path="/item/:id" element={<ProductPage />} />
+          <Route path="/favourites" element={<FavouritesPage />} />
+          <Route path="/cart" element={<CartPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

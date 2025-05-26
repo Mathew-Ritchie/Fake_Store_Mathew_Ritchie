@@ -7,6 +7,22 @@ export default function AddToFavouritesBtn() {
   const { productInfo } = useGlobalStore();
   const [isFavourite, setIsFavourite] = useState(false);
 
+  useEffect(() => {
+    if (productInfo && productInfo.id) {
+      try {
+        const currentFavourites = JSON.parse(localStorage.getItem("myFakeStoreFavourites") || "[]");
+        const foundInFavourites = currentFavourites.some((item) => item.id === productInfo.id);
+        setIsFavourite(foundInFavourites);
+      } catch (error) {
+        console.error("Failed to parse favourites from localStorage:", error);
+
+        setIsFavourite(false);
+      }
+    } else {
+      setIsFavourite(false);
+    }
+  }, [productInfo]);
+
   const handleAddToFavourites = () => {
     if (!productInfo || !productInfo.id) {
       console.warn("Product info is missing!");

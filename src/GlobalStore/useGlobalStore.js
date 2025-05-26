@@ -123,8 +123,28 @@ const useGlobalStore = create((set, get) => ({
 
   removeFromCart: (itemId) =>
     set((state) => {
-      const newCart = state.cart.filter((item) => item.id !== itemId);
+      const newCart = [...state.cart];
+      const existingProductIndex = newCart.findIndex((item) => item.id === itemId);
+      if (existingProductIndex > -1) {
+        if (newCart[existingProductIndex].quantity > 1) {
+          newCart[existingProductIndex] = {
+            ...newCart[existingProductIndex],
+            quantity: newCart[existingProductIndex].quantity - 1,
+          };
+          console.log(
+            `Decreased quantity of item ID ${itemId} to ${newCart[existingProductIndex].quantity}`
+          );
+        } else {
+          const removedItemTitle = newCart[existingProductIndex].title;
+          newCart.splice(existingProductIndex, 1);
+          console.log(`Removed ${removedItemTitle} (ID: ${itemId}) from cart`);
+        }
+      } else {
+        console.warn(`Attempted to remove item ID ${itemId}, but it was not found in the cart.`);
+      }
+
       localStorage.setItem("myFakeStoreCart", JSON.stringify(newCart));
+
       return { cart: newCart };
     }),
 
