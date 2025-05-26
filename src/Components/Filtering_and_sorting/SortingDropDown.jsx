@@ -1,5 +1,5 @@
 import React from "react";
-import useGlobalStore from "../GlobalStore/useGlobalStore";
+import useGlobalStore from "../../GlobalStore/useGlobalStore";
 
 export default function SortingDropDown() {
   const { sortOption, setSortOption } = useGlobalStore();

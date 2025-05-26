@@ -1,8 +1,8 @@
 import React from "react";
 import { IoCartOutline, IoCartSharp } from "react-icons/io5";
-import "./cart.css";
+import "./cart-btn.css";
 import { useEffect, useMemo } from "react";
-import useGlobalStore from "../GlobalStore/useGlobalStore";
+import useGlobalStore from "../../GlobalStore/useGlobalStore";
 
 export default function Cart() {
   const { cart } = useGlobalStore();

@@ -4,7 +4,7 @@ import "./app.css";
 
 import ProductPage from "./Pages/ProductPage";
 import MainPage from "./Pages/MainPage";
-import MainHeader from "./Components/MainHeader";
+import MainHeader from "./Components/Headers_and_Footers/MainHeader";
 
 export default function App() {
   return (

@@ -4,6 +4,7 @@ import useGlobalStore from "../GlobalStore/useGlobalStore";
 import "./storeItems.css";
 import { FaStar } from "react-icons/fa";
 import truncateText from "../Utilities/utils";
+import AddToFavouritesBtn from "./buttons/AddToFavouritesBtn";
 
 export default function StoreItems() {
   const { filteredItems, storeItems, fetchStoreData, loading, error } = useGlobalStore();

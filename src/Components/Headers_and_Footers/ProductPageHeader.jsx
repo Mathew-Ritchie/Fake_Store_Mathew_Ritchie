@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router";
-import useGlobalStore from "../GlobalStore/useGlobalStore";
-import truncateText from "../Utilities/utils";
+import useGlobalStore from "../../GlobalStore/useGlobalStore";
+import truncateText from "../../Utilities/utils";
 import { IoIosArrowRoundBack } from "react-icons/io";
-import Cart from "./Cart";
+import Cart from "../buttons/CartBtn";
 import "./product-page-header.css";
 
 export default function ProductPageHeader() {

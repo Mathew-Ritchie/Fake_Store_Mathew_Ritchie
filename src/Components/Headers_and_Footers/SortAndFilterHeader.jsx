@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import CategoryDropDown from "./CategoryDropDown";
-import SortingDropDown from "./SortingDropDown";
-import Cart from "./Cart";
+import CategoryDropDown from "../Filtering_and_sorting/CategoryDropDown";
+import SortingDropDown from "../Filtering_and_sorting/SortingDropDown";
+import Cart from "../buttons/CartBtn";
 import "./sort-and-filter-header.css";
-import useGlobalStore from "../GlobalStore/useGlobalStore";
+import useGlobalStore from "../../GlobalStore/useGlobalStore";
 
 export default function SortAndFilterHeader() {
   const { filteredItems } = useGlobalStore();
