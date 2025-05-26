@@ -5,6 +5,7 @@ import truncateText from "../../Utilities/utils";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import Cart from "../buttons/CartBtn";
 import "./product-page-header.css";
+import GoToFavouritesBtn from "../buttons/GoToFavouritesBtn";
 
 export default function ProductPageHeader() {
   const { productInfo } = useGlobalStore();
@@ -20,6 +21,7 @@ export default function ProductPageHeader() {
           {productInfo.title ? truncateText(productInfo.title, 30) : "Loading..."}
         </h3>
       </div>
+      <GoToFavouritesBtn />
       <Cart />
     </div>
   );
