@@ -4,52 +4,21 @@ import useGlobalStore from "../../GlobalStore/useGlobalStore";
 import "./add-to-favourites-btn.css";
 
 export default function AddToFavouritesBtn() {
-  const { productInfo } = useGlobalStore();
-  const [isFavourite, setIsFavourite] = useState(false);
+  const { productInfo, toggleFavourite, isProductFavourite } = useGlobalStore();
 
-  useEffect(() => {
-    if (productInfo && productInfo.id) {
-      try {
-        const currentFavourites = JSON.parse(localStorage.getItem("myFakeStoreFavourites") || "[]");
-        const foundInFavourites = currentFavourites.some((item) => item.id === productInfo.id);
-        setIsFavourite(foundInFavourites);
-      } catch (error) {
-        console.error("Failed to parse favourites from localStorage:", error);
+  const isFavourite = productInfo ? isProductFavourite(productInfo.id) : false;
 
-        setIsFavourite(false);
-      }
-    } else {
-      setIsFavourite(false);
-    }
-  }, [productInfo]);
-
-  const handleAddToFavourites = () => {
-    if (!productInfo || !productInfo.id) {
-      console.warn("Product info is missing!");
+  const handleToggleFavourite = () => {
+    if (!productInfo || typeof productInfo.id === "undefined") {
+      console.warn("Product info or ID is missing, cannot toggle favourite status!");
       return;
     }
-
-    let currentFavourites = JSON.parse(localStorage.getItem("myFakeStoreFavourites") || "[]");
-    const existingFavouriteIndex = currentFavourites.findIndex(
-      (item) => item.id === productInfo.id
-    );
-
-    if (existingFavouriteIndex !== -1) {
-      currentFavourites.splice(existingFavouriteIndex, 1);
-      setIsFavourite(false);
-      console.log(`${productInfo.title} removed from favourites!`);
-    } else {
-      currentFavourites.push({ ...productInfo });
-      setIsFavourite(true);
-      console.log(`${productInfo.title} added to favourites!`);
-    }
-
-    localStorage.setItem("myFakeStoreFavourites", JSON.stringify(currentFavourites));
+    toggleFavourite(productInfo);
   };
 
   return (
     <div>
-      <button onClick={handleAddToFavourites} className="favourites-btn">
+      <button onClick={handleToggleFavourite} className="favourites-btn">
         {isFavourite ? <IoIosHeart /> : <IoIosHeartEmpty />}
       </button>
     </div>

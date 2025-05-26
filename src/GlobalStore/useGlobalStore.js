@@ -11,6 +11,7 @@ const useGlobalStore = create((set, get) => ({
   sortOption: "",
   filteredItems: [],
   cart: JSON.parse(localStorage.getItem("myFakeStoreCart") || "[]"),
+  favourites: JSON.parse(localStorage.getItem("myFakeStoreFavourites") || "[]"),
 
   //Fetch the store items from the API and store them in StoreItems.
   fetchStoreData: async () => {
@@ -153,6 +154,50 @@ const useGlobalStore = create((set, get) => ({
   //     localStorage.removeItem("myFakeStoreCart");
   //     return { cart: [] };
   //   }),
+
+  toggleFavourite: (productToToggle) =>
+    set((state) => {
+      if (!productToToggle || typeof productToToggle.id === "undefined") {
+        console.warn("toggleFavourite: Invalid product provided (missing ID).", productToToggle);
+        return {};
+      }
+
+      const newFavourites = [...state.favourites];
+
+      const existingFavouriteIndex = newFavourites.findIndex(
+        (favItem) => favItem.id === productToToggle.id
+      );
+
+      // Logic to add or remove
+      if (existingFavouriteIndex !== -1) {
+        newFavourites.splice(existingFavouriteIndex, 1);
+        console.log(`${productToToggle.title || "An item"} removed from favourites.`);
+      } else {
+        newFavourites.push({ ...productToToggle });
+        console.log(`${productToToggle.title || "An item"} added to favourites.`);
+      }
+
+      localStorage.setItem("myFakeStoreFavourites", JSON.stringify(newFavourites));
+
+      return { favourites: newFavourites };
+    }),
+
+  /**
+   * Checks if a product is currently in the favourites list.
+   * This is a "getter" action that doesn't modify state, but uses 'get()'.
+   * @param {number} productId - The ID of the product to check.
+   * @returns {boolean} True if the product is a favourite, false otherwise.
+   */
+  isProductFavourite: (productId) => {
+    const { favourites } = get();
+    return favourites.some((item) => item.id === productId);
+  },
+
+  clearFavourites: () =>
+    set(() => {
+      localStorage.removeItem("myFakeStoreFavourites");
+      return { favourites: [] };
+    }),
 }));
 
 export default useGlobalStore;
