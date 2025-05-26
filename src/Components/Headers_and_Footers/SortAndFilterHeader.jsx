@@ -19,7 +19,7 @@ export default function SortAndFilterHeader() {
   return (
     <div className="sort-filter-header-div">
       {/* <h1>Welcome to my fake store!!!</h1> */}
-      <p className="sort-filter-header-p">Items: {itemQuantity}</p>
+      <p className="sort-filter-header-p">{itemQuantity} products</p>
       <CategoryDropDown />
       <SortingDropDown />
       <GoToFavouritesBtn />

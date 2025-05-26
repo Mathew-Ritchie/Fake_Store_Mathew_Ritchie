@@ -1,5 +1,6 @@
 import React from "react";
 import useGlobalStore from "../../GlobalStore/useGlobalStore";
+import "./dropdowns.css";
 
 export default function CategoryDropDown() {
   const { categories, categoryOption, setCategoryOption } = useGlobalStore();
@@ -12,7 +13,7 @@ export default function CategoryDropDown() {
 
   return (
     <select
-      className="category-dropbox"
+      className="category-dropbox dropdown"
       id="category-dropbox"
       value={categoryOption}
       onChange={handleCategoryChange}

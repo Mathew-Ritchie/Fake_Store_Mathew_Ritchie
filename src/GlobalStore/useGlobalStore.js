@@ -132,13 +132,13 @@ const useGlobalStore = create((set, get) => ({
             ...newCart[existingProductIndex],
             quantity: newCart[existingProductIndex].quantity - 1,
           };
-          console.log(
-            `Decreased quantity of item ID ${itemId} to ${newCart[existingProductIndex].quantity}`
-          );
+          // console.log(
+          //   `Decreased quantity of item ID ${itemId} to ${newCart[existingProductIndex].quantity}`
+          // );
         } else {
           const removedItemTitle = newCart[existingProductIndex].title;
           newCart.splice(existingProductIndex, 1);
-          console.log(`Removed ${removedItemTitle} (ID: ${itemId}) from cart`);
+          //console.log(`Removed ${removedItemTitle} (ID: ${itemId}) from cart`);
         }
       } else {
         console.warn(`Attempted to remove item ID ${itemId}, but it was not found in the cart.`);

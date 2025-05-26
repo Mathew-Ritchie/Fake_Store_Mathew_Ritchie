@@ -18,7 +18,7 @@ export default function ProductPageHeader() {
           <IoIosArrowRoundBack className="back-arrow" />
         </Link>
         <h3 className="product-page-header-title">
-          {productInfo.title ? truncateText(productInfo.title, 30) : "Loading..."}
+          {productInfo.title ? truncateText(productInfo.title, 20) : "Loading..."}
         </h3>
       </div>
       <GoToFavouritesBtn />

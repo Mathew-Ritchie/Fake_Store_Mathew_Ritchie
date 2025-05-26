@@ -35,9 +35,9 @@ export default function AddToFavouritesBtn({ product }) {
         }
       >
         {isFavourite ? (
-          <IoIosHeart className="favourite-icon" />
+          <IoIosHeart className="favourite-icon icons" />
         ) : (
-          <IoIosHeartEmpty className="not-favourite-icon" />
+          <IoIosHeartEmpty className="not-favourite-icon icons" />
         )}
       </button>
     </div>

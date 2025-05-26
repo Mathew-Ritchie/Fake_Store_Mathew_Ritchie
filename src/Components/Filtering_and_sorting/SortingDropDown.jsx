@@ -1,5 +1,6 @@
 import React from "react";
 import useGlobalStore from "../../GlobalStore/useGlobalStore";
+import "./dropdowns.css";
 
 export default function SortingDropDown() {
   const { sortOption, setSortOption } = useGlobalStore();
@@ -11,7 +12,7 @@ export default function SortingDropDown() {
   return (
     <select
       id="select_zone"
-      className="sorting-dropdown"
+      className="sorting-dropdown dropdown"
       value={sortOption}
       onChange={handleSortChange}
     >

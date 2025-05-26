@@ -6,3 +6,10 @@ body {
   margin: 0;
   padding: 0;
 }
+
+.icons {
+  background-color: transparent;
+  border: 0;
+  font-size: 25px;
+  color: grey;
+}

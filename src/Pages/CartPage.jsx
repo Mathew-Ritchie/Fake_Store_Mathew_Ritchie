@@ -12,6 +12,9 @@ export default function CartPage() {
   if (!cart || cart.length === 0) {
     return (
       <div className="cart-empty-message">
+        <Link to={"/"} className="product-page-header-link">
+          <IoIosArrowRoundBack className="back-arrow" />
+        </Link>
         <h2>Your Shopping Cart</h2>
         <p>Your cart is empty. Start adding some awesome products!</p>
         {/* You might want to add a link back to your store/products page here */}

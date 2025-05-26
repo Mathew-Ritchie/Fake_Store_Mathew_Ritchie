@@ -10,7 +10,9 @@ export default function GoToFavouritesBtn() {
 
   return (
     <div>
-      <Link to={"/favourites"}>{hasFavourites ? <IoIosHeart /> : <IoIosHeartEmpty />}</Link>
+      <Link to={"/favourites"}>
+        {hasFavourites ? <IoIosHeart className="icons" /> : <IoIosHeartEmpty className="icons" />}
+      </Link>
     </div>
   );
 }
