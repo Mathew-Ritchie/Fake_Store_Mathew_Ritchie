@@ -1,25 +1,44 @@
-import React, { useEffect, useState } from "react";
+import React from "react"; // No need for useEffect here anymore as state is global
 import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
 import useGlobalStore from "../../GlobalStore/useGlobalStore";
 import "./add-to-favourites-btn.css";
 
-export default function AddToFavouritesBtn() {
-  const { productInfo, toggleFavourite, isProductFavourite } = useGlobalStore();
+export default function AddToFavouritesBtn({ product }) {
+  const { toggleFavourite, isProductFavourite, productInfo: globalProductInfo } = useGlobalStore();
 
-  const isFavourite = productInfo ? isProductFavourite(productInfo.id) : false;
+  const productForButton = product || globalProductInfo;
+
+  const isFavourite = productForButton ? isProductFavourite(productForButton.id) : false;
 
   const handleToggleFavourite = () => {
-    if (!productInfo || typeof productInfo.id === "undefined") {
-      console.warn("Product info or ID is missing, cannot toggle favourite status!");
+    if (!productForButton || typeof productForButton.id === "undefined") {
+      console.warn(
+        "AddToFavouritesBtn: Cannot toggle favourite. Product data or ID is missing for this button instance.",
+        productForButton
+      );
       return;
     }
-    toggleFavourite(productInfo);
+
+    toggleFavourite(productForButton);
   };
 
   return (
     <div>
-      <button onClick={handleToggleFavourite} className="favourites-btn">
-        {isFavourite ? <IoIosHeart /> : <IoIosHeartEmpty />}
+      <button
+        onClick={handleToggleFavourite}
+        className="favourites-btn"
+        disabled={!productForButton || typeof productForButton.id === "undefined"}
+        title={
+          isFavourite
+            ? `Remove ${productForButton?.title || "item"} from favourites`
+            : `Add ${productForButton?.title || "item"} to favourites`
+        }
+      >
+        {isFavourite ? (
+          <IoIosHeart className="favourite-icon" />
+        ) : (
+          <IoIosHeartEmpty className="not-favourite-icon" />
+        )}
       </button>
     </div>
   );
