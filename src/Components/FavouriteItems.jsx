@@ -1,6 +1,8 @@
 import React from "react";
+import { Link } from "react-router";
 import AddToFavouritesBtn from "../Components/buttons/AddToFavouritesBtn";
 import useGlobalStore from "../GlobalStore/useGlobalStore";
+import "./favourite-items.css";
 
 export default function FavouritesPage() {
   const { favourites } = useGlobalStore();
@@ -9,18 +11,18 @@ export default function FavouritesPage() {
     <div className="favourites-list">
       {favourites.map((item) => (
         <div key={item.id} className="favourite-item-card">
-          <img
-            src={item.image}
-            alt={item.title}
-            style={{ width: "100px", height: "100px", objectFit: "contain" }}
-            className="favourite-item-image"
-          />
+          <Link to={`/item/${item.id}`}>
+            <img src={item.image} alt={item.title} className="favourite-item-image" />
+          </Link>
           <div className="favourite-item-details">
-            <h1>{item.title}</h1>
+            <Link className="favourite-item-link" to={`/item/${item.id}`}>
+              <h4 className="favourite-item-title">{item.title}</h4>
+            </Link>
+            <div className="favourite-remove-btn">
+              <AddToFavouritesBtn product={item} />
+            </div>
 
-            <AddToFavouritesBtn product={item} />
-
-            {item.price && <p className="favourite-item-price">${item.price.toFixed(2)}</p>}
+            {/* {item.price && <p className="favourite-item-price">${item.price.toFixed(2)}</p>} */}
           </div>
         </div>
       ))}

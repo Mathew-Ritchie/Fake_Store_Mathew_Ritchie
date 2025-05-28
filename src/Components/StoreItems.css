@@ -20,7 +20,7 @@
   border: 1px solid grey;
   border-radius: 2px;
   width: 49vw;
-  height: 310px;
+  height: 340px;
   padding: 10px;
 }
 
@@ -44,11 +44,17 @@
   text-decoration: none;
 }
 
+.store-item-price {
+  font-weight: bolder;
+  font-size: 1.3rem;
+}
+
 .product-rating-div {
   display: flex;
   align-items: end;
   gap: 5px;
   width: 150px;
+  font-size: 1rem;
 }
 
 .product-rating-div > p {

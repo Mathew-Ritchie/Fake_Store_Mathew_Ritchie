@@ -26,7 +26,7 @@ export default function StoreItems() {
                 <img className="product-img" src={item.image} />
               </div>
               <h1 className="product-title">{truncateText(item.title, 50)}</h1>
-              <p>R {item.price}</p>
+              <p className="store-item-price">R {item.price}</p>
               <div className="product-rating-div">
                 <FaStar className="faStar" />
                 <p>{`${item.rating.rate}(${item.rating.count})`}</p>
