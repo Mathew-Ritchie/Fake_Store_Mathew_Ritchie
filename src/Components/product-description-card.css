@@ -21,8 +21,22 @@
   font-size: x-large;
 }
 
+.individual-product-price-rating-div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+}
+
 .individual-product-price {
   font-size: x-large;
   font-weight: bolder;
-  margin-bottom: 0;
+  margin: 0;
+}
+
+.individual-product-rating-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
 }

@@ -21,9 +21,15 @@ export default function AddToCartBtn() {
     }, 3000);
   };
 
+  const addToCartBtnStyle = {
+    backgroundColor: "green",
+    color: "white",
+    width: "200px",
+  };
+
   return (
     <div>
-      <button className="add-to-cart-btn" onClick={handleAddToCart}>
+      <button className="add-to-cart-btn" style={addToCartBtnStyle} onClick={handleAddToCart}>
         Add to cart
       </button>
       {addToCartMessage && <p className="add-to-cart-message">{addToCartMessage}</p>}

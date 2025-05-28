@@ -20,9 +20,9 @@ export default function Cart() {
     <Link to={"/cart"}>
       <div>
         {cart.length === 0 ? (
-          <IoCartOutline className="cart-icon" />
+          <IoCartOutline className="cart-icon icons" />
         ) : (
-          <IoCartSharp className="cart-icon" />
+          <IoCartSharp className="cart-icon icons" />
         )}
         {cart.length > 0 && <span className="cart-item-count">{totalQuantity}</span>}
       </div>

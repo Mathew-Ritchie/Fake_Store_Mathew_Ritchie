@@ -37,21 +37,22 @@ export default function ProductDescriptionCard() {
         <h1 className="individual-product-title">{productInfo.title}</h1>
         <p>{productInfo.description}</p>
       </div>
-
-      <p className="individual-product-price">
-        R{typeof productInfo.price === "number" ? productInfo.price.toFixed(2) : "N/A"}
-      </p>
-      {productInfo.rating &&
-      typeof productInfo.rating === "object" &&
-      productInfo.rating.rate !== undefined &&
-      productInfo.rating.count !== undefined ? (
-        <div className="product-rating-div">
-          <FaStar className="faStar" />
-          <p>{`${productInfo.rating.rate} (${productInfo.rating.count})`}</p>
-        </div>
-      ) : (
-        <p>Rating: N/A</p>
-      )}
+      <div className="individual-product-price-rating-div">
+        <p className="individual-product-price">
+          R{typeof productInfo.price === "number" ? productInfo.price.toFixed(2) : "N/A"}
+        </p>
+        {productInfo.rating &&
+        typeof productInfo.rating === "object" &&
+        productInfo.rating.rate !== undefined &&
+        productInfo.rating.count !== undefined ? (
+          <div className="individual-product-rating-div">
+            <FaStar className="faStar" />
+            <p>{`${productInfo.rating.rate} (${productInfo.rating.count})`}</p>
+          </div>
+        ) : (
+          <p>Rating: N/A</p>
+        )}
+      </div>
     </div>
   );
 }

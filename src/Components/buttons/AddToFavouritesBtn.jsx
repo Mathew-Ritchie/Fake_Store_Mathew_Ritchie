@@ -1,7 +1,6 @@
 import React from "react"; // No need for useEffect here anymore as state is global
 import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
 import useGlobalStore from "../../GlobalStore/useGlobalStore";
-import "./add-to-favourites-btn.css";
 
 export default function AddToFavouritesBtn({ product }) {
   const { toggleFavourite, isProductFavourite, productInfo: globalProductInfo } = useGlobalStore();
@@ -26,7 +25,7 @@ export default function AddToFavouritesBtn({ product }) {
     <div>
       <button
         onClick={handleToggleFavourite}
-        className="favourites-btn"
+        className="favourites-btn icons"
         disabled={!productForButton || typeof productForButton.id === "undefined"}
         title={
           isFavourite
