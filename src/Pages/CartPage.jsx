@@ -61,7 +61,7 @@ export default function CartPage() {
           Total: R
           {cart.reduce((acc, item) => acc + (item.price || 0) * (item.quantity || 0), 0).toFixed(2)}
         </h3>
-        <button className="checkout-btn">Proceed to Checkout</button>
+        <button className="checkout-btn button-style-1">Proceed to Checkout</button>
       </div>
     </div>
   );

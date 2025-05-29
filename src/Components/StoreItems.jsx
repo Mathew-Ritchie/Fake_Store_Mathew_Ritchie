@@ -34,6 +34,7 @@ export default function StoreItems() {
             </div>
           </Link>
         ))}
+      <p>{filteredItems.length} Items</p>
     </div>
   );
 }

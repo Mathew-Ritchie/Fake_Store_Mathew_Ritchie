@@ -7,6 +7,8 @@ import MainPage from "./Pages/MainPage";
 import MainHeader from "./Components/Headers_and_Footers/MainHeader";
 import FavouritesPage from "./Pages/FavouritesPage";
 import CartPage from "./Pages/CartPage";
+import Login from "./credentialCertification/LogIn";
+import Register from "./credentialCertification/Register";
 
 export default function App() {
   return (
@@ -17,6 +19,8 @@ export default function App() {
           <Route path="/item/:id" element={<ProductPage />} />
           <Route path="/favourites" element={<FavouritesPage />} />
           <Route path="/cart" element={<CartPage />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
         </Route>
       </Routes>
     </BrowserRouter>

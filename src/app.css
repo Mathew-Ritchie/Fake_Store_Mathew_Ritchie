@@ -13,3 +13,13 @@ body {
   font-size: 25px;
   color: grey;
 }
+
+.button-style-1 {
+  padding: 5px;
+  font-size: larger;
+  border-radius: 5px;
+  border: 0;
+  background-color: green;
+  color: white;
+  width: 200px;
+}

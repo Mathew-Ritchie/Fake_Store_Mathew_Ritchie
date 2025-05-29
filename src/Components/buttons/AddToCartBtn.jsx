@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./add-to-cart-btn.css";
+
 import useGlobalStore from "../../GlobalStore/useGlobalStore";
 
 export default function AddToCartBtn() {
@@ -21,15 +21,9 @@ export default function AddToCartBtn() {
     }, 3000);
   };
 
-  const addToCartBtnStyle = {
-    backgroundColor: "green",
-    color: "white",
-    width: "200px",
-  };
-
   return (
     <div>
-      <button className="add-to-cart-btn" style={addToCartBtnStyle} onClick={handleAddToCart}>
+      <button className="add-to-cart-btn button-style-1" onClick={handleAddToCart}>
         Add to cart
       </button>
       {addToCartMessage && <p className="add-to-cart-message">{addToCartMessage}</p>}
