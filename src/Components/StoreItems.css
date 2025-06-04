@@ -17,9 +17,9 @@
   flex-direction: column;
   justify-content: start;
   align-items: center;
-  border: 1px solid grey;
+  border: 1px solid var(--clr-very-light-grey);
   border-radius: 2px;
-  width: 49vw;
+  width: 196px;
   height: 340px;
   padding: 10px;
 }
@@ -42,6 +42,7 @@
   font-weight: lighter;
   font-size: medium;
   text-decoration: none;
+  color: var(--clr-dark-grey);
 }
 
 .store-item-price {
@@ -60,8 +61,26 @@
 .product-rating-div > p {
   margin: 0;
   text-decoration: none;
+  color: var(--clr-dark-grey);
 }
 
 .faStar {
   color: gold;
 }
+
+.store-items-total {
+  text-align: center;
+  color: var(--clr-dark-grey);
+}
+
+/* @media (width: 1024px) {
+  .product-card {
+    width: 24vw;
+  }
+}
+
+@media (width: 1366px) {
+  .product-card {
+    width: 19vw;
+  }
+} */

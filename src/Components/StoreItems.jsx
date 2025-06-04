@@ -15,26 +15,28 @@ export default function StoreItems() {
 
   // console.log(storeItems);
   return (
-    <div className="product-container">
-      {loading && <h1>Items loading...</h1>}
-      {error && <h1>There was an error loading data, please try again.</h1>}
-      {filteredItems &&
-        filteredItems.map((item) => (
-          <Link key={item.id} to={`/item/${item.id}`} className="product-link">
-            <div className="product-card">
-              <div className="product-img-div">
-                <img className="product-img" src={item.image} />
+    <div>
+      <div className="product-container">
+        {loading && <h1>Items loading...</h1>}
+        {error && <h1>There was an error loading data, please try again.</h1>}
+        {filteredItems &&
+          filteredItems.map((item) => (
+            <Link key={item.id} to={`/item/${item.id}`} className="product-link">
+              <div className="product-card">
+                <div className="product-img-div">
+                  <img className="product-img" src={item.image} />
+                </div>
+                <h1 className="product-title">{truncateText(item.title, 50)}</h1>
+                <p className="store-item-price">R {item.price}</p>
+                <div className="product-rating-div">
+                  <FaStar className="faStar" />
+                  <p>{`${item.rating.rate}(${item.rating.count})`}</p>
+                </div>
               </div>
-              <h1 className="product-title">{truncateText(item.title, 50)}</h1>
-              <p className="store-item-price">R {item.price}</p>
-              <div className="product-rating-div">
-                <FaStar className="faStar" />
-                <p>{`${item.rating.rate}(${item.rating.count})`}</p>
-              </div>
-            </div>
-          </Link>
-        ))}
-      <p>{filteredItems.length} Items</p>
+            </Link>
+          ))}
+      </div>
+      <p className="store-items-total">{filteredItems.length} Items</p>
     </div>
   );
 }

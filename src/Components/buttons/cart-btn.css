@@ -1,6 +1,6 @@
 .cart-icon {
   font-size: 25px;
-  color: grey;
+  color: var(--clr-medium-dark-grey);
 }
 
 .cart-item-count {

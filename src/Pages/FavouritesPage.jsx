@@ -3,6 +3,7 @@ import useGlobalStore from "../GlobalStore/useGlobalStore";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { Link } from "react-router";
 import FavouriteItems from "../Components/FavouriteItems";
+import "./favourites-page.css";
 
 export default function FavouritesPage() {
   const { favourites } = useGlobalStore();
@@ -21,10 +22,12 @@ export default function FavouritesPage() {
 
   return (
     <div className="favourites-page-container">
-      <Link to={"/"} className="product-page-header-link">
-        <IoIosArrowRoundBack className="back-arrow" />
-      </Link>
-      <h2>Your Favourites</h2>
+      <div className="favourites-page-link-title-div">
+        <Link to={"/"} className="product-page-header-link">
+          <IoIosArrowRoundBack className="back-arrow" />
+        </Link>
+        <h2>Your Favourites</h2>
+      </div>
       <FavouriteItems />
     </div>
   );

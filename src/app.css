@@ -1,3 +1,9 @@
+:root {
+  --clr-very-light-grey: #e9ecef;
+  --clr-medium-dark-grey: #6c757d;
+  --clr-dark-grey: #495057;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -11,7 +17,7 @@ body {
   background-color: transparent;
   border: 0;
   font-size: 25px;
-  color: grey;
+  color: var(--clr-medium-dark-grey);
 }
 
 .button-style-1 {
