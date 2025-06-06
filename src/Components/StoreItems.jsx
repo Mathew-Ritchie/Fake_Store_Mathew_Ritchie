@@ -15,7 +15,7 @@ export default function StoreItems() {
 
   // console.log(storeItems);
   return (
-    <div>
+    <div className="store-items-container">
       <div className="product-container">
         {loading && <h1>Items loading...</h1>}
         {error && <h1>There was an error loading data, please try again.</h1>}
