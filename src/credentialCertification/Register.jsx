@@ -23,9 +23,8 @@ function Register() {
       // 2. Store additional user info in Firestore using the user's UID
       await setDoc(doc(db, "users", user.uid), {
         username: username,
-        email: email, // You might store email here too, though auth handles it
+        email: email,
         createdAt: new Date(),
-        // Add other profile fields here
       });
 
       setSuccess("Registration successful! You can now log in.");

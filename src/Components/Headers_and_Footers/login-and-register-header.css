@@ -1,0 +1,9 @@
+.login-and-register-header-div {
+  display: flex;
+  position: relative;
+  justify-content: end;
+  align-items: center;
+  gap: 5px;
+  height: 32px;
+  z-index: 2;
+}

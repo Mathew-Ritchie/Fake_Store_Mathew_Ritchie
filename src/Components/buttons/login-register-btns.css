@@ -1,0 +1,23 @@
+.login-register-btn-div {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 5px;
+}
+
+.register-btn {
+  padding: 5px;
+  width: 60px;
+  /* background-color: var(--clr-very-light-grey); */
+  text-decoration: none;
+  color: var(--clr-dark-grey);
+}
+
+.login-btn {
+  padding: 5px;
+  width: 60px;
+  /* background-color: var(--clr-very-light-grey); */
+  margin-right: 5px;
+  text-decoration: none;
+  color: var(--clr-dark-grey);
+}
