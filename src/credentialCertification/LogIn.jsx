@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { auth } from "../firebase"; // Import your initialized Firebase auth
 import { signInWithEmailAndPassword } from "firebase/auth";
+import "./login.css";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -25,18 +26,27 @@ function Login() {
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <h2>Login</h2>
+    <form onSubmit={handleLogin} className="login-form-wrapper">
+      <h2 className="login-form-title">Login</h2>
       {success && <p style={{ color: "green" }}>{success}</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <div>
+      <div className="login-input-divs">
         <label>Email:</label>
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        <input
+          className="login-input"
+          type="email"
+          placeholder="email@mail.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
       </div>
-      <div>
+      <div className="login-input-divs">
         <label>Password:</label>
         <input
+          className="login-input"
           type="password"
+          placeholder="xxxxxxxxxxx"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
