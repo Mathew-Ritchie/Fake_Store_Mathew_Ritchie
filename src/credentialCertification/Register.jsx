@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { auth, db } from "../firebase"; // Import your initialized Firebase auth and db
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore"; // For Firestore
+import "./register.css";
 
 function Register() {
   const [email, setEmail] = useState("");
@@ -38,33 +39,43 @@ function Register() {
   };
 
   return (
-    <form onSubmit={handleRegister}>
+    <form onSubmit={handleRegister} className="register-form">
       <h2>Register</h2>
       {success && <p style={{ color: "green" }}>{success}</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <div>
+      <div className="register-input-div">
         <label>Username (for profile):</label>
         <input
           type="text"
+          className="register-input"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           required
         />
       </div>
-      <div>
+      <div className="register-input-div">
         <label>Email:</label>
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        <input
+          type="email"
+          className="register-input"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
       </div>
-      <div>
+      <div className="register-input-div">
         <label>Password:</label>
         <input
           type="password"
+          className="register-input"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
       </div>
-      <button type="submit">Register</button>
+      <button type="submit" className="register-btn">
+        Register
+      </button>
     </form>
   );
 }

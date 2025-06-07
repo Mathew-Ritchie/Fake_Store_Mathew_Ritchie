@@ -1,4 +1,4 @@
-.login-form-wrapper {
+.register-form {
   display: flex;
   flex-direction: column;
   justify-content: start;
@@ -11,18 +11,14 @@
   height: 100vh;
 }
 
-.login-form-title {
-  margin-top: 0;
-}
-
-.login-input-divs {
+.register-input-div {
   display: flex;
   flex-direction: column;
   gap: 5px;
   margin-bottom: 20px;
 }
 
-.login-input {
+.register-input {
   border: none;
   box-shadow: 2px 2px 5px var(--clr-dark-grey);
   font-size: 10px;
@@ -31,7 +27,7 @@
   border-radius: 2px;
 }
 
-.login-btn {
+.register-btn {
   padding: 5px 0px;
   width: 120px;
   font-size: 20px;
