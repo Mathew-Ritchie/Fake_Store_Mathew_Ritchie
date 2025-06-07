@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { Link } from "react-router";
 import { auth } from "../firebase"; // Import your initialized Firebase auth
 import { signInWithEmailAndPassword } from "firebase/auth";
 import "./login.css";
+import { IoIosArrowRoundBack } from "react-icons/io";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -27,6 +29,9 @@ function Login() {
 
   return (
     <form onSubmit={handleLogin} className="login-form-wrapper">
+      <Link to={"/"} className="product-page-header-link">
+        <IoIosArrowRoundBack className="back-arrow" />
+      </Link>
       <h2 className="login-form-title">Login</h2>
       {success && <p style={{ color: "green" }}>{success}</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
@@ -55,6 +60,14 @@ function Login() {
       <button type="submit" className="login-btn">
         Login
       </button>
+      <div>
+        <p>
+          If you are not yet registered{" "}
+          <span>
+            <Link to={"/register"}>click here</Link>
+          </span>
+        </p>
+      </div>
     </form>
   );
 }

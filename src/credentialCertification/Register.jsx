@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { Link } from "react-router";
 import { auth, db } from "../firebase"; // Import your initialized Firebase auth and db
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore"; // For Firestore
 import "./register.css";
+import { IoIosArrowRoundBack } from "react-icons/io";
 
 function Register() {
   const [email, setEmail] = useState("");
@@ -40,6 +42,9 @@ function Register() {
 
   return (
     <form onSubmit={handleRegister} className="register-form">
+      <Link to={"/"} className="product-page-header-link">
+        <IoIosArrowRoundBack className="back-arrow" />
+      </Link>
       <h2>Register</h2>
       {success && <p style={{ color: "green" }}>{success}</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
@@ -47,6 +52,7 @@ function Register() {
         <label>Username (for profile):</label>
         <input
           type="text"
+          placeholder="username"
           className="register-input"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
@@ -57,6 +63,7 @@ function Register() {
         <label>Email:</label>
         <input
           type="email"
+          placeholder="email@mail.com"
           className="register-input"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -67,6 +74,7 @@ function Register() {
         <label>Password:</label>
         <input
           type="password"
+          placeholder="xxxxxxxxxxx"
           className="register-input"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -76,6 +84,15 @@ function Register() {
       <button type="submit" className="register-btn">
         Register
       </button>
+      <div>
+        <p>
+          If you are already registered{" "}
+          <span>
+            <Link to={"/login"}>click here</Link>
+          </span>{" "}
+          to log in
+        </p>
+      </div>
     </form>
   );
 }
