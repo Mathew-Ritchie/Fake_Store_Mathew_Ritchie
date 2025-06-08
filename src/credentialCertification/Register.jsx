@@ -30,6 +30,10 @@ function Register() {
         createdAt: new Date(),
       });
 
+      await updateProfile(user, {
+        dispalyName: username,
+      });
+
       setSuccess("Registration successful! You can now log in.");
       setEmail("");
       setPassword("");

@@ -4,30 +4,28 @@ import { auth } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import "./login.css";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import useGlobalStore from "../GlobalStore/useGlobalStore";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [localError, setLocalError] = useState("");
 
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const loginUser = useGlobalStore((state) => state.loginUser);
+  const authLoading = useGlobalStore((state) => state.authLoading);
+  const authError = useGlobalStore((state) => state.authError);
+
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
+    setLocalError("");
 
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-      console.log(user);
-      setSuccess(`Logged in as: ${user.email}`);
+      await loginUser(email, password);
       navigate("/");
-      // Redirect user, update global state, etc.
     } catch (err) {
-      console.error("Login error:", err.message);
-      setError(err.message);
+      setLocalError(authError || "An unexpected error occurred during login.");
     }
   };
 

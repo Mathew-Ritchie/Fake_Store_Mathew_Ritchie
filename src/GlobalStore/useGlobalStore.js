@@ -1,5 +1,8 @@
 import { create } from "zustand";
 import AddToCartBtn from "../Components/buttons/AddToCartBtn";
+import { auth, db } from "../firebase";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
 
 const useGlobalStore = create((set, get) => ({
   storeItems: [],
@@ -15,16 +18,80 @@ const useGlobalStore = create((set, get) => ({
 
   user: null,
   isLoggedIn: false,
+  authLoading: false,
+  authError: null,
 
+  setAuthLoading: (isLoading) => set({ authLoading: isLoading }),
+
+  fetchUserProfileFromFirestore: async (uid) => {
+    if (!uid) return null;
+    const userDocRef = doc(db, "users", uid);
+    try {
+      const userDocSnap = await getDoc(userDocRef);
+      if (userDocSnap.exists()) {
+        return userDocSnap.data();
+      } else {
+        console.warn("No additional user data found in Firestore for UID:", uid);
+        return null;
+      }
+    } catch (error) {
+      console.error("Error fetching user data from Firestore for UID:", uid, error);
+      return null;
+    }
+  },
+  //Set user and update isLoggedIn state
   setUser: (userData) => {
     set({ user: userData, isLoggedIn: !!userData });
-    localStorage.setItem("currentUser", JSON.stringify(userData));
+    // localStorage.setItem("currentUser", JSON.stringify(userData));
   },
 
-  clearUser: () => {
-    set({ user: null, isLoggedIn: false });
-    localStorage.removeItem("currentUser");
+  loginUser: async (email, password) => {
+    set({ authLoading: true, authError: null });
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const firebaseAuthUser = userCredential.user;
+      const customUserProfile = await get().fetchUserProfileFromFirestore(firebaseAuthUser.uid);
+      const combinedUserData = {
+        uid: firebaseAuthUser.uid,
+        email: firebaseAuthUser.email,
+        displayName: firebaseAuthUser.displayName,
+        photoURL: firebaseAuthUser.photoURL,
+        username: customUserProfile ? customUserProfile.username : null,
+        createdAt: customUserProfile ? customUserProfile.createdAt : null,
+      };
+
+      set({
+        user: combinedUserData,
+        isLoggedIn: true,
+        authLoading: false,
+      });
+
+      return combinedUserData;
+    } catch (error) {
+      console.error("Auth Error (from store):", error.message);
+      set({ authError: error.message, authLoading: false, user: null, isLoggedIn: false });
+      throw error;
+    }
   },
+
+  logoutUser: async () => {
+    set({ authLoading: true, authError: null });
+    try {
+      await signOut(auth);
+      set({ user: null, isLoggedIn: false, authLoading: false });
+    } catch (error) {
+      console.error("Logout Error (from store):", error.message);
+      set({ authError: error.message, authLoading: false });
+      throw error;
+    }
+  },
+
+  //Clear user and set isLoggedIn back to false.
+  // clearUser: () => {
+  //   set({ user: null, isLoggedIn: false });
+  //   localStorage.removeItem("currentUser");
+  // },
+
   //Fetch the store items from the API and store them in StoreItems.
   fetchStoreData: async () => {
     set({ loading: true, error: null });
