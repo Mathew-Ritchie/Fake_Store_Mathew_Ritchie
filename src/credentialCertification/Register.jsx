@@ -7,31 +7,28 @@ import "./register.css";
 import { IoIosArrowRoundBack } from "react-icons/io";
 
 function Register() {
+  // States for form submission inputs.
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [username, setUsername] = useState(""); // To store in Firestore
+  const [username, setUsername] = useState("");
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  // Handles form submission for registration. takes the form event as a parametre.
   const handleRegister = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
-
     try {
-      // 1. Create user with Firebase Authentication
+      // Create user with Firebase Authentication
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-
-      // 2. Store additional user info in Firestore using the user's UID
+      // Store additional user info in Firestore using the user's UID
       await setDoc(doc(db, "users", user.uid), {
         username: username,
         email: email,
         createdAt: new Date(),
-      });
-
-      await updateProfile(user, {
-        dispalyName: username,
       });
 
       setSuccess("Registration successful! You can now log in.");

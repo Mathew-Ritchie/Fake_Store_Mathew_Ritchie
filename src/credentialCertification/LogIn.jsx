@@ -1,26 +1,28 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { auth } from "../firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import "./login.css";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import useGlobalStore from "../GlobalStore/useGlobalStore";
 
 function Login() {
+  // State for input fields
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  // local state to display error message to the login form
   const [localError, setLocalError] = useState("");
 
+  //Hook to navigate user after successful login
   const navigate = useNavigate();
 
+  //Access authentication-related actions from global store
   const loginUser = useGlobalStore((state) => state.loginUser);
-  const authLoading = useGlobalStore((state) => state.authLoading);
+  //const authLoading = useGlobalStore((state) => state.authLoading);
   const authError = useGlobalStore((state) => state.authError);
 
+  // handles form submission for login. accepts the form event as a parameter.
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setLocalError("");
-
     try {
       await loginUser(email, password);
       navigate("/");
@@ -30,13 +32,12 @@ function Login() {
   };
 
   return (
-    <form onSubmit={handleLogin} className="login-form-wrapper">
+    <form onSubmit={handleLoginSubmit} className="login-form-wrapper">
       <Link to={"/"} className="product-page-header-link">
         <IoIosArrowRoundBack className="back-arrow" />
       </Link>
       <h2 className="login-form-title">Login</h2>
-      {success && <p style={{ color: "green" }}>{success}</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {localError && <p style={{ color: "red" }}>{error}</p>}
       <div className="login-input-divs">
         <label>Email:</label>
         <input
