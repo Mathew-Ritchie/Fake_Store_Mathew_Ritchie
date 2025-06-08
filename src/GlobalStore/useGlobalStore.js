@@ -13,6 +13,18 @@ const useGlobalStore = create((set, get) => ({
   cart: JSON.parse(localStorage.getItem("myFakeStoreCart") || "[]"),
   favourites: JSON.parse(localStorage.getItem("myFakeStoreFavourites") || "[]"),
 
+  user: null,
+  isLoggedIn: false,
+
+  setUser: (userData) => {
+    set({ user: userData, isLoggedIn: !!userData });
+    localStorage.setItem("currentUser", JSON.stringify(userData));
+  },
+
+  clearUser: () => {
+    set({ user: null, isLoggedIn: false });
+    localStorage.removeItem("currentUser");
+  },
   //Fetch the store items from the API and store them in StoreItems.
   fetchStoreData: async () => {
     set({ loading: true, error: null });

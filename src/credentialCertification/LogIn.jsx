@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router";
-import { auth } from "../firebase"; // Import your initialized Firebase auth
+import { Link, useNavigate } from "react-router";
+import { auth } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import "./login.css";
 import { IoIosArrowRoundBack } from "react-icons/io";
@@ -11,6 +11,8 @@ function Login() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  const navigate = useNavigate();
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
@@ -19,7 +21,9 @@ function Login() {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
+      console.log(user);
       setSuccess(`Logged in as: ${user.email}`);
+      navigate("/");
       // Redirect user, update global state, etc.
     } catch (err) {
       console.error("Login error:", err.message);
