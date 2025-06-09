@@ -3,7 +3,8 @@
   position: relative;
   justify-content: end;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
   height: 32px;
   z-index: 2;
+  padding-right: 10px;
 }

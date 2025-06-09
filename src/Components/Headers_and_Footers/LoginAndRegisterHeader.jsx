@@ -28,7 +28,9 @@ export default function LoginAndRegisterHeader() {
       {isLoggedIn && (
         <>
           <span>Welcome, {user.username || user.email}!</span>
-          <button onClick={handleLogoutClick}>Logout</button>
+          <button onClick={handleLogoutClick} className="login-and-register-header-logout-btn">
+            Logout
+          </button>
         </>
       )}
     </div>

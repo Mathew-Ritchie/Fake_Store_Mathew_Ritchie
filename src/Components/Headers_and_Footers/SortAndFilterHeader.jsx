@@ -9,10 +9,15 @@ import GoToFavouritesBtn from "../buttons/GoToFavouritesBtn";
 export default function SortAndFilterHeader() {
   return (
     <div className="sort-filter-header-div">
-      <CategoryDropDown />
-      <SortingDropDown />
-      <GoToFavouritesBtn />
-      <Cart />
+      <div className="sort-filter-header-sort-category-div">
+        <CategoryDropDown />
+        <SortingDropDown />
+      </div>
+
+      <div className="sort-filter-header-cart-favourites-div">
+        <GoToFavouritesBtn />
+        <Cart />
+      </div>
     </div>
   );
 }
