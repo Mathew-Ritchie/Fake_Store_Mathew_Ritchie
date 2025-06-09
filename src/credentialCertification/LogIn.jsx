@@ -60,7 +60,7 @@ function Login() {
           required
         />
       </div>
-      <button type="submit" className="login-btn">
+      <button type="submit" className="login-submit-btn">
         Login
       </button>
       <div>

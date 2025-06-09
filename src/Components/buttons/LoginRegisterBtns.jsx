@@ -8,6 +8,7 @@ export default function LoginRegisterBtns() {
       <NavLink to={"/register"} className="register-btn">
         Register
       </NavLink>
+      <p>/</p>
       <NavLink to={"/login"} className="login-btn">
         Login
       </NavLink>
