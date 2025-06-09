@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router";
 import useGlobalStore from "../GlobalStore/useGlobalStore";
-import "./store-items.css";
+import "./Store-items.css";
 import { FaStar } from "react-icons/fa";
 import truncateText from "../Utilities/utils";
 
@@ -12,7 +12,6 @@ export default function StoreItems() {
     fetchStoreData();
   }, [fetchStoreData]);
 
-  // console.log(storeItems);
   return (
     <div className="store-items-container">
       <div className="product-container">
