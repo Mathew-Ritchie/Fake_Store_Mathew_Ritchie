@@ -6,7 +6,7 @@ export default function MainHeader() {
   return (
     <div className="main-header-div">
       <div className="main-header-title-div">
-        <h1 className="main-header-title">FAKE-A-LOT.COM</h1>
+        <h1 className="main-header-title">MY-FAKE-STORE.COM</h1>
       </div>
 
       <Outlet />

@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import AddToCartBtn from "../Components/buttons/AddToCartBtn";
 import { auth, db } from "../firebase";
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
