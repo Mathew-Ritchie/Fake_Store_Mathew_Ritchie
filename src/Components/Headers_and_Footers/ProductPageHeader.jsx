@@ -13,7 +13,7 @@ export default function ProductPageHeader() {
 
   return (
     <div className="product-page-header-div">
-      <div className="product-page-header-inner-div">
+      <div className="product-page-header-backbtn-title-div">
         <Link to={"/"} className="product-page-header-link">
           <IoIosArrowRoundBack className="back-arrow" />
         </Link>
@@ -21,8 +21,10 @@ export default function ProductPageHeader() {
           {productInfo.title ? truncateText(productInfo.title, 20) : "Loading..."}
         </h3>
       </div>
-      <GoToFavouritesBtn />
-      <Cart />
+      <div className="product-page-header-favbtn-cartbtn-div">
+        <GoToFavouritesBtn />
+        <Cart />
+      </div>
     </div>
   );
 }

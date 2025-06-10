@@ -40,3 +40,10 @@
   align-items: center;
   gap: 5px;
 }
+
+@media (min-width: 800px) {
+  .individual-product-info-div {
+    width: 500px;
+    margin: 0px auto;
+  }
+}
