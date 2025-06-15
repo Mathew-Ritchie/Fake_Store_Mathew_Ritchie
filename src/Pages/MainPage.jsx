@@ -6,7 +6,6 @@ import LoginAndRegisterHeader from "../Components/Headers_and_Footers/LoginAndRe
 export default function MainPage() {
   return (
     <div>
-      <LoginAndRegisterHeader />
       <SortAndFilterHeader />
       <StoreItems />
     </div>

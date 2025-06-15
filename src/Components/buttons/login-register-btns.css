@@ -3,6 +3,7 @@
   align-items: center;
   justify-content: end;
   gap: 5px;
+  width: 100vw;
 }
 
 .register-btn {
@@ -11,7 +12,7 @@
   /* background-color: var(--clr-very-light-grey); */
   text-decoration: none;
   color: var(--clr-dark-grey);
-  margin-right: 15px;
+  margin-right: 20px;
 }
 
 .login-btn {
