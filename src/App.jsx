@@ -13,35 +13,14 @@ import Login from "./credentialCertification/LogIn";
 import Register from "./credentialCertification/Register";
 
 export default function App() {
-  const setUser = useGlobalStore((state) => state.setUser);
-  const fetchUserProfileFromFirestore = useGlobalStore(
-    (state) => state.fetchUserProfileFromFirestore
+  const initializeFirebaseAndCartListeners = useGlobalStore(
+    (state) => state.initializeFirebaseAndCartListeners
   );
-  const setAuthLoading = useGlobalStore((state) => state.setAuthLoading);
+
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseAuthUser) => {
-      if (firebaseAuthUser) {
-        const customUserProfile = await fetchUserProfileFromFirestore(firebaseAuthUser.uid);
-
-        const combinedUserData = {
-          uid: firebaseAuthUser.uid,
-          email: firebaseAuthUser.email,
-          displayName: firebaseAuthUser.displayName,
-          photoURL: firebaseAuthUser.photoURL,
-          username: customUserProfile ? customUserProfile.username : null,
-          createdAt: customUserProfile ? customUserProfile.createdAt : null,
-        };
-
-        setUser(combinedUserData);
-      } else {
-        setUser(null);
-      }
-      setAuthLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, [setUser, fetchUserProfileFromFirestore, setAuthLoading]);
-
+    // Call this once when the app mounts
+    initializeFirebaseAndCartListeners();
+  }, [initializeFirebaseAndCartListeners]);
   return (
     <BrowserRouter>
       <Routes>

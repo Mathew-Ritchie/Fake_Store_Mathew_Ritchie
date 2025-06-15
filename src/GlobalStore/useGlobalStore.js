@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { auth, db } from "../firebase";
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
+import { doc, getDoc, setDoc, onSnapshot } from "firebase/firestore";
 
 const useGlobalStore = create((set, get) => ({
   storeItems: [],
@@ -19,6 +19,8 @@ const useGlobalStore = create((set, get) => ({
   isLoggedIn: false,
   authLoading: false,
   authError: null,
+
+  _cartUnsubscribe: null,
 
   setAuthLoading: (isLoading) => set({ authLoading: isLoading }),
 
@@ -49,6 +51,7 @@ const useGlobalStore = create((set, get) => ({
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const firebaseAuthUser = userCredential.user;
+
       const customUserProfile = await get().fetchUserProfileFromFirestore(firebaseAuthUser.uid);
       const combinedUserData = {
         uid: firebaseAuthUser.uid,
@@ -65,6 +68,13 @@ const useGlobalStore = create((set, get) => ({
         authLoading: false,
       });
 
+      // Merge local cart with Firestore cart (if any)
+      await get()._mergeCarts(firebaseAuthUser.uid);
+      // Subscribe to real-time cart updates from Firestore
+      get()._subscribeToUserCart(firebaseAuthUser.uid);
+      // Clear localStorage cart after successful merge
+      localStorage.removeItem("myFakeStoreCart");
+
       return combinedUserData;
     } catch (error) {
       console.error("Auth Error (from store):", error.message);
@@ -77,7 +87,8 @@ const useGlobalStore = create((set, get) => ({
     set({ authLoading: true, authError: null });
     try {
       await signOut(auth);
-      set({ user: null, isLoggedIn: false, authLoading: false });
+      get()._unsubscribeFromCart();
+      set({ user: null, isLoggedIn: false, authLoading: false, cart: [] });
     } catch (error) {
       console.error("Logout Error (from store):", error.message);
       set({ authError: error.message, authLoading: false });
@@ -85,11 +96,207 @@ const useGlobalStore = create((set, get) => ({
     }
   },
 
-  //Clear user and set isLoggedIn back to false.
-  // clearUser: () => {
-  //   set({ user: null, isLoggedIn: false });
-  //   localStorage.removeItem("currentUser");
-  // },
+  /**
+   * Helper to convert cart array to Firestore-friendly map.
+   * @param {Array} cartArray - The cart array from Zustand state.
+   * @returns {object} A map of cart items by product ID.
+   */
+  _cartArrayToMap: (cartArray) => {
+    return cartArray.reduce((acc, item) => {
+      acc[item.id] = { ...item, productId: item.id }; // Add productId field and spread other item details
+      return acc;
+    }, {});
+  },
+
+  /**
+   * Helper to convert Firestore cart map to array for Zustand state.
+   * @param {object} cartMap - The cart map from Firestore document.
+   * @returns {Array} An array of cart items.
+   */
+  _cartMapToArray: (cartMap) => {
+    if (!cartMap) return [];
+    return Object.values(cartMap).map((item) => ({ ...item, id: item.productId })); // Ensure 'id' is present
+  },
+
+  /**
+   * Updates the user's cart in Firestore.
+   * @param {string} userId - The UID of the user.
+   * @param {Array} cartItemsArray - The cart items as an array.
+   */
+  _updateCartInFirestore: async (userId, cartItemsArray) => {
+    const cartRef = doc(db, "carts", userId);
+    const cartItemsMap = get()._cartArrayToMap(cartItemsArray);
+    try {
+      // Use setDoc with merge:true to create or update the document without overwriting other fields
+      await setDoc(cartRef, { items: cartItemsMap, lastUpdated: new Date() }, { merge: true });
+      console.log("Cart updated successfully in Firestore!");
+    } catch (error) {
+      console.error("Error updating cart in Firestore: ", error);
+    }
+  },
+
+  /**
+   * Merges items from local storage cart into the Firestore cart upon login.
+   * @param {string} userId - The UID of the logged-in user.
+   */
+  _mergeCarts: async (userId) => {
+    const localStorageCart = JSON.parse(localStorage.getItem("myFakeStoreCart") || "[]");
+    if (localStorageCart.length === 0) {
+      console.log("No local storage cart to merge.");
+      return; // Nothing to merge
+    }
+
+    const cartRef = doc(db, "carts", userId);
+    const cartSnap = await getDoc(cartRef);
+    let firestoreCartMap = {}; // Will store Firestore cart as a map for easy merging
+
+    if (cartSnap.exists()) {
+      firestoreCartMap = cartSnap.data().items || {};
+    }
+
+    // Merge local storage items into the Firestore map
+    localStorageCart.forEach((localItem) => {
+      if (firestoreCartMap[localItem.id]) {
+        // Item exists in both, update quantity
+        firestoreCartMap[localItem.id].quantity += localItem.quantity;
+      } else {
+        // Item only in local storage, add it to the map
+        firestoreCartMap[localItem.id] = { ...localItem, productId: localItem.id };
+      }
+    });
+
+    // Convert the merged map back to an array for _updateCartInFirestore
+    const mergedCartArray = get()._cartMapToArray(firestoreCartMap);
+    await get()._updateCartInFirestore(userId, mergedCartArray);
+    localStorage.removeItem("myFakeStoreCart"); // Clear local storage after merge
+    console.log("Carts merged successfully!");
+  },
+
+  /**
+   * Subscribes to real-time updates for the user's cart in Firestore.
+   * @param {string} userId - The UID of the user.
+   */
+  _subscribeToUserCart: (userId) => {
+    // Unsubscribe from any previous listener to avoid memory leaks
+    if (get()._cartUnsubscribe) {
+      get()._cartUnsubscribe();
+    }
+
+    const cartRef = doc(db, "carts", userId);
+    const unsubscribe = onSnapshot(
+      cartRef,
+      (docSnap) => {
+        if (docSnap.exists()) {
+          const firestoreCartMap = docSnap.data().items || {};
+          const newCartArray = get()._cartMapToArray(firestoreCartMap);
+          set({ cart: newCartArray });
+          console.log("Real-time cart updated from Firestore:", newCartArray);
+        } else {
+          // Document does not exist (e.g., first login, or cart was cleared)
+          set({ cart: [] });
+          console.log("Cart document not found in Firestore. Setting local cart to empty.");
+        }
+      },
+      (error) => {
+        console.error("Error listening to cart changes from Firestore: ", error);
+        // Optionally handle error, e.g., revert to local storage or show message
+      }
+    );
+
+    set({ _cartUnsubscribe: unsubscribe }); // Store the unsubscribe function
+  },
+
+  _unsubscribeFromCart: () => {
+    if (get()._cartUnsubscribe) {
+      get()._cartUnsubscribe();
+      set({ _cartUnsubscribe: null });
+      console.log("Unsubscribed from Firestore cart listener.");
+    }
+  },
+
+  /**
+   * Adds an item to the cart. Persists to Firestore if logged in, otherwise to localStorage.
+   * @param {object} itemToAdd - The product item to add.
+   */
+  addToCart: (itemToAdd) =>
+    set((state) => {
+      const { user, isLoggedIn } = get(); // Get latest user state within set
+      const newCart = [...state.cart];
+      const existingProductIndex = newCart.findIndex((item) => item.id === itemToAdd.id);
+
+      if (existingProductIndex > -1) {
+        // Item already in cart, increment quantity
+        newCart[existingProductIndex] = {
+          ...newCart[existingProductIndex],
+          quantity: newCart[existingProductIndex].quantity + 1,
+        };
+      } else {
+        // New item, add to cart with quantity 1
+        newCart.push({ ...itemToAdd, quantity: 1 });
+      }
+
+      // If logged in, update Firestore. The _subscribeToUserCart will then update the local state.
+      if (isLoggedIn && user && user.uid) {
+        get()._updateCartInFirestore(user.uid, newCart);
+      } else {
+        // If not logged in, update localStorage
+        localStorage.setItem("myFakeStoreCart", JSON.stringify(newCart));
+      }
+      return { cart: newCart };
+    }),
+
+  /**
+   * Removes an item (or decreases its quantity) from the cart.
+   * Persists to Firestore if logged in, otherwise to localStorage.
+   * @param {number} itemId - The ID of the item to remove.
+   */
+  removeFromCart: (itemId) =>
+    set((state) => {
+      const { user, isLoggedIn } = get(); // Get latest user state within set
+      const newCart = [...state.cart];
+      const existingProductIndex = newCart.findIndex((item) => item.id === itemId);
+
+      if (existingProductIndex > -1) {
+        if (newCart[existingProductIndex].quantity > 1) {
+          // Decrease quantity
+          newCart[existingProductIndex] = {
+            ...newCart[existingProductIndex],
+            quantity: newCart[existingProductIndex].quantity - 1,
+          };
+        } else {
+          // Quantity is 1, remove item
+          newCart.splice(existingProductIndex, 1);
+        }
+      } else {
+        console.warn(`Attempted to remove item ID ${itemId}, but it was not found in the cart.`);
+      }
+
+      // If logged in, update Firestore. The _subscribeToUserCart will then update the local state.
+      if (isLoggedIn && user && user.uid) {
+        get()._updateCartInFirestore(user.uid, newCart);
+      } else {
+        // If not logged in, update localStorage
+        localStorage.setItem("myFakeStoreCart", JSON.stringify(newCart));
+      }
+
+      return { cart: newCart };
+    }),
+
+  /**
+   * Clears the local storage cart and the Zustand cart state.
+   * Note: For logged-in users, this would typically involve setting their Firestore cart to empty.
+   * This current implementation only clears localStorage.
+   */
+  clearCart: () =>
+    set((state) => {
+      const { user, isLoggedIn } = get();
+      if (isLoggedIn && user && user.uid) {
+        get()._updateCartInFirestore(user.uid, []); // Set Firestore cart to empty array
+      } else {
+        localStorage.removeItem("myFakeStoreCart");
+      }
+      return { cart: [] };
+    }),
 
   //Fetch the store items from the API and store them in StoreItems.
   fetchStoreData: async () => {
@@ -183,56 +390,6 @@ const useGlobalStore = create((set, get) => ({
     set({ filteredItems: currentFilteredItems });
   },
 
-  addToCart: (itemToAdd) =>
-    set((state) => {
-      const newCart = [...state.cart];
-      const existingProductIndex = newCart.findIndex((item) => item.id === itemToAdd.id);
-      if (existingProductIndex > -1) {
-        newCart[existingProductIndex] = {
-          ...newCart[existingProductIndex],
-          quantity: newCart[existingProductIndex].quantity + 1,
-        };
-      } else {
-        newCart.push({ ...itemToAdd, quantity: 1 });
-      }
-
-      localStorage.setItem("myFakeStoreCart", JSON.stringify(newCart));
-      return { cart: newCart };
-    }),
-
-  removeFromCart: (itemId) =>
-    set((state) => {
-      const newCart = [...state.cart];
-      const existingProductIndex = newCart.findIndex((item) => item.id === itemId);
-      if (existingProductIndex > -1) {
-        if (newCart[existingProductIndex].quantity > 1) {
-          newCart[existingProductIndex] = {
-            ...newCart[existingProductIndex],
-            quantity: newCart[existingProductIndex].quantity - 1,
-          };
-          // console.log(
-          //   `Decreased quantity of item ID ${itemId} to ${newCart[existingProductIndex].quantity}`
-          // );
-        } else {
-          const removedItemTitle = newCart[existingProductIndex].title;
-          newCart.splice(existingProductIndex, 1);
-          //console.log(`Removed ${removedItemTitle} (ID: ${itemId}) from cart`);
-        }
-      } else {
-        console.warn(`Attempted to remove item ID ${itemId}, but it was not found in the cart.`);
-      }
-
-      localStorage.setItem("myFakeStoreCart", JSON.stringify(newCart));
-
-      return { cart: newCart };
-    }),
-
-  // clearCart: () =>
-  //   set(() => {
-  //     localStorage.removeItem("myFakeStoreCart");
-  //     return { cart: [] };
-  //   }),
-
   toggleFavourite: (productToToggle) =>
     set((state) => {
       if (!productToToggle || typeof productToToggle.id === "undefined") {
@@ -276,6 +433,47 @@ const useGlobalStore = create((set, get) => ({
       localStorage.removeItem("myFakeStoreFavourites");
       return { favourites: [] };
     }),
+
+  // --- Initialization for Firebase Auth State and Cart Listener ---
+  // This should be called once, typically in your main App component's useEffect
+  initializeFirebaseAndCartListeners: () => {
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        console.log("Firebase Auth State Changed: User logged in.", user.uid);
+        // Fetch custom profile and set user in store
+        const customUserProfile = await get().fetchUserProfileFromFirestore(user.uid);
+        const combinedUserData = {
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+          username: customUserProfile ? customUserProfile.username : null,
+          createdAt: customUserProfile ? customUserProfile.createdAt : null,
+        };
+        set({ user: combinedUserData, isLoggedIn: true });
+
+        // If the user logs in via onAuthStateChanged (e.g., on app refresh),
+        // we need to perform the merge and subscribe logic here.
+        // The `loginUser` action already handles this for direct logins.
+        // This handles cases where the session persists or a refresh occurs.
+        await get()._mergeCarts(user.uid);
+        get()._subscribeToUserCart(user.uid);
+        localStorage.removeItem("myFakeStoreCart"); // Clear local storage after merge
+      } else {
+        console.log("Firebase Auth State Changed: User logged out or no user.");
+        // Clear user from store
+        set({ user: null, isLoggedIn: false });
+        // Unsubscribe from Firestore cart listener
+        get()._unsubscribeFromCart();
+        // If a user logs out, their local cart should remain for guest mode,
+        // unless you specifically want to clear it.
+        // Here, we load from localStorage for guest mode.
+        const guestCart = JSON.parse(localStorage.getItem("myFakeStoreCart") || "[]");
+        set({ cart: guestCart });
+      }
+      set({ authLoading: false }); // Auth check complete
+    });
+  },
 }));
 
 export default useGlobalStore;
