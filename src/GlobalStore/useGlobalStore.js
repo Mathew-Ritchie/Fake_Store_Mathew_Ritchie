@@ -6,12 +6,13 @@ import { doc, getDoc, setDoc, onSnapshot } from "firebase/firestore";
 const useGlobalStore = create((set, get) => ({
   storeItems: [],
   productInfo: {},
+  filteredItems: [],
   loading: false,
   error: null,
   categories: [],
   categoryOption: "",
   sortOption: "",
-  filteredItems: [],
+
   cart: JSON.parse(localStorage.getItem("myFakeStoreCart") || "[]"),
   favourites: JSON.parse(localStorage.getItem("myFakeStoreFavourites") || "[]"),
 

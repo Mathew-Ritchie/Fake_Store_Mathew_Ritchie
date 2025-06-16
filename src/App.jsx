@@ -21,6 +21,7 @@ export default function App() {
     // Call this once when the app mounts
     initializeFirebaseAndCartListeners();
   }, [initializeFirebaseAndCartListeners]);
+
   return (
     <BrowserRouter>
       <Routes>
