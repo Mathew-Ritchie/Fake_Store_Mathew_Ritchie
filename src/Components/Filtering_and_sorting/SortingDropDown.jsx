@@ -1,9 +1,9 @@
 import React from "react";
-import useGlobalStore from "../../GlobalStore/useGlobalStore";
+import useProductsStore from "../../GlobalStore/useProductStore";
 import "./dropdowns.css";
 
 export default function SortingDropDown() {
-  const { sortOption, setSortOption } = useGlobalStore();
+  const { sortOption, setSortOption } = useProductsStore();
 
   const handleSortChange = (event) => {
     setSortOption(event.target.value);

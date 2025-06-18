@@ -1,9 +1,9 @@
 import React from "react";
-import useGlobalStore from "../../GlobalStore/useGlobalStore";
+import useProductsStore from "../../GlobalStore/useProductStore";
 import "./dropdowns.css";
 
 export default function CategoryDropDown() {
-  const { categories, categoryOption, setCategoryOption } = useGlobalStore();
+  const { categories, categoryOption, setCategoryOption } = useProductsStore();
 
   const handleCategoryChange = (event) => {
     setCategoryOption(event.target.value);
