@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router";
 import AddToFavouritesBtn from "../Components/buttons/AddToFavouritesBtn";
-import useGlobalStore from "../GlobalStore/useGlobalStore";
+import useFavouritesStore from "../GlobalStore/useFavouritesStore";
 import "./favourite-items.css";
 
 export default function FavouritesPage() {
-  const { favourites } = useGlobalStore();
+  const { favourites } = useFavouritesStore();
 
   return (
     <div className="favourites-list">
