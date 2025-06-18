@@ -1,14 +1,14 @@
 import React from "react";
 import { Link } from "react-router";
 
-import useGlobalStore from "../GlobalStore/useGlobalStore";
+import useCartStore from "../GlobalStore/useGlobalStore";
 
 import { IoIosArrowRoundBack } from "react-icons/io";
 
 import "./cart-page.css";
 
 export default function CartPage() {
-  const { cart, addToCart, removeFromCart } = useGlobalStore();
+  const { cart, addToCart, removeFromCart } = useCartStore();
 
   // console.log(cart);
 
