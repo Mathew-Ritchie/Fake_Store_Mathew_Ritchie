@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router";
-import useGlobalStore from "../GlobalStore/useGlobalStore";
+
+import useProductsStore from "../GlobalStore/useProductStore";
 import "./Store-items.css";
 import { FaStar } from "react-icons/fa";
 import truncateText from "../Utilities/utils";
 
 export default function StoreItems() {
-  const { filteredItems, storeItems, fetchStoreData, loading, error } = useGlobalStore();
+  const { filteredItems, fetchStoreData, loading, error } = useProductsStore();
 
   useEffect(() => {
     fetchStoreData();
