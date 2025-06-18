@@ -9,13 +9,13 @@ import { doc, setDoc, getDoc, onSnapshot } from "firebase/firestore";
  * depending on the user's login status.
  * @typedef {Object} CartStore
  * @property {Array<object>} cart - An array of cart items, each with product details and quantity.
- * @property {function(): void|null} _cartUnsubscribe - The unsubscribe function for the Firestore real-time listener, or null.
- * @property {function(Array<object>): object} _cartArrayToMap - Helper to convert cart array to Firestore-friendly map.
- * @property {function(object): Array<object>} _cartMapToArray - Helper to convert Firestore cart map to array for Zustand state.
- * @property {function(string, Array<object>): Promise<void>} _updateCartInFirestore - Updates the user's cart in Firestore.
- * @property {function(string): Promise<void>} _mergeCarts - Merges items from local storage cart into the Firestore cart upon login.
- * @property {function(string): void} _subscribeToUserCart - Subscribes to real-time updates for the user's cart in Firestore.
- * @property {function(): void} _unsubscribeFromCart - Unsubscribes from the Firestore cart real-time listener.
+ * @property {function(): void|null} cartUnsubscribe - The unsubscribe function for the Firestore real-time listener, or null.
+ * @property {function(Array<object>): object} cartArrayToMap - Helper to convert cart array to Firestore-friendly map.
+ * @property {function(object): Array<object>} cartMapToArray - Helper to convert Firestore cart map to array for Zustand state.
+ * @property {function(string, Array<object>): Promise<void>} updateCartInFirestore - Updates the user's cart in Firestore.
+ * @property {function(string): Promise<void>} mergeCarts - Merges items from local storage cart into the Firestore cart upon login.
+ * @property {function(string): void} subscribeToUserCart - Subscribes to real-time updates for the user's cart in Firestore.
+ * @property {function(): void} unsubscribeFromCart - Unsubscribes from the Firestore cart real-time listener.
  * @property {function(object): void} addToCart - Adds an item to the cart.
  * @property {function(number): void} removeFromCart - Removes an item (or decreases its quantity) from the cart.
  * @property {function(): void} clearCart - Clears the local storage cart and the Zustand cart state, and optionally Firestore cart.
@@ -34,7 +34,7 @@ const useCartStore = create((set, get) => ({
    * @type {function(): void|null}
    * @private
    */
-  _cartUnsubscribe: null,
+  cartUnsubscribe: null,
 
   /**
    * Helper function to convert a cart array (Zustand format) into a map
@@ -45,7 +45,7 @@ const useCartStore = create((set, get) => ({
    * will also have a `productId` field matching its key.
    * @private
    */
-  _cartArrayToMap: (cartArray) => {
+  cartArrayToMap: (cartArray) => {
     return cartArray.reduce((acc, item) => {
       acc[item.id] = { ...item, productId: item.id }; // Add productId field and spread other item details
       return acc;
@@ -59,7 +59,7 @@ const useCartStore = create((set, get) => ({
    * @returns {Array<object>} An array of cart items. Each item will have an `id` field.
    * @private
    */
-  _cartMapToArray: (cartMap) => {
+  cartMapToArray: (cartMap) => {
     if (!cartMap) return [];
     return Object.values(cartMap).map((item) => ({ ...item, id: item.productId })); // Ensure 'id' is present
   },
@@ -71,7 +71,7 @@ const useCartStore = create((set, get) => ({
    * @param {Array<object>} cartItemsArray - The cart items as an array to be saved to Firestore.
    * @private
    */
-  _updateCartInFirestore: async (userId, cartItemsArray) => {
+  updateCartInFirestore: async (userId, cartItemsArray) => {
     const cartRef = doc(db, "carts", userId);
     const cartItemsMap = get()._cartArrayToMap(cartItemsArray);
     try {
@@ -89,7 +89,7 @@ const useCartStore = create((set, get) => ({
    * @param {string} userId - The UID of the logged-in user.
    * @private
    */
-  _mergeCarts: async (userId) => {
+  mergeCarts: async (userId) => {
     const localStorageCart = JSON.parse(localStorage.getItem("myFakeStoreCart") || "[]");
     if (localStorageCart.length === 0) {
       console.log("No local storage cart to merge.");
@@ -116,8 +116,8 @@ const useCartStore = create((set, get) => ({
     });
 
     // Convert the merged map back to an array for _updateCartInFirestore
-    const mergedCartArray = get()._cartMapToArray(firestoreCartMap);
-    await get()._updateCartInFirestore(userId, mergedCartArray);
+    const mergedCartArray = get().cartMapToArray(firestoreCartMap);
+    await get().updateCartInFirestore(userId, mergedCartArray);
     localStorage.removeItem("myFakeStoreCart"); // Clear local storage after merge
     console.log("Carts merged successfully!");
   },
@@ -129,10 +129,10 @@ const useCartStore = create((set, get) => ({
    * @param {string} userId - The UID of the user.
    * @private
    */
-  _subscribeToUserCart: (userId) => {
+  subscribeToUserCart: (userId) => {
     // Unsubscribe from any previous listener to avoid memory leaks
-    if (get()._cartUnsubscribe) {
-      get()._cartUnsubscribe();
+    if (get().cartUnsubscribe) {
+      get().cartUnsubscribe();
     }
 
     const cartRef = doc(db, "carts", userId);
@@ -141,7 +141,7 @@ const useCartStore = create((set, get) => ({
       (docSnap) => {
         if (docSnap.exists()) {
           const firestoreCartMap = docSnap.data().items || {};
-          const newCartArray = get()._cartMapToArray(firestoreCartMap);
+          const newCartArray = get().cartMapToArray(firestoreCartMap);
           set({ cart: newCartArray });
           console.log("Real-time cart updated from Firestore:", newCartArray);
         } else {
@@ -156,7 +156,7 @@ const useCartStore = create((set, get) => ({
       }
     );
 
-    set({ _cartUnsubscribe: unsubscribe }); // Store the unsubscribe function
+    set({ cartUnsubscribe: unsubscribe }); // Store the unsubscribe function
   },
 
   /**
@@ -165,10 +165,10 @@ const useCartStore = create((set, get) => ({
    * to prevent memory leaks and unnecessary data fetching.
    * @private
    */
-  _unsubscribeFromCart: () => {
-    if (get()._cartUnsubscribe) {
-      get()._cartUnsubscribe();
-      set({ _cartUnsubscribe: null });
+  unsubscribeFromCart: () => {
+    if (get().cartUnsubscribe) {
+      get().cartUnsubscribe();
+      set({ cartUnsubscribe: null });
       console.log("Unsubscribed from Firestore cart listener.");
     }
   },
@@ -198,7 +198,7 @@ const useCartStore = create((set, get) => ({
 
       // If logged in, update Firestore. The _subscribeToUserCart will then update the local state.
       if (isLoggedIn && user && user.uid) {
-        get()._updateCartInFirestore(user.uid, newCart);
+        get().updateCartInFirestore(user.uid, newCart);
       } else {
         // If not logged in, update localStorage
         localStorage.setItem("myFakeStoreCart", JSON.stringify(newCart));
@@ -235,7 +235,7 @@ const useCartStore = create((set, get) => ({
 
       // If logged in, update Firestore. The _subscribeToUserCart will then update the local state.
       if (isLoggedIn && user && user.uid) {
-        get()._updateCartInFirestore(user.uid, newCart);
+        get().updateCartInFirestore(user.uid, newCart);
       } else {
         // If not logged in, update localStorage
         localStorage.setItem("myFakeStoreCart", JSON.stringify(newCart));
@@ -253,7 +253,7 @@ const useCartStore = create((set, get) => ({
     set((state) => {
       const { user, isLoggedIn } = get();
       if (isLoggedIn && user && user.uid) {
-        get()._updateCartInFirestore(user.uid, []); // Set Firestore cart to empty array
+        get().updateCartInFirestore(user.uid, []); // Set Firestore cart to empty array
       } else {
         localStorage.removeItem("myFakeStoreCart");
       }
