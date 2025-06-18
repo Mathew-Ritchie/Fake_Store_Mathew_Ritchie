@@ -3,10 +3,10 @@ import { Link } from "react-router";
 import { IoCartOutline, IoCartSharp } from "react-icons/io5";
 import "./cart-btn.css";
 import { useEffect, useMemo } from "react";
-import useGlobalStore from "../../GlobalStore/useGlobalStore";
+import useCartStore from "../../GlobalStore/useCartStore";
 
 export default function Cart() {
-  const { cart } = useGlobalStore();
+  const { cart } = useCartStore();
 
   const totalQuantity = useMemo(() => {
     return cart.reduce((sum, item) => sum + item.quantity, 0);

@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 
-import useGlobalStore from "../../GlobalStore/useGlobalStore";
+import useCartStore from "../../GlobalStore/useCartStore";
+import useProductsStore from "../../GlobalStore/useProductStore";
 
 export default function AddToCartBtn() {
-  const { productInfo, addToCart } = useGlobalStore();
+  const { productInfo } = useProductsStore();
+  const { addToCart } = useCartStore();
+
   const [addToCartMessage, setAddToCartMessage] = useState("");
 
   const handleAddToCart = () => {
