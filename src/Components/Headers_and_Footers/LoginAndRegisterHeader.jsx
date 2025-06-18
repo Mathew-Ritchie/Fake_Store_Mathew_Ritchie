@@ -1,6 +1,6 @@
 import React from "react";
 
-import useGlobalStore from "../../GlobalStore/useGlobalStore";
+import useAuthStore from "../../GlobalStore/useAuthStore";
 import { auth } from "../../firebase";
 import { signOut } from "firebase/auth";
 
@@ -8,9 +8,9 @@ import LoginRegisterBtns from "../buttons/LoginRegisterBtns";
 import "./login-and-register-header.css";
 
 export default function LoginAndRegisterHeader() {
-  const user = useGlobalStore((state) => state.user);
-  const isLoggedIn = useGlobalStore((state) => state.isLoggedIn);
-  const logoutUser = useGlobalStore((state) => state.logoutUser);
+  const user = useAuthStore((state) => state.user);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const logoutUser = useAuthStore((state) => state.logoutUser);
 
   const handleLogoutClick = async () => {
     try {
