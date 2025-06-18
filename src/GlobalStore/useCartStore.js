@@ -73,7 +73,7 @@ const useCartStore = create((set, get) => ({
    */
   updateCartInFirestore: async (userId, cartItemsArray) => {
     const cartRef = doc(db, "carts", userId);
-    const cartItemsMap = get()._cartArrayToMap(cartItemsArray);
+    const cartItemsMap = get().cartArrayToMap(cartItemsArray);
     try {
       // Use setDoc with merge:true to create or update the document without overwriting other fields
       await setDoc(cartRef, { items: cartItemsMap, lastUpdated: new Date() }, { merge: true });

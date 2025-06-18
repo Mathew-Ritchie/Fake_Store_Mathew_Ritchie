@@ -1,11 +1,14 @@
 import React from "react"; // No need for useEffect here anymore as state is global
 import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
-import useGlobalStore from "../../GlobalStore/useGlobalStore";
+import useFavouritesStore from "../../GlobalStore/useFavouritesStore";
+import useProductsStore from "../../GlobalStore/useProductStore";
 
 export default function AddToFavouritesBtn({ product }) {
-  const { toggleFavourite, isProductFavourite, productInfo: globalProductInfo } = useGlobalStore();
+  const { toggleFavourite, isProductFavourite } = useFavouritesStore();
 
-  const productForButton = product || globalProductInfo;
+  const fetchedProductInfo = useProductsStore((state) => state.productInfo);
+
+  const productForButton = product || fetchedProductInfo;
 
   const isFavourite = productForButton ? isProductFavourite(productForButton.id) : false;
 

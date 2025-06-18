@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router";
 
-import useCartStore from "../GlobalStore/useGlobalStore";
+import useCartStore from "../GlobalStore/useCartStore";
 
 import { IoIosArrowRoundBack } from "react-icons/io";
 
