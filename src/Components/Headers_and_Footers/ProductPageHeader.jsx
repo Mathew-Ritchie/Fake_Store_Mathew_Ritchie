@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router";
-import useGlobalStore from "../../GlobalStore/useGlobalStore";
+import useProductsStore from "../../GlobalStore/useProductStore";
 import truncateText from "../../Utilities/utils";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import Cart from "../buttons/CartBtn";
@@ -8,7 +8,7 @@ import "./product-page-header.css";
 import GoToFavouritesBtn from "../buttons/GoToFavouritesBtn";
 
 export default function ProductPageHeader() {
-  const { productInfo } = useGlobalStore();
+  const { productInfo } = useProductsStore();
   //   console.log(productInfo);
 
   return (

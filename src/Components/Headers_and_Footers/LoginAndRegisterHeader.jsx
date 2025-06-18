@@ -1,8 +1,6 @@
 import React from "react";
 
 import useAuthStore from "../../GlobalStore/useAuthStore";
-import { auth } from "../../firebase";
-import { signOut } from "firebase/auth";
 
 import LoginRegisterBtns from "../buttons/LoginRegisterBtns";
 import "./login-and-register-header.css";
