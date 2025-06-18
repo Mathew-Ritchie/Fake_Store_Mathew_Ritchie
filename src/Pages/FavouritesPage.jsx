@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router";
 
-import useGlobalStore from "../GlobalStore/useGlobalStore";
+import useFavouritesStore from "../GlobalStore/useFavouritesStore";
 
 import { IoIosArrowRoundBack } from "react-icons/io";
 
@@ -10,7 +10,7 @@ import "./favourites-page.css";
 
 //Favourites layout function. If there are items in favourites then they
 export default function FavouritesPage() {
-  const { favourites } = useGlobalStore();
+  const { favourites } = useFavouritesStore();
 
   //If there is no favourites or length is equal to 0.
   if (!favourites || favourites.length === 0) {
