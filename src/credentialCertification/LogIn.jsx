@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import "./login.css";
 import { IoIosArrowRoundBack } from "react-icons/io";
-import useGlobalStore from "../GlobalStore/useGlobalStore";
+import useAuthStore from "../GlobalStore/useAuthStore";
 
 function Login() {
   // State for input fields
@@ -15,9 +15,11 @@ function Login() {
   const navigate = useNavigate();
 
   //Access authentication-related actions from global store
-  const loginUser = useGlobalStore((state) => state.loginUser);
+  const loginUser = useAuthStore((state) => state.loginUser);
+
+  const authLoading = useAuthStore((state) => state.authLoading);
   //const authLoading = useGlobalStore((state) => state.authLoading);
-  const authError = useGlobalStore((state) => state.authError);
+  const authError = useAuthStore((state) => state.authError);
 
   // handles form submission for login. accepts the form event as a parameter.
   const handleLoginSubmit = async (e) => {
@@ -28,6 +30,7 @@ function Login() {
       navigate("/");
     } catch (err) {
       setLocalError(authError || "An unexpected error occurred during login.");
+      console.error("Login attempt failed:", err);
     }
   };
 
@@ -61,7 +64,7 @@ function Login() {
         />
       </div>
       <button type="submit" className="login-submit-btn">
-        Login
+        {authLoading ? "Logging in..." : "Login"}
       </button>
       <div>
         <p>

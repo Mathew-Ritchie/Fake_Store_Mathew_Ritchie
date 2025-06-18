@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router";
-import useGlobalStore from "../GlobalStore/useGlobalStore";
+//import useGlobalStore from "../GlobalStore/useGlobalStore";
+import useProductsStore from "../GlobalStore/useProductStore";
 import { FaStar } from "react-icons/fa";
 import "./product-description-card.css";
 
 export default function ProductDescriptionCard() {
-  const { productInfo, loading, error, fetchProductInfo } = useGlobalStore();
+  const { productInfo, loading, error, fetchProductInfo } = useProductsStore();
 
   const { id } = useParams();
 
