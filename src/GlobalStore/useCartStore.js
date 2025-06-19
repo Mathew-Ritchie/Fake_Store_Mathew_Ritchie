@@ -118,7 +118,7 @@ const useCartStore = create((set, get) => ({
     // Convert the merged map back to an array for _updateCartInFirestore
     const mergedCartArray = get().cartMapToArray(firestoreCartMap);
     await get().updateCartInFirestore(userId, mergedCartArray);
-    localStorage.removeItem("myFakeStoreCart"); // Clear local storage after merge
+    //localStorage.removeItem("myFakeStoreCart"); // Clear local storage after merge
     console.log("Carts merged successfully!");
   },
 
@@ -179,32 +179,29 @@ const useCartStore = create((set, get) => ({
    * The cart is then persisted to Firestore (if logged in) or local storage (if not logged in).
    * @param {object} itemToAdd - The product item object to add to the cart. Must have an `id` property.
    */
-  addToCart: (itemToAdd) =>
-    set((state) => {
-      const { user, isLoggedIn } = get(); // Get latest user state within set
-      const newCart = [...state.cart];
-      const existingProductIndex = newCart.findIndex((item) => item.id === itemToAdd.id);
+  addToCart: (itemToAdd, userId) => {
+    const state = get();
+    const currentCart = [...state.cart];
+    const existingProductIndex = currentCart.findIndex((item) => item.id === itemToAdd.id);
 
-      if (existingProductIndex > -1) {
-        // Item already in cart, increment quantity
-        newCart[existingProductIndex] = {
-          ...newCart[existingProductIndex],
-          quantity: newCart[existingProductIndex].quantity + 1,
-        };
-      } else {
-        // New item, add to cart with quantity 1
-        newCart.push({ ...itemToAdd, quantity: 1 });
-      }
+    const newCart = [...currentCart];
 
-      // If logged in, update Firestore. The _subscribeToUserCart will then update the local state.
-      if (isLoggedIn && user && user.uid) {
-        get().updateCartInFirestore(user.uid, newCart);
-      } else {
-        // If not logged in, update localStorage
-        localStorage.setItem("myFakeStoreCart", JSON.stringify(newCart));
-      }
-      return { cart: newCart };
-    }),
+    if (existingProductIndex > -1) {
+      newCart[existingProductIndex] = {
+        ...newCart[existingProductIndex],
+        quantity: newCart[existingProductIndex].quantity + 1,
+      };
+    } else {
+      newCart.push({ ...itemToAdd, quantity: 1 });
+    }
+
+    if (userId) {
+      get().updateCartInFirestore(userId, newCart);
+    } else {
+      localStorage.setItem("myFakeStoreCart", JSON.stringify(newCart));
+      set({ cart: newCart });
+    }
+  },
 
   /**
    * Removes a product item from the cart. If the item's quantity is greater than 1,
@@ -212,53 +209,47 @@ const useCartStore = create((set, get) => ({
    * The cart is then persisted to Firestore (if logged in) or local storage (if not logged in).
    * @param {number} itemId - The ID of the item to remove or decrease quantity for.
    */
-  removeFromCart: (itemId) =>
-    set((state) => {
-      const { user, isLoggedIn } = get(); // Get latest user state within set
-      const newCart = [...state.cart];
-      const existingProductIndex = newCart.findIndex((item) => item.id === itemId);
+  removeFromCart: (itemId, userId) => {
+    const state = get();
+    const currentCart = [...state.cart];
+    const existingProductIndex = currentCart.findIndex((item) => item.id === itemId);
 
-      if (existingProductIndex > -1) {
-        if (newCart[existingProductIndex].quantity > 1) {
-          // Decrease quantity
-          newCart[existingProductIndex] = {
-            ...newCart[existingProductIndex],
-            quantity: newCart[existingProductIndex].quantity - 1,
-          };
-        } else {
-          // Quantity is 1, remove item
-          newCart.splice(existingProductIndex, 1);
-        }
+    const newCart = [...currentCart];
+
+    if (existingProductIndex > -1) {
+      if (newCart[existingProductIndex].quantity > 1) {
+        newCart[existingProductIndex] = {
+          ...newCart[existingProductIndex],
+          quantity: newCart[existingProductIndex].quantity - 1,
+        };
       } else {
-        console.warn(`Attempted to remove item ID ${itemId}, but it was not found in the cart.`);
+        newCart.splice(existingProductIndex, 1);
       }
+    } else {
+      console.warn(`Attempted to remove item ID ${itemId}, but it was not found in the cart.`);
+    }
 
-      // If logged in, update Firestore. The _subscribeToUserCart will then update the local state.
-      if (isLoggedIn && user && user.uid) {
-        get().updateCartInFirestore(user.uid, newCart);
-      } else {
-        // If not logged in, update localStorage
-        localStorage.setItem("myFakeStoreCart", JSON.stringify(newCart));
-      }
-
-      return { cart: newCart };
-    }),
+    if (userId) {
+      get().updateCartInFirestore(userId, newCart);
+    } else {
+      localStorage.setItem("myFakeStoreCart", JSON.stringify(newCart));
+      set({ cart: newCart });
+    }
+  },
 
   /**
    * Clears all items from the cart.
    * If the user is logged in, their Firestore cart will also be cleared.
    * Otherwise, the local storage cart will be cleared.
    */
-  clearCart: () =>
-    set((state) => {
-      const { user, isLoggedIn } = get();
-      if (isLoggedIn && user && user.uid) {
-        get().updateCartInFirestore(user.uid, []); // Set Firestore cart to empty array
-      } else {
-        localStorage.removeItem("myFakeStoreCart");
-      }
-      return { cart: [] };
-    }),
+  clearCart: (userId) => {
+    if (userId) {
+      get().updateCartInFirestore(userId, []);
+    } else {
+      localStorage.removeItem("myFakeStoreCart");
+      set({ cart: [] }); // Direct update for guests
+    }
+  },
 
   /**
    * Initializes the cart state by loading the cart items from local storage.

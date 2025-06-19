@@ -2,14 +2,16 @@ import React from "react";
 import { Link } from "react-router";
 
 import useCartStore from "../GlobalStore/useCartStore";
-
+import useAuthStore from "../GlobalStore/useAuthStore";
 import { IoIosArrowRoundBack } from "react-icons/io";
 
 import "./cart-page.css";
 
 export default function CartPage() {
-  const { cart, addToCart, removeFromCart } = useCartStore();
+  const { cart, addToCart, removeFromCart, clearCart } = useCartStore();
 
+  const user = useAuthStore((state) => state.user);
+  const currentUserId = user?.uid || null;
   // console.log(cart);
 
   // If there is no cart or the cart length is 0
@@ -48,11 +50,17 @@ export default function CartPage() {
 
             {/* Add and deduct buttons with quantity in cart */}
             <div className="cart-item-quantity-controls">
-              <button onClick={() => addToCart(item)} className="quantity-btn add-btn">
+              <button
+                onClick={() => addToCart(item, currentUserId)}
+                className="quantity-btn add-btn"
+              >
                 +
               </button>
               <p className="cart-item-quantity">{item.quantity}</p>
-              <button onClick={() => removeFromCart(item.id)} className="quantity-btn remove-btn">
+              <button
+                onClick={() => removeFromCart(item.id, currentUserId)}
+                className="quantity-btn remove-btn"
+              >
                 -
               </button>
             </div>
@@ -66,6 +74,9 @@ export default function CartPage() {
           Total: R
           {cart.reduce((acc, item) => acc + (item.price || 0) * (item.quantity || 0), 0).toFixed(2)}
         </h3>
+        <button onClick={() => clearCart(currentUserId)} className="checkout-btn button-style-1">
+          Clear cart
+        </button>
         <button className="checkout-btn button-style-1">Proceed to Checkout</button>
       </div>
     </div>

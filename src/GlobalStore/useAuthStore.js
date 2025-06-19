@@ -118,7 +118,7 @@ const useAuthStore = create((set, get) => ({
     set({ authLoading: true, authError: null });
     try {
       await signOut(auth);
-      get()._unsubscribeFromCart();
+      get().unsubscribeFromCart();
       set({ user: null, isLoggedIn: false, authLoading: false, cart: [] });
     } catch (error) {
       console.error("Logout Error (from store):", error.message);
