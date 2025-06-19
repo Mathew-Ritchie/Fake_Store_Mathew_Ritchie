@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router";
-import useGlobalStore from "../../GlobalStore/useGlobalStore";
+import useFavouritesStore from "../../GlobalStore/useFavouritesStore";
 import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
 
 export default function GoToFavouritesBtn() {
-  const { favourites } = useGlobalStore();
+  const { favourites } = useFavouritesStore();
 
   const hasFavourites = favourites && favourites.length > 0;
 
