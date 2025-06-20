@@ -51,8 +51,19 @@
   line-height: 25px;
 }
 
+.cart-page-clear-cheackout-btn-div {
+  display: flex;
+  justify-content: end;
+  gap: 5px;
+  align-items: center;
+}
+
 .cart-total {
   text-align: end;
   padding-right: 20px;
   padding-bottom: 20px;
+}
+
+.clear-btn {
+  background-color: darkred;
 }
