@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router";
 import "./login.css";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import useAuthStore from "../GlobalStore/useAuthStore";
+import HomeButton from "../Components/buttons/HomeButton";
 
 function Login() {
   // State for input fields
@@ -36,9 +37,10 @@ function Login() {
 
   return (
     <form onSubmit={handleLoginSubmit} className="login-form-wrapper">
-      <Link to={"/"} className="product-page-header-link">
+      <HomeButton />
+      {/* <Link to={"/"} className="product-page-header-link">
         <IoIosArrowRoundBack className="back-arrow" />
-      </Link>
+      </Link> */}
       <h2 className="login-form-title">Login</h2>
       {localError && <p style={{ color: "red" }}>{error}</p>}
       <div className="login-input-divs">

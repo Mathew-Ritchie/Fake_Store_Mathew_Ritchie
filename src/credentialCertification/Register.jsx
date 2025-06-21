@@ -5,6 +5,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore"; // For Firestore
 import "./register.css";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import HomeButton from "../Components/buttons/HomeButton";
 
 function Register() {
   // States for form submission inputs.
@@ -43,9 +44,10 @@ function Register() {
 
   return (
     <form onSubmit={handleRegister} className="register-form">
-      <Link to={"/"} className="product-page-header-link">
+      <HomeButton />
+      {/* <Link to={"/"} className="product-page-header-link">
         <IoIosArrowRoundBack className="back-arrow" />
-      </Link>
+      </Link> */}
       <h2>Register</h2>
       {success && <p style={{ color: "green" }}>{success}</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}

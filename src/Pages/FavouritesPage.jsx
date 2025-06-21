@@ -7,6 +7,7 @@ import { IoIosArrowRoundBack } from "react-icons/io";
 
 import FavouriteItems from "../Components/FavouriteItems";
 import "./favourites-page.css";
+import HomeButton from "../Components/buttons/HomeButton";
 
 //Favourites layout function. If there are items in favourites then they
 export default function FavouritesPage() {
@@ -29,11 +30,12 @@ export default function FavouritesPage() {
   return (
     <div className="favourites-page-container">
       <div className="favourites-page-link-title-div">
-        <Link to={"/"} className="product-page-header-link">
+        <HomeButton />
+        {/* <Link to={"/"} className="product-page-header-link">
           <IoIosArrowRoundBack className="back-arrow" />
-        </Link>
-        <h2>Your Favourites</h2>
+        </Link> */}
       </div>
+      <h2 className="cart-page-sub-title">Your Favourites</h2>
       <FavouriteItems />
     </div>
   );

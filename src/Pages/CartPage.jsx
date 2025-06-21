@@ -6,6 +6,7 @@ import useAuthStore from "../GlobalStore/useAuthStore";
 import { IoIosArrowRoundBack } from "react-icons/io";
 
 import "./cart-page.css";
+import HomeButton from "../Components/buttons/HomeButton";
 
 export default function CartPage() {
   const { cart, addToCart, removeFromCart, clearCart } = useCartStore();
@@ -31,13 +32,14 @@ export default function CartPage() {
   return (
     <div className="cart-container">
       {/* Back button and subheading */}
-      <div className="cart-heading-and-home-btn">
-        <Link to={"/"} className="product-page-header-link">
+      <div className="cart-home-btn-div">
+        <HomeButton />
+        {/* <Link to={"/"} className="cart-page-header-link">
           <IoIosArrowRoundBack className="back-arrow" />
-        </Link>
-        <h2>Your Shopping Cart</h2>
+          <h2>HOME</h2>
+        </Link> */}
       </div>
-
+      <h2 className="cart-page-sub-title">Your Shopping Cart</h2>
       {/* map() to add each product in the cart to the UI */}
       {cart.map((item) => (
         <div key={item.id} className="cart-item">
@@ -78,7 +80,7 @@ export default function CartPage() {
           <button onClick={() => clearCart(currentUserId)} className="clear-btn button-style-1">
             Clear cart
           </button>
-          <button className="checkout-btn button-style-1">Proceed to Checkout</button>
+          <button className="checkout-btn button-style-1">Checkout</button>
         </div>
       </div>
     </div>
