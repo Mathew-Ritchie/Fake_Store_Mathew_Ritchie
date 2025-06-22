@@ -17,9 +17,10 @@ export default function FavouritesPage() {
   if (!favourites || favourites.length === 0) {
     return (
       <div className="favourites-empty-message">
-        <Link to={"/"} className="product-page-header-link">
+        <HomeButton />
+        {/* <Link to={"/"} className="product-page-header-link">
           <IoIosArrowRoundBack className="back-arrow" />
-        </Link>
+        </Link> */}
         <h2>Your Favourites</h2>
         <p>You haven't added any items to your favourites yet. Go explore the store!</p>
       </div>
