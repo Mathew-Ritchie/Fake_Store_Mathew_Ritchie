@@ -6,7 +6,7 @@ import useFavouritesStore from "../GlobalStore/useFavouritesStore";
 import { IoIosArrowRoundBack } from "react-icons/io";
 
 import FavouriteItems from "../Components/FavouriteItems";
-import "./favourites-page.css";
+// import "./favourites-page.css";
 import HomeButton from "../Components/buttons/HomeButton";
 
 //Favourites layout function. If there are items in favourites then they

@@ -5,7 +5,7 @@ import useCartStore from "../GlobalStore/useCartStore";
 import useAuthStore from "../GlobalStore/useAuthStore";
 import { IoIosArrowRoundBack } from "react-icons/io";
 
-import "./cart-page.css";
+// import "./cart-page.css";
 import HomeButton from "../Components/buttons/HomeButton";
 
 export default function CartPage() {
