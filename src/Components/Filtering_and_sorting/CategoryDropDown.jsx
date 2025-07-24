@@ -1,6 +1,5 @@
 import React from "react";
 import useProductsStore from "../../GlobalStore/useProductStore";
-import "./dropdowns.css";
 
 export default function CategoryDropDown() {
   const { categories, categoryOption, setCategoryOption } = useProductsStore();
