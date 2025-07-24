@@ -7,18 +7,14 @@
 }
 
 .register-btn {
-  /* padding: 5px; */
   width: 40px;
-  /* background-color: var(--clr-very-light-grey); */
   text-decoration: none;
   color: var(--clr-dark-grey);
   margin-right: 20px;
 }
 
 .login-btn {
-  /* padding: 5px; */
   width: 40px;
-  /* background-color: var(--clr-very-light-grey); */
   margin-right: 10px;
   text-decoration: none;
   color: var(--clr-dark-grey);
