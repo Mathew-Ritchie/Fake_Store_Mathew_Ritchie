@@ -5,6 +5,12 @@
   justify-content: center;
   gap: 20px;
   background-color: white;
-  width: 500px;
+  width: 90%;
   padding-bottom: 20px;
+}
+
+@media (min-width: 800px) {
+  .product-page-footer-div {
+    width: 500px;
+  }
 }

@@ -70,7 +70,7 @@ body {
   background-color: var(--clr-very-light-grey);
   width: 100vw;
   text-align: center;
-  box-shadow: 1px 1px 5px 1px var(--clr-dark-grey);
+  /* box-shadow: 1px 1px 5px 1px var(--clr-dark-grey); */
   /* margin-bottom: 10px; */
   position: relative;
   z-index: 1;
@@ -134,4 +134,5 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100vw;
 }
