@@ -42,35 +42,36 @@ export default function CartPage() {
       </div>
       <h2 className="cart-page-sub-title">Your Shopping Cart</h2>
       {/* map() to add each product in the cart to the UI */}
-      {cart.map((item) => (
-        <div key={item.id} className="cart-item">
-          <Link to={`/item/${item.id}`}>
-            <img src={item.image} alt={item.title} className="cart-item-image" />
-          </Link>
-          <div className="cart-item-details">
-            <h5 className="cart-item-title">{item.title}</h5>
-            {item.price && <p className="cart-item-price">R{item.price.toFixed(2)}</p>}
+      <div className="cart-items-div">
+        {cart.map((item) => (
+          <div key={item.id} className="cart-item">
+            <Link to={`/item/${item.id}`}>
+              <img src={item.image} alt={item.title} className="cart-item-image" />
+            </Link>
+            <div className="cart-item-details">
+              <h5 className="cart-item-title">{item.title}</h5>
+              {item.price && <p className="cart-item-price">R{item.price.toFixed(2)}</p>}
 
-            {/* Add and deduct buttons with quantity in cart */}
-            <div className="cart-item-quantity-controls">
-              <button
-                onClick={() => addToCart(item, currentUserId)}
-                className="quantity-btn add-btn"
-              >
-                +
-              </button>
-              <p className="cart-item-quantity">{item.quantity}</p>
-              <button
-                onClick={() => removeFromCart(item.id, currentUserId)}
-                className="quantity-btn remove-btn"
-              >
-                -
-              </button>
+              {/* Add and deduct buttons with quantity in cart */}
+              <div className="cart-item-quantity-controls">
+                <button
+                  onClick={() => addToCart(item, currentUserId)}
+                  className="quantity-btn add-btn"
+                >
+                  +
+                </button>
+                <p className="cart-item-quantity">{item.quantity}</p>
+                <button
+                  onClick={() => removeFromCart(item.id, currentUserId)}
+                  className="quantity-btn remove-btn"
+                >
+                  -
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      ))}
-
+        ))}
+      </div>
       {/* Total and checkout button */}
       <div className="cart-total">
         <h3>
