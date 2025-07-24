@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router";
-import "./main-header.css";
+
 import LoginAndRegisterHeader from "./LoginAndRegisterHeader";
 
 export default function MainHeader() {
