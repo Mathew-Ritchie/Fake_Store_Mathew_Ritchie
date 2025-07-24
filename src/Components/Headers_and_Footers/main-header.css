@@ -26,33 +26,3 @@
   font-style: normal;
   font-size: xx-large;
 }
-
-.sort-filter-header-div {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  /* border: 1px solid red; */
-  /* box-shadow: 1px 1px 3px 0px var(--clr-medium-dark-grey); */
-  padding-bottom: 3px;
-  /* margin-bottom: 2px; */
-  height: 32px;
-  background-color: var(--clr-very-light-grey);
-}
-
-.sort-filter-header-sort-category-div {
-  display: flex;
-  align-items: center;
-  justify-content: start;
-  padding-left: 10px;
-}
-
-.sort-filter-header-cart-favourites-div {
-  display: flex;
-  justify-content: end;
-  align-items: center;
-  gap: 5px;
-  line-height: 10px;
-  padding-right: 10px;
-}

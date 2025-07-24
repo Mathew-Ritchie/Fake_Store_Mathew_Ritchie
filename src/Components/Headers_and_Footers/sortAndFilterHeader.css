@@ -1,13 +1,10 @@
-/* .sort-filter-header-div {
+.sort-filter-header-div {
   position: relative;
   z-index: 1;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid red; 
-   box-shadow: 1px 1px 3px 0px var(--clr-medium-dark-grey); 
-  padding-bottom: 3px; 
-   margin-bottom: 2px; 
+  padding-bottom: 3px;
   height: 32px;
   background-color: var(--clr-very-light-grey);
 }
@@ -26,4 +23,4 @@
   gap: 5px;
   line-height: 10px;
   padding-right: 10px;
-} */
+}
