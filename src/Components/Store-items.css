@@ -7,9 +7,11 @@
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: 1px;
+  gap: 15px;
   padding-top: 10px;
   background-color: var(--clr-very-light-grey);
+  padding-left: 50px;
+  padding-right: 50px;
 }
 
 .product-link {
@@ -22,7 +24,7 @@
   flex-direction: column;
   justify-content: start;
   align-items: center;
-  border: 1px solid var(--clr-medium-dark-grey);
+  /* border: 1px solid var(--clr-medium-dark-grey); */
   border-radius: 2px;
   width: 196px;
   height: 340px;

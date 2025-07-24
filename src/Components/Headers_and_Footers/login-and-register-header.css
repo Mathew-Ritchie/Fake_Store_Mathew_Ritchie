@@ -8,4 +8,5 @@
   z-index: 2;
   padding-right: 10px;
   width: 100vw;
+  background-color: var(--clr-very-light-grey);
 }
