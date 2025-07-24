@@ -10,6 +10,7 @@ export default function HomeButton() {
     padding: "0px 10px",
     gap: "10px",
     textDecoration: "none",
+    color: "#023e8a",
   };
 
   return (
