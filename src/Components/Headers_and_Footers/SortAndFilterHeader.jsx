@@ -2,7 +2,8 @@ import React from "react";
 import CategoryDropDown from "../Filtering_and_sorting/CategoryDropDown";
 import SortingDropDown from "../Filtering_and_sorting/SortingDropDown";
 import Cart from "../buttons/CartBtn";
-import "./sortAndFilterHeader.css";
+// import "./sortAndFilterHeader.css";
+import "./main-header.css";
 
 import GoToFavouritesBtn from "../buttons/GoToFavouritesBtn";
 
