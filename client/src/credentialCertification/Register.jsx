@@ -1,56 +1,45 @@
 import React, { useState } from "react";
-import { Link } from "react-router";
-import { auth, db } from "../firebase"; // Import your initialized Firebase auth and db
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore"; // For Firestore
-import "./register.css";
+import { Link } from "react-router-dom"; // Make sure this matches your routing
 import { IoIosArrowRoundBack } from "react-icons/io";
 import HomeButton from "../Components/buttons/HomeButton";
+import { useUserStore } from "../GlobalStore/useUserStore";
+import "./register.css";
 
 function Register() {
-  // States for form submission inputs.
+  // Form states
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
-
-  const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  // Handles form submission for registration. takes the form event as a parametre.
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    setError("");
-    setSuccess("");
-    try {
-      // Create user with Firebase Authentication
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-      // Store additional user info in Firestore using the user's UID
-      await setDoc(doc(db, "users", user.uid), {
-        username: username,
-        email: email,
-        createdAt: new Date(),
-      });
+  // Zustand store
+  const { register, loading, error } = useUserStore();
 
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSuccess("");
+
+    const result = await register(username, email, password);
+    if (result) {
       setSuccess("Registration successful! You can now log in.");
+      setUsername("");
       setEmail("");
       setPassword("");
-      setUsername("");
-    } catch (err) {
-      console.error("Registration error:", err.message);
-      setError(err.message);
     }
   };
 
   return (
-    <form onSubmit={handleRegister} className="register-form">
+    <form onSubmit={handleSubmit} className="register-form">
       <HomeButton />
-      {/* <Link to={"/"} className="product-page-header-link">
-        <IoIosArrowRoundBack className="back-arrow" />
-      </Link> */}
+
       <h2>Register</h2>
+
+      {/* Success / Error messages */}
       {success && <p style={{ color: "green" }}>{success}</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
+
+      {/* Username input */}
       <div className="register-input-div">
         <label>Username (for profile):</label>
         <input
@@ -62,6 +51,8 @@ function Register() {
           required
         />
       </div>
+
+      {/* Email input */}
       <div className="register-input-div">
         <label>Email:</label>
         <input
@@ -73,6 +64,8 @@ function Register() {
           required
         />
       </div>
+
+      {/* Password input */}
       <div className="register-input-div">
         <label>Password:</label>
         <input
@@ -84,9 +77,13 @@ function Register() {
           required
         />
       </div>
-      <button type="submit" className="register-submit-btn">
-        Register
+
+      {/* Submit button */}
+      <button type="submit" className="register-submit-btn" disabled={loading}>
+        {loading ? "Registering..." : "Register"}
       </button>
+
+      {/* Login link */}
       <div>
         <p>
           If you are already registered{" "}

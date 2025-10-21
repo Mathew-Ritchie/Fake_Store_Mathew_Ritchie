@@ -1,36 +1,30 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router";
-import "./login.css";
+import { Link, useNavigate } from "react-router-dom"; // ✅ Correct import for React Router v6+
 import { IoIosArrowRoundBack } from "react-icons/io";
-import useAuthStore from "../GlobalStore/useAuthStore";
 import HomeButton from "../Components/buttons/HomeButton";
+import { useUserStore } from "../GlobalStore/useUserStore"; // ✅ use your Zustand user store
+import "./login.css";
 
 function Login() {
-  // State for input fields
+  // Local form state
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // local state to display error message to the login form
   const [localError, setLocalError] = useState("");
 
-  //Hook to navigate user after successful login
   const navigate = useNavigate();
 
-  //Access authentication-related actions from global store
-  const loginUser = useAuthStore((state) => state.loginUser);
+  // ✅ Pull from Zustand store
+  const { login, loading, error } = useUserStore();
 
-  const authLoading = useAuthStore((state) => state.authLoading);
-  //const authLoading = useGlobalStore((state) => state.authLoading);
-  const authError = useAuthStore((state) => state.authError);
-
-  // handles form submission for login. accepts the form event as a parameter.
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setLocalError("");
+
     try {
-      await loginUser(email, password);
-      navigate("/");
+      await login(email, password);
+      navigate("/"); // ✅ redirect to homepage on success
     } catch (err) {
-      setLocalError(authError || "An unexpected error occurred during login.");
+      setLocalError(error || "An unexpected error occurred during login.");
       console.error("Login attempt failed:", err);
     }
   };
@@ -38,11 +32,14 @@ function Login() {
   return (
     <form onSubmit={handleLoginSubmit} className="login-form-wrapper">
       <HomeButton />
-      {/* <Link to={"/"} className="product-page-header-link">
-        <IoIosArrowRoundBack className="back-arrow" />
-      </Link> */}
+
       <h2 className="login-form-title">Login</h2>
-      {localError && <p style={{ color: "red" }}>{error}</p>}
+
+      {/* ✅ Show error messages */}
+      {localError && <p style={{ color: "red" }}>{localError}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
+
+      {/* Email input */}
       <div className="login-input-divs">
         <label>Email:</label>
         <input
@@ -54,6 +51,8 @@ function Login() {
           required
         />
       </div>
+
+      {/* Password input */}
       <div className="login-input-divs">
         <label>Password:</label>
         <input
@@ -65,9 +64,13 @@ function Login() {
           required
         />
       </div>
-      <button type="submit" className="login-submit-btn">
-        {authLoading ? "Logging in..." : "Login"}
+
+      {/* Submit button */}
+      <button type="submit" className="login-submit-btn" disabled={loading}>
+        {loading ? "Logging in..." : "Login"}
       </button>
+
+      {/* Link to Register */}
       <div>
         <p>
           If you are not yet registered{" "}

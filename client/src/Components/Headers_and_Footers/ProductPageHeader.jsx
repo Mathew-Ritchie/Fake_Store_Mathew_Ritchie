@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import useProductsStore from "../../GlobalStore/useProductStore";
 import truncateText from "../../Utilities/utils";
 import { IoIosArrowRoundBack } from "react-icons/io";
-import Cart from "../buttons/CartBtn";
+//import Cart from "../buttons/CartBtn";
 import "./product-page-header.css";
 import GoToFavouritesBtn from "../buttons/GoToFavouritesBtn";
 import HomeButton from "../buttons/HomeButton";
@@ -25,7 +25,7 @@ export default function ProductPageHeader() {
       </div>
       <div className="product-page-header-favbtn-cartbtn-div">
         <GoToFavouritesBtn />
-        <Cart />
+        {/* <Cart /> */}
       </div>
     </div>
   );
