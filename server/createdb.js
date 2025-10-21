@@ -1,34 +1,17 @@
-// db.js
-import sqlite3 from "sqlite3";
-import { open } from "sqlite";
+// createdb.js
+import { openDb } from "./db.js";
 
-export async function openDb() {
-  const db = await open({
-    filename: "./database.db",
-    driver: sqlite3.Database,
-  });
+async function createTables() {
+  const db = await openDb();
 
-  await db.exec(`
-    CREATE TABLE IF NOT EXISTS users (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      username TEXT NOT NULL,
-      email TEXT UNIQUE NOT NULL,
-      password TEXT NOT NULL
-    );
-  `);
+  const tables = await db.all("SELECT name FROM sqlite_master WHERE type='table'");
+  console.log(
+    "📦 Tables in database:",
+    tables.map((t) => t.name)
+  );
 
-  await db.exec(`
-    CREATE TABLE IF NOT EXISTS cart (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      user_id INTEGER NOT NULL,
-      item_id TEXT NOT NULL,
-      title TEXT,
-      image TEXT,
-      price REAL,
-      quantity INTEGER DEFAULT 1,
-      FOREIGN KEY (user_id) REFERENCES users(id)
-    );
-  `);
-
-  return db;
+  await db.close();
+  console.log("✅ Database connection closed");
 }
+
+createTables().catch((err) => console.error("❌ Error creating tables:", err));
