@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebase";
+
 import { useUserStore } from "./GlobalStore/useUserStore";
 //importing new zustand stores. favourites is not currently needed here as it is not connected to firebase.
-import useAuthStore from "./GlobalStore/useAuthStore";
+//import useAuthStore from "./GlobalStore/useAuthStore";
 //import useCartStore from "./GlobalStore/useCartStore";
 import useProductsStore from "./GlobalStore/useProductStore";
 //import useFavouritesStore from "./GlobalStore/useFavouritesStore"; //Not currently needed as this still works on Localstorage
@@ -18,7 +17,7 @@ import ProductPage from "./Pages/ProductPage";
 import MainPage from "./Pages/MainPage";
 import MainHeader from "./Components/Headers_and_Footers/MainHeader";
 import FavouritesPage from "./Pages/FavouritesPage";
-//import CartPage from "./Pages/CartPage";
+import CartPage from "./Pages/CartPage";
 import Login from "./credentialCertification/LogIn";
 import Register from "./credentialCertification/Register";
 
@@ -39,17 +38,17 @@ import Register from "./credentialCertification/Register";
  * @returns {JSX.Element} The root React component for the application.
  */
 export default function App() {
-  const setUser = useAuthStore((state) => state.setUser);
-  const setAuthLoading = useAuthStore((state) => state.setAuthLoading);
-  const fetchUserProfileFromFirestore = useAuthStore(
-    (state) => state.fetchUserProfileFromFirestore
-  );
+  // const setUser = useAuthStore((state) => state.setUser);
+  // const setAuthLoading = useAuthStore((state) => state.setAuthLoading);
+  // const fetchUserProfileFromFirestore = useAuthStore(
+  //   (state) => state.fetchUserProfileFromFirestore
+  // );
 
-  const fetchUser = useUserStore((state) => state.fetchUser);
+  const loadUserFromToken = useUserStore((state) => state.loadUserFromToken);
 
   useEffect(() => {
-    fetchUser();
-  }, []);
+    loadUserFromToken();
+  }, [loadUserFromToken]);
   //const mergeCarts = useCartStore((state) => state.mergeCarts);
   //const subscribeToUserCart = useCartStore((state) => state.subscribeToUserCart);
   //const unsubscribeFromCart = useCartStore((state) => state.unsubscribeFromCart);
@@ -118,7 +117,7 @@ export default function App() {
           <Route index element={<MainPage />} />
           <Route path="/item/:id" element={<ProductPage />} />
           <Route path="/favourites" element={<FavouritesPage />} />
-          {/* <Route path="/cart" element={<CartPage />} /> */}
+          <Route path="/cart" element={<CartPage />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
         </Route>

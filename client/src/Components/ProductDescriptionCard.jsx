@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router";
-//import useGlobalStore from "../GlobalStore/useGlobalStore";
+
 import useProductsStore from "../GlobalStore/useProductStore";
 import { FaStar } from "react-icons/fa";
 import "./product-description-card.css";

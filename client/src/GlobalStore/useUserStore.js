@@ -1,70 +1,87 @@
-// src/store/userStore.js
+// GlobalStore/useUserStore.js
 import { create } from "zustand";
 
 export const useUserStore = create((set) => ({
   user: null,
   token: localStorage.getItem("token") || null,
-  loading: false,
-  error: null,
 
-  fetchUser: async () => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-
-    set({ loading: true, error: null });
-    try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/me`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to fetch user");
-
-      set({ user: data.user, loading: false });
-    } catch (err) {
-      set({ user: null, token: null, error: err.message, loading: false });
-      localStorage.removeItem("token");
-    }
-  },
-
+  // ✅ Register a new user
   register: async (username, email, password) => {
-    set({ loading: true, error: null });
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/register`, {
+      const res = await fetch("http://localhost:8000/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, email, password }),
       });
+
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Registration failed");
 
-      // Optionally: automatically log the user in after register
-      set({ loading: false });
-      return data;
-    } catch (err) {
-      set({ error: err.message, loading: false });
+      // store token and user if returned
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+        set({ token: data.token, user: data.user });
+      }
+
+      return { success: true, user: data.user };
+    } catch (error) {
+      console.error("❌ Registration error:", error);
+      return { success: false, message: error.message };
     }
   },
 
+  // ✅ Log in an existing user
   login: async (email, password) => {
-    set({ loading: true, error: null });
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
+      const res = await fetch("http://localhost:8000/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
+
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Login failed");
 
+      // Save token and user
       localStorage.setItem("token", data.token);
-      set({ user: data.user, token: data.token, loading: false });
-    } catch (err) {
-      set({ error: err.message, loading: false });
+      set({ user: data.user, token: data.token });
+
+      return { success: true, user: data.user };
+    } catch (error) {
+      console.error("❌ Login error:", error);
+      return { success: false, message: error.message };
     }
   },
 
+  // ✅ Log out
   logout: () => {
     localStorage.removeItem("token");
     set({ user: null, token: null });
+  },
+
+  // ✅ Load user from token (for persistent sessions)
+  loadUserFromToken: async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    try {
+      const res = await fetch("http://localhost:8000/api/auth/me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await res.json();
+      if (res.ok && data.user) {
+        set({ user: data.user, token });
+      } else {
+        localStorage.removeItem("token");
+        set({ user: null, token: null });
+      }
+    } catch (error) {
+      console.error("❌ Failed to load user:", error);
+      localStorage.removeItem("token");
+      set({ user: null, token: null });
+    }
   },
 }));

@@ -1,43 +1,46 @@
-// import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useCartStore } from "../../GlobalStore/useCartStore";
+import useProductsStore from "../../GlobalStore/useProductStore";
+import { useUserStore } from "../../GlobalStore/useUserStore";
 
-// import useCartStore from "../../GlobalStore/useCartStore";
-// import useProductsStore from "../../GlobalStore/useProductStore";
-// import useAuthStore from "../../GlobalStore/useAuthStore";
+export default function AddToCartBtn() {
+  const { productInfo } = useProductsStore();
+  const { addToCart, fetchCart } = useCartStore();
+  const user = useUserStore((state) => state.user);
+  const [addToCartMessage, setAddToCartMessage] = useState("");
 
-// export default function AddToCartBtn() {
-//   const { productInfo } = useProductsStore();
-//   const { addToCart } = useCartStore();
+  const handleAddToCart = async () => {
+    if (!user) {
+      setAddToCartMessage("Please log in to add items to your cart.");
+      setTimeout(() => setAddToCartMessage(""), 3000);
+      return;
+    }
 
-//   const user = useAuthStore((state) => state.user);
-//   const userId = user?.uid || null;
+    if (!productInfo || !productInfo.id) {
+      setAddToCartMessage("Error: Product information not available.");
+      setTimeout(() => setAddToCartMessage(""), 3000);
+      return;
+    }
 
-//   const [addToCartMessage, setAddToCartMessage] = useState("");
+    try {
+      await addToCart(productInfo);
+      await fetchCart(); // Refresh the cart count immediately
 
-//   const handleAddToCart = () => {
-//     if (!productInfo || !productInfo.id) {
-//       setAddToCartMessage("Error: Product information not available.");
+      setAddToCartMessage(`${productInfo.title} added to cart!`);
+      setTimeout(() => setAddToCartMessage(""), 3000);
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      setAddToCartMessage("Failed to add item to cart.");
+      setTimeout(() => setAddToCartMessage(""), 3000);
+    }
+  };
 
-//       setTimeout(() => {
-//         setAddToCartMessage("");
-//       }, 3000);
-//       return;
-//     }
-
-//     addToCart(productInfo, userId);
-
-//     setAddToCartMessage(`${productInfo.title} added to cart!`);
-
-//     setTimeout(() => {
-//       setAddToCartMessage("");
-//     }, 3000);
-//   };
-
-//   return (
-//     <div>
-//       <button className="add-to-cart-btn button-style-1" onClick={handleAddToCart}>
-//         Add to cart
-//       </button>
-//       {addToCartMessage && <p className="add-to-cart-message">{addToCartMessage}</p>}
-//     </div>
-//   );
-// }
+  return (
+    <div>
+      <button className="add-to-cart-btn button-style-1" onClick={handleAddToCart}>
+        Add to cart
+      </button>
+      {addToCartMessage && <p className="add-to-cart-message">{addToCartMessage}</p>}
+    </div>
+  );
+}

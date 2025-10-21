@@ -1,7 +1,7 @@
 import React from "react";
 import CategoryDropDown from "../Filtering_and_sorting/CategoryDropDown";
 import SortingDropDown from "../Filtering_and_sorting/SortingDropDown";
-//import Cart from "../buttons/CartBtn";
+import Cart from "../buttons/CartBtn";
 
 import GoToFavouritesBtn from "../buttons/GoToFavouritesBtn";
 
@@ -15,7 +15,7 @@ export default function SortAndFilterHeader() {
 
       <div className="sort-filter-header-cart-favourites-div">
         <GoToFavouritesBtn />
-        {/* <Cart /> */}
+        <Cart />
       </div>
     </div>
   );

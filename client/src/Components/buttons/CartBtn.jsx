@@ -1,31 +1,39 @@
-// import React from "react";
-// import { Link } from "react-router";
-// import { IoCartOutline, IoCartSharp } from "react-icons/io5";
-// import "./cart-btn.css";
-// import { useEffect, useMemo } from "react";
-// import useCartStore from "../../GlobalStore/useCartStore";
+import React, { useEffect, useMemo } from "react";
+import { Link } from "react-router-dom";
+import { IoCartOutline, IoCartSharp } from "react-icons/io5";
+import "./cart-btn.css";
+import { useCartStore } from "../../GlobalStore/useCartStore";
+import { useUserStore } from "../../GlobalStore/useUserStore";
 
-// export default function Cart() {
-//   const { cart } = useCartStore();
+export default function Cart() {
+  const { cart, fetchCart } = useCartStore();
+  const user = useUserStore((state) => state.user);
 
-//   const totalQuantity = useMemo(() => {
-//     return cart.reduce((sum, item) => sum + item.quantity, 0);
-//   }, [cart]);
+  // Fetch cart whenever user logs in
+  useEffect(() => {
+    if (user) {
+      fetchCart();
+    } else {
+      // Reset cart if user logs out
+      setCart([]);
+    }
+  }, [user, fetchCart]);
 
-//   useEffect(() => {
-//     console.log("Current cart length:", cart.length);
-//   }, [cart]);
+  // Compute total quantity
+  const totalQuantity = useMemo(() => {
+    return cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+  }, [cart]);
 
-//   return (
-//     <Link to={"/cart"}>
-//       <div>
-//         {cart.length === 0 ? (
-//           <IoCartOutline className="cart-icon icons" />
-//         ) : (
-//           <IoCartSharp className="cart-icon icons" />
-//         )}
-//         {cart.length > 0 && <span className="cart-item-count">{totalQuantity}</span>}
-//       </div>
-//     </Link>
-//   );
-// }
+  return (
+    <Link to={"/cart"}>
+      <div>
+        {cart.length === 0 ? (
+          <IoCartOutline className="cart-icon icons" />
+        ) : (
+          <IoCartSharp className="cart-icon icons" />
+        )}
+        {cart.length > 0 && <span className="cart-item-count">{totalQuantity}</span>}
+      </div>
+    </Link>
+  );
+}

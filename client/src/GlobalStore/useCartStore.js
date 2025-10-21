@@ -1,45 +1,119 @@
-// // src/store/cartStore.js
-// import { create } from "zustand";
+// GlobalStore/useCartStore.js
+import { create } from "zustand";
 
-// export const useCartStore = create((set, get) => ({
-//   cart: [],
-//   loading: false,
-//   error: null,
+export const useCartStore = create((set, get) => ({
+  cart: [],
 
-//   fetchCart: async () => {
-//     const token = localStorage.getItem("token");
-//     if (!token) return set({ error: "Not logged in" });
+  // ✅ Fetch user's cart from backend
+  fetchCart: async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.warn("No token found. Skipping cart fetch.");
+        return;
+      }
 
-//     set({ loading: true, error: null });
+      const res = await fetch("http://localhost:8000/api/cart", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-//     try {
-//       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/cart`, {
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: `Bearer ${token}`,
-//         },
-//       });
+      const data = await res.json();
+      const cartItems = Array.isArray(data) ? data : data.cart || [];
+      set({ cart: cartItems });
+    } catch (err) {
+      console.error("❌ Failed to fetch cart:", err);
+      set({ cart: [] });
+    }
+  },
 
-//       const data = await res.json();
-//       if (!res.ok) throw new Error(data.message || "Failed to load cart");
+  // ✅ Add an item to the cart
+  addToCart: async (item) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.warn("User not authenticated");
+        return;
+      }
 
-//       set({ cart: data.cart || data, loading: false });
-//     } catch (err) {
-//       set({ error: err.message, loading: false });
-//     }
-//   },
+      const res = await fetch("http://localhost:8000/api/cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          itemId: item.id,
+          title: item.title,
+          image: item.image,
+          price: item.price,
+        }),
+      });
 
-//   addToCart: async (itemId) => {
-//     const token = localStorage.getItem("token");
-//     const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/cart`, {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//         Authorization: `Bearer ${token}`,
-//       },
-//       body: JSON.stringify({ itemId }),
-//     });
-//     const data = await res.json();
-//     set({ cart: data.cart });
-//   },
-// }));
+      const data = await res.json();
+      const cartItems = Array.isArray(data) ? data : data.cart || [];
+      set({ cart: cartItems });
+    } catch (err) {
+      console.error("❌ Failed to add to cart:", err);
+    }
+  },
+
+  // ✅ Remove one quantity (or delete item if quantity = 1)
+  removeFromCart: async (itemId) => {
+    console.log("🧩 Removing from cart:", itemId);
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.warn("❌ User not authenticated – no token found");
+        return;
+      }
+
+      const res = await fetch(`http://localhost:8000/api/cart/${itemId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) {
+        const msg = await res.text();
+        console.error(`❌ Failed to remove item: ${res.status} ${msg}`);
+        return;
+      }
+
+      const data = await res.json();
+      const updatedCart = Array.isArray(data) ? data : data.cart || [];
+
+      set({ cart: updatedCart });
+      console.log("🗑️ Item removed, updated cart:", updatedCart);
+    } catch (err) {
+      console.error("❌ Failed to remove item from cart:", err);
+    }
+  },
+
+  // ✅ Clear the entire cart
+  clearCart: async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.warn("User not authenticated");
+        return;
+      }
+
+      const res = await fetch("http://localhost:8000/api/cart", {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await res.json();
+      const cartItems = Array.isArray(data) ? data : data.cart || [];
+      set({ cart: cartItems });
+    } catch (err) {
+      console.error("❌ Failed to clear cart:", err);
+    }
+  },
+}));
