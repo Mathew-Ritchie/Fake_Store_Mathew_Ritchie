@@ -8,6 +8,7 @@ export async function openDb() {
     driver: sqlite3.Database,
   });
 
+  // 1. USERS Table (No Change)
   await db.exec(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -17,27 +18,26 @@ export async function openDb() {
     );
   `);
 
+  // 2. CART Table (Image and Price REMOVED)
   await db.exec(`
     CREATE TABLE IF NOT EXISTS cart (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       user_id INTEGER NOT NULL,
       item_id TEXT NOT NULL,
       title TEXT,
-      image TEXT,
-      price REAL,
       quantity INTEGER DEFAULT 1,
+      UNIQUE(user_id, item_id), 
       FOREIGN KEY (user_id) REFERENCES users(id)
     );
   `);
 
+  // 3. FAVOURITES Table (Image and Price REMOVED)
   await db.exec(`
   CREATE TABLE IF NOT EXISTS favourites (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     item_id INTEGER NOT NULL,
     title TEXT,
-    image TEXT,
-    price REAL,
     FOREIGN KEY (user_id) REFERENCES users(id)
   );
 `);

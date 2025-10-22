@@ -64,8 +64,6 @@ const useFavouritesStore = create((set, get) => ({
         {
           item_id: product.id,
           title: product.title,
-          image: product.image,
-          price: product.price,
         },
       ];
       console.log(`${product.title || "Item"} added to favourites.`);
@@ -86,8 +84,6 @@ const useFavouritesStore = create((set, get) => ({
           body: JSON.stringify({
             itemId: product.id,
             title: product.title,
-            image: product.image,
-            price: product.price,
           }),
         });
 

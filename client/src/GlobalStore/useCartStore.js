@@ -31,9 +31,20 @@ const useCartStore = create((set, get) => ({
   // ✅ Add an item to the cart
   addToCart: async (item) => {
     try {
+      // 1. CRITICAL FIX: Define token inside the function scope
       const token = localStorage.getItem("token");
       if (!token) {
         console.warn("User not authenticated");
+        return;
+      }
+
+      // 2. LOGIC: Determine the stable product ID
+      // item.item_id is used when adding from the Cart Page (item retrieved from DB)
+      // item.id is used when adding from the Products Page (original product ID)
+      const productIdentifier = item.item_id || item.id;
+
+      if (!productIdentifier) {
+        console.error("❌ Cannot add to cart: Missing item identifier.");
         return;
       }
 
@@ -41,15 +52,20 @@ const useCartStore = create((set, get) => ({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`, // Use the correctly scoped token
         },
         body: JSON.stringify({
-          itemId: item.id,
+          itemId: productIdentifier, // Use the stable product identifier
           title: item.title,
-          image: item.image,
-          price: item.price,
         }),
       });
+
+      // 3. BEST PRACTICE: Check for non-2xx response status
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error(`❌ Failed to add to cart: ${res.status} ${errorText}`);
+        return;
+      }
 
       const data = await res.json();
       const cartItems = Array.isArray(data) ? data : data.cart || [];
