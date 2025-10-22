@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useCartStore } from "../../GlobalStore/useCartStore";
+import useCartStore from "../../GlobalStore/useCartStore";
 import useProductsStore from "../../GlobalStore/useProductStore";
 import { useUserStore } from "../../GlobalStore/useUserStore";
 

@@ -30,5 +30,17 @@ export async function openDb() {
     );
   `);
 
+  await db.exec(`
+  CREATE TABLE IF NOT EXISTS favourites (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    item_id INTEGER NOT NULL,
+    title TEXT,
+    image TEXT,
+    price REAL,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+  );
+`);
+
   return db;
 }

@@ -1,10 +1,10 @@
 // GlobalStore/useCartStore.js
 import { create } from "zustand";
 
-export const useCartStore = create((set, get) => ({
+const useCartStore = create((set, get) => ({
   cart: [],
 
-  // ✅ Fetch user's cart from backend
+  // Fetch user's cart from backend
   fetchCart: async () => {
     try {
       const token = localStorage.getItem("token");
@@ -117,3 +117,5 @@ export const useCartStore = create((set, get) => ({
     }
   },
 }));
+
+export default useCartStore;

@@ -2,11 +2,11 @@ import React, { useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { IoCartOutline, IoCartSharp } from "react-icons/io5";
 import "./cart-btn.css";
-import { useCartStore } from "../../GlobalStore/useCartStore";
+import useCartStore from "../../GlobalStore/useCartStore";
 import { useUserStore } from "../../GlobalStore/useUserStore";
 
 export default function Cart() {
-  const { cart, fetchCart } = useCartStore();
+  const { cart, fetchCart, setCart } = useCartStore();
   const user = useUserStore((state) => state.user);
 
   // Fetch cart whenever user logs in
@@ -14,8 +14,6 @@ export default function Cart() {
     if (user) {
       fetchCart();
     } else {
-      // Reset cart if user logs out
-      setCart([]);
     }
   }, [user, fetchCart]);
 

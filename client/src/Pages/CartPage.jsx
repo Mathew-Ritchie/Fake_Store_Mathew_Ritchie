@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import HomeButton from "../Components/buttons/HomeButton";
-import { useCartStore } from "../GlobalStore/useCartStore";
+import useCartStore from "../GlobalStore/useCartStore";
 import { useUserStore } from "../GlobalStore/useUserStore";
 
 export default function CartPage() {
