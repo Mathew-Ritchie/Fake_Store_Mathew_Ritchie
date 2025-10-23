@@ -34,12 +34,12 @@ export async function openDb() {
   // 3. FAVOURITES Table (Image and Price REMOVED)
   await db.exec(`
   CREATE TABLE IF NOT EXISTS favourites (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
-    item_id INTEGER NOT NULL,
-    title TEXT,
-    FOREIGN KEY (user_id) REFERENCES users(id)
-  );
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        item_id INTEGER NOT NULL,
+        title TEXT,
+        UNIQUE(user_id, item_id) 
+    );
 `);
 
   return db;
