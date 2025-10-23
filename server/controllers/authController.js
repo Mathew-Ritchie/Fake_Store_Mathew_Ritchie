@@ -59,7 +59,6 @@ export const loginUser = async (req, res) => {
  * Controller for getting the current logged-in user.
  */
 export const getCurrentUser = async (req, res) => {
-  // req.user is set by the authenticateToken middleware
   try {
     const db = await openDb();
     const user = await db.get("SELECT id, username, email FROM users WHERE id = ?", [req.user.id]);

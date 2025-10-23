@@ -26,7 +26,6 @@ export const addItemToCart = async (req, res) => {
 
   const standardizedItemId = String(itemId).toLowerCase().trim();
 
-  // 2. ✅ LOG THE DATA (using the defined variables)
   console.log(`[CART LOG] User ${req.user.id} attempting to add/update item: 
     {
       Original ID: "${itemId}",
