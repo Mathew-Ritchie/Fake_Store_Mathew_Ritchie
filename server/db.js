@@ -6,6 +6,7 @@ export async function openDb() {
   const db = await open({
     filename: "./database.db",
     driver: sqlite3.Database,
+    busyTimeout: 5000,
   });
 
   // 1. USERS Table (No Change)
