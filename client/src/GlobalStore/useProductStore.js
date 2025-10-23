@@ -134,19 +134,44 @@ const useProductsStore = create((set, get) => ({
    * @param {number} id - The ID of the product to fetch.
    * @returns {Promise<void>} A promise that resolves when the product info is fetched.
    */
+  /**
+   * Fetches detailed information for a single product by its ID from the Fake Store API.
+   * NOTE: This is changed to return the product data directly for use in CartPage.
+   * @async
+   * @param {string|number} id - The ID of the product to fetch.
+   * @returns {Promise<object|null>} A promise that resolves with the product data object or null on failure.
+   */
+  // stores/useProductsStore.js (Corrected fetchProductInfo)
+
+  /**
+   * Fetches detailed information for a single product by its ID from the Fake Store API.
+   * This is changed to return the product data directly for use in CartPage.
+   * @async
+   * @param {string|number} id - The ID of the product to fetch.
+   * @returns {Promise<object|null>} A promise that resolves with the product data object or null on failure.
+   */
   fetchProductInfo: async (id) => {
-    set({ loading: true, error: null });
+    // ⚠️ FIX: Use 'set' directly, as it's available in the store closure.
+    set({ error: null });
     try {
       const res = await fetch(`https://fakestoreapi.com/products/${id}`);
       if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
+        console.error(`HTTP error fetching product ${id}: ${res.status}`);
+        return null;
       }
+
       const data = await res.json();
-      set({ productInfo: data, loading: false });
+
+      // Use 'set' directly to update the state
+      set({ productInfo: data });
+
+      return data;
     } catch (error) {
       console.error("An error occurred fetching product info:", error);
-      set({ error: "Failed to load product data", loading: false });
+      return null;
     }
+    // You should probably remove the final 'set({ loading: false })' if
+    // it was previously in a 'finally' block, as it conflicts with the CartPage component's loading state.
   },
 
   /**
