@@ -7,7 +7,28 @@ import favouritesRoutes from "./routes/favourites.js";
 
 dotenv.config();
 const app = express();
-app.use(cors());
+
+const allowedOrigins = [
+  "http://localhost:5173", // Local client development URL
+  process.env.NETLIFY_CLIENT_URL || "https://mathews-fake-store.netlify.app/",
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.indexOf(origin) === -1) {
+        const msg =
+          "The CORS policy for this site does not allow access from the specified Origin.";
+        return callback(new Error(msg), false);
+      }
+      return callback(null, true);
+    },
+  })
+);
+
+// Use Express middleware for JSON parsing
 app.use(express.json());
 
 // Routes

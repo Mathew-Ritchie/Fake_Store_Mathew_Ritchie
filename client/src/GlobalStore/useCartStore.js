@@ -1,6 +1,9 @@
 // GlobalStore/useCartStore.js
 import { create } from "zustand";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+// Ensure this variable is set in your Netlify environment settings!
+
 const useCartStore = create((set, get) => ({
   cart: [],
 
@@ -13,7 +16,7 @@ const useCartStore = create((set, get) => ({
         return;
       }
 
-      const res = await fetch("http://localhost:8000/api/cart", {
+      const res = await fetch(`${API_BASE_URL}/cart`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -31,16 +34,12 @@ const useCartStore = create((set, get) => ({
   //  Add an item to the cart
   addToCart: async (item) => {
     try {
-      // 1. CRITICAL FIX: Define token inside the function scope
       const token = localStorage.getItem("token");
       if (!token) {
         console.warn("User not authenticated");
         return;
       }
 
-      // 2. LOGIC: Determine the stable product ID
-      // item.item_id is used when adding from the Cart Page (item retrieved from DB)
-      // item.id is used when adding from the Products Page (original product ID)
       const productIdentifier = item.item_id || item.id;
 
       if (!productIdentifier) {
@@ -48,19 +47,18 @@ const useCartStore = create((set, get) => ({
         return;
       }
 
-      const res = await fetch("http://localhost:8000/api/cart", {
+      const res = await fetch(`${API_BASE_URL}/cart`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Use the correctly scoped token
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          itemId: productIdentifier, // Use the stable product identifier
+          itemId: productIdentifier,
           title: item.title,
         }),
       });
 
-      // 3. BEST PRACTICE: Check for non-2xx response status
       if (!res.ok) {
         const errorText = await res.text();
         console.error(` Failed to add to cart: ${res.status} ${errorText}`);
@@ -85,7 +83,8 @@ const useCartStore = create((set, get) => ({
         return;
       }
 
-      const res = await fetch(`http://localhost:8000/api/cart/${itemId}`, {
+      // 🎯 4. Use the variable
+      const res = await fetch(`${API_BASE_URL}/cart/${itemId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -118,7 +117,8 @@ const useCartStore = create((set, get) => ({
         return;
       }
 
-      const res = await fetch("http://localhost:8000/api/cart", {
+      // 🎯 5. Use the variable
+      const res = await fetch(`${API_BASE_URL}/cart`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

@@ -3,6 +3,8 @@ import { create } from "zustand";
 import useCartStore from "./useCartStore";
 import useFavouritesStore from "./useFavouritesStore";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 export const useUserStore = create((set) => ({
   user: null,
   token: localStorage.getItem("token") || null,
@@ -10,7 +12,7 @@ export const useUserStore = create((set) => ({
   //  Register a new user
   register: async (username, email, password) => {
     try {
-      const res = await fetch("http://localhost:8000/api/auth/register", {
+      const res = await fetch(`${API_BASE_URL}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, email, password }),
@@ -35,7 +37,7 @@ export const useUserStore = create((set) => ({
   //  Log in an existing user
   login: async (email, password) => {
     try {
-      const res = await fetch("http://localhost:8000/api/auth/login", {
+      const res = await fetch(`${API_BASE_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -69,7 +71,7 @@ export const useUserStore = create((set) => ({
     if (!token) return;
 
     try {
-      const res = await fetch("http://localhost:8000/api/auth/me", {
+      const res = await fetch(`${API_BASE_URL}/auth/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

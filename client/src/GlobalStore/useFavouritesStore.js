@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-const API_URL = "http://localhost:8000/api/favourites";
+const API_URL = import.meta.env.VITE_API_BASE_URL;
 
 const useFavouritesStore = create((set, get) => ({
   // State initialization: Start with an empty array. No localStorage used.
