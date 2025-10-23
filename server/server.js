@@ -10,7 +10,7 @@ const app = express();
 
 const allowedOrigins = [
   "http://localhost:5173", // Local client development URL
-  process.env.NETLIFY_CLIENT_URL || "https://mathews-fake-store.netlify.app/",
+  process.env.NETLIFY_CLIENT_URL || "https://mathews-fake-store.netlify.app",
 ];
 
 app.use(
