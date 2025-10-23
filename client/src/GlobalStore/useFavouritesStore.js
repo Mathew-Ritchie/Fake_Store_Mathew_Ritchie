@@ -1,5 +1,6 @@
 import { create } from "zustand";
 
+// API_URL is correctly set to https://fake-store-mathew-ritchie.onrender.com/api
 const API_URL = import.meta.env.VITE_API_BASE_URL;
 
 const useFavouritesStore = create((set, get) => ({
@@ -19,7 +20,8 @@ const useFavouritesStore = create((set, get) => ({
     }
 
     try {
-      const res = await fetch(API_URL, {
+      // FIX: Appending /favourites to hit the correct GET endpoint
+      const res = await fetch(`${API_URL}/favourites`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -56,8 +58,8 @@ const useFavouritesStore = create((set, get) => ({
     }
 
     try {
-      //  Direct call to the backend for the toggle action
-      const res = await fetch(API_URL, {
+      // FIX: Appending /favourites to hit the correct POST endpoint
+      const res = await fetch(`${API_URL}/favourites`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -102,7 +104,8 @@ const useFavouritesStore = create((set, get) => ({
     if (!token) return; // Exit if not logged in
 
     try {
-      const res = await fetch(`${API_URL}/${itemId}`, {
+      // The URL for DELETE ONE is already correct: /api/favourites/:itemId
+      const res = await fetch(`${API_URL}/favourites/${itemId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -119,7 +122,7 @@ const useFavouritesStore = create((set, get) => ({
   },
 
   /**
-   * Clear all favourites
+   * Clear all favourites (Asynchronous backend call)
    * Requires: User must be logged in.
    */
   clearFavourites: async () => {
@@ -127,7 +130,8 @@ const useFavouritesStore = create((set, get) => ({
     if (!token) return; // Exit if not logged in
 
     try {
-      const res = await fetch(API_URL, {
+      // FIX: Appending /favourites to hit the correct DELETE ALL endpoint
+      const res = await fetch(`${API_URL}/favourites`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -142,9 +146,10 @@ const useFavouritesStore = create((set, get) => ({
   },
 
   /**
-   * Clear all favourites (locally ONLY, preserves backend data)
+   * Clear all favourites (Locally ONLY, preserves backend data)
+   * NOTE: This is a duplicate function name and should be renamed (e.g., clearLocalFavourites)
    */
-  clearFavourites: () => {
+  clearLocalFavourites: () => {
     set({ favourites: [] });
   },
 }));
