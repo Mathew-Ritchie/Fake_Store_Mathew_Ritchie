@@ -11,3 +11,4 @@ router.post("/login", loginUser);
 router.get("/me", authenticateToken, getCurrentUser);
 
 export default router;
+//route name correction.
