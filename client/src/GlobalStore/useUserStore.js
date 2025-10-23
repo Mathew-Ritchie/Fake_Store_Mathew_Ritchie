@@ -1,11 +1,13 @@
 // GlobalStore/useUserStore.js
 import { create } from "zustand";
+import useCartStore from "./useCartStore";
+import useFavouritesStore from "./useFavouritesStore";
 
 export const useUserStore = create((set) => ({
   user: null,
   token: localStorage.getItem("token") || null,
 
-  // ✅ Register a new user
+  //  Register a new user
   register: async (username, email, password) => {
     try {
       const res = await fetch("http://localhost:8000/api/auth/register", {
@@ -25,12 +27,12 @@ export const useUserStore = create((set) => ({
 
       return { success: true, user: data.user };
     } catch (error) {
-      console.error("❌ Registration error:", error);
+      console.error(" Registration error:", error);
       return { success: false, message: error.message };
     }
   },
 
-  // ✅ Log in an existing user
+  //  Log in an existing user
   login: async (email, password) => {
     try {
       const res = await fetch("http://localhost:8000/api/auth/login", {
@@ -48,18 +50,20 @@ export const useUserStore = create((set) => ({
 
       return { success: true, user: data.user };
     } catch (error) {
-      console.error("❌ Login error:", error);
+      console.error(" Login error:", error);
       return { success: false, message: error.message };
     }
   },
 
-  // ✅ Log out
+  //  Log out
   logout: () => {
     localStorage.removeItem("token");
     set({ user: null, token: null });
+    useCartStore.getState().syncClearCart();
+    useFavouritesStore.getState().clearFavourites();
   },
 
-  // ✅ Load user from token (for persistent sessions)
+  // Load user from token (for persistent sessions)
   loadUserFromToken: async () => {
     const token = localStorage.getItem("token");
     if (!token) return;
@@ -79,7 +83,7 @@ export const useUserStore = create((set) => ({
         set({ user: null, token: null });
       }
     } catch (error) {
-      console.error("❌ Failed to load user:", error);
+      console.error(" Failed to load user:", error);
       localStorage.removeItem("token");
       set({ user: null, token: null });
     }

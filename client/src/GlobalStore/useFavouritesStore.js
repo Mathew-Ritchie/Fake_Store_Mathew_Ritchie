@@ -1,18 +1,20 @@
-// stores/useFavouritesStore.js
 import { create } from "zustand";
 
 const API_URL = "http://localhost:8000/api/favourites";
 
 const useFavouritesStore = create((set, get) => ({
-  favourites: JSON.parse(localStorage.getItem("myFakeStoreFavourites") || "[]"),
+  // State initialization: Start with an empty array. No localStorage used.
+  favourites: [],
 
   /**
    * Fetch favourites from backend for logged-in user
+   * Requires: User must be logged in.
    */
   fetchFavourites: async () => {
     const token = localStorage.getItem("token");
     if (!token) {
-      console.warn("User not authenticated, using local favourites only.");
+      // If not logged in, state remains empty, and we exit silently.
+      set({ favourites: [] });
       return;
     }
 
@@ -27,18 +29,19 @@ const useFavouritesStore = create((set, get) => ({
       }
 
       const data = await res.json();
+      // The backend should return { favourites: [...] }
       const favourites = Array.isArray(data) ? data : data.favourites || [];
 
-      localStorage.setItem("myFakeStoreFavourites", JSON.stringify(favourites));
+      // Update state directly from server response
       set({ favourites });
     } catch (err) {
-      console.error("❌ Error fetching favourites:", err);
+      console.error(" Error fetching favourites:", err);
     }
   },
 
   /**
    * Toggle a product as favourite (add/remove)
-   * Syncs with backend if user is logged in.
+   * Requires: User must be logged in.
    */
   toggleFavourite: async (product) => {
     if (!product || typeof product.id === "undefined") {
@@ -47,56 +50,37 @@ const useFavouritesStore = create((set, get) => ({
     }
 
     const token = localStorage.getItem("token");
-    const isLoggedIn = !!token;
-    const { favourites } = get();
-
-    // Determine if product is already favourited
-    const existingIndex = favourites.findIndex((fav) => fav.item_id === product.id);
-
-    // Optimistic local update
-    let updatedFavourites;
-    if (existingIndex !== -1) {
-      updatedFavourites = favourites.filter((fav) => fav.item_id !== product.id);
-      console.log(`${product.title || "Item"} removed from favourites.`);
-    } else {
-      updatedFavourites = [
-        ...favourites,
-        {
-          item_id: product.id,
-          title: product.title,
-        },
-      ];
-      console.log(`${product.title || "Item"} added to favourites.`);
+    if (!token) {
+      console.warn("Must be logged in to toggle favourites.");
+      return; // Exit if not logged in
     }
 
-    set({ favourites: updatedFavourites });
-    localStorage.setItem("myFakeStoreFavourites", JSON.stringify(updatedFavourites));
+    try {
+      //  Direct call to the backend for the toggle action
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          itemId: product.id,
+          title: product.title,
+        }),
+      });
 
-    // Sync with backend
-    if (isLoggedIn) {
-      try {
-        const res = await fetch(API_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            itemId: product.id,
-            title: product.title,
-          }),
-        });
+      if (res.ok) {
+        //  Update state ONLY with the confirmed list from the server
+        const data = await res.json();
+        const favouritesFromServer = Array.isArray(data) ? data : data.favourites || [];
 
-        if (res.ok) {
-          const data = await res.json();
-          const favouritesFromServer = Array.isArray(data) ? data : data.favourites || [];
-
-          set({ favourites: favouritesFromServer });
-          localStorage.setItem("myFakeStoreFavourites", JSON.stringify(favouritesFromServer));
-        }
-      } catch (err) {
-        console.error(" Error syncing favourite to backend:", err);
+        set({ favourites: favouritesFromServer });
+        console.log(`Favourite state synced with server.`);
+      } else {
+        console.error(` Failed to sync favourite. Status: ${res.status}`);
       }
+    } catch (err) {
+      console.error(" Error syncing favourite to backend:", err);
     }
   },
 
@@ -104,25 +88,18 @@ const useFavouritesStore = create((set, get) => ({
    * Check if product is currently favourited
    */
   isProductFavourite: (productId) => {
+    // Relies solely on the current state synced from the backend
     const { favourites } = get();
     return favourites.some((item) => item.item_id === productId || item.id === productId);
   },
 
   /**
    * Remove a specific product from favourites
+   * Requires: User must be logged in.
    */
   removeFavourite: async (itemId) => {
     const token = localStorage.getItem("token");
-    const { favourites } = get();
-
-    const updatedFavourites = favourites.filter(
-      (item) => item.item_id !== itemId && item.id !== itemId
-    );
-
-    set({ favourites: updatedFavourites });
-    localStorage.setItem("myFakeStoreFavourites", JSON.stringify(updatedFavourites));
-
-    if (!token) return;
+    if (!token) return; // Exit if not logged in
 
     try {
       const res = await fetch(`${API_URL}/${itemId}`, {
@@ -131,10 +108,10 @@ const useFavouritesStore = create((set, get) => ({
       });
 
       if (res.ok) {
+        // Update state with the new list returned by the server
         const data = await res.json();
         const favouritesFromServer = Array.isArray(data) ? data : data.favourites || [];
         set({ favourites: favouritesFromServer });
-        localStorage.setItem("myFakeStoreFavourites", JSON.stringify(favouritesFromServer));
       }
     } catch (err) {
       console.error(" Failed to remove favourite from backend:", err);
@@ -142,23 +119,33 @@ const useFavouritesStore = create((set, get) => ({
   },
 
   /**
-   * Clear all favourites (both locally and on backend)
+   * Clear all favourites
+   * Requires: User must be logged in.
    */
   clearFavourites: async () => {
-    set({ favourites: [] });
-    localStorage.removeItem("myFakeStoreFavourites");
-
     const token = localStorage.getItem("token");
-    if (!token) return;
+    if (!token) return; // Exit if not logged in
 
     try {
-      await fetch(API_URL, {
+      const res = await fetch(API_URL, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
+
+      if (res.ok) {
+        // The server should return an empty array if successful
+        set({ favourites: [] });
+      }
     } catch (err) {
       console.error(" Failed to clear favourites on backend:", err);
     }
+  },
+
+  /**
+   * Clear all favourites (locally ONLY, preserves backend data)
+   */
+  clearFavourites: () => {
+    set({ favourites: [] });
   },
 }));
 

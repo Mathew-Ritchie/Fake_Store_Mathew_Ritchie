@@ -23,12 +23,12 @@ const useCartStore = create((set, get) => ({
       const cartItems = Array.isArray(data) ? data : data.cart || [];
       set({ cart: cartItems });
     } catch (err) {
-      console.error("❌ Failed to fetch cart:", err);
+      console.error(" Failed to fetch cart:", err);
       set({ cart: [] });
     }
   },
 
-  // ✅ Add an item to the cart
+  //  Add an item to the cart
   addToCart: async (item) => {
     try {
       // 1. CRITICAL FIX: Define token inside the function scope
@@ -44,7 +44,7 @@ const useCartStore = create((set, get) => ({
       const productIdentifier = item.item_id || item.id;
 
       if (!productIdentifier) {
-        console.error("❌ Cannot add to cart: Missing item identifier.");
+        console.error(" Cannot add to cart: Missing item identifier.");
         return;
       }
 
@@ -63,7 +63,7 @@ const useCartStore = create((set, get) => ({
       // 3. BEST PRACTICE: Check for non-2xx response status
       if (!res.ok) {
         const errorText = await res.text();
-        console.error(`❌ Failed to add to cart: ${res.status} ${errorText}`);
+        console.error(` Failed to add to cart: ${res.status} ${errorText}`);
         return;
       }
 
@@ -71,17 +71,17 @@ const useCartStore = create((set, get) => ({
       const cartItems = Array.isArray(data) ? data : data.cart || [];
       set({ cart: cartItems });
     } catch (err) {
-      console.error("❌ Failed to add to cart:", err);
+      console.error(" Failed to add to cart:", err);
     }
   },
 
-  // ✅ Remove one quantity (or delete item if quantity = 1)
+  //  Remove one quantity (or delete item if quantity = 1)
   removeFromCart: async (itemId) => {
-    console.log("🧩 Removing from cart:", itemId);
+    console.log(" Removing from cart:", itemId);
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        console.warn("❌ User not authenticated – no token found");
+        console.warn(" User not authenticated – no token found");
         return;
       }
 
@@ -95,7 +95,7 @@ const useCartStore = create((set, get) => ({
 
       if (!res.ok) {
         const msg = await res.text();
-        console.error(`❌ Failed to remove item: ${res.status} ${msg}`);
+        console.error(` Failed to remove item: ${res.status} ${msg}`);
         return;
       }
 
@@ -105,11 +105,11 @@ const useCartStore = create((set, get) => ({
       set({ cart: updatedCart });
       console.log("🗑️ Item removed, updated cart:", updatedCart);
     } catch (err) {
-      console.error("❌ Failed to remove item from cart:", err);
+      console.error(" Failed to remove item from cart:", err);
     }
   },
 
-  // ✅ Clear the entire cart
+  //  Clear the entire cart
   clearCart: async () => {
     try {
       const token = localStorage.getItem("token");
@@ -129,8 +129,12 @@ const useCartStore = create((set, get) => ({
       const cartItems = Array.isArray(data) ? data : data.cart || [];
       set({ cart: cartItems });
     } catch (err) {
-      console.error("❌ Failed to clear cart:", err);
+      console.error(" Failed to clear cart:", err);
     }
+  },
+
+  syncClearCart: () => {
+    set({ cart: [] });
   },
 }));
 
