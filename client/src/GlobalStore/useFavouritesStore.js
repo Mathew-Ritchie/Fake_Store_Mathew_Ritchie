@@ -1,3 +1,5 @@
+// useFavouritesStore.js (Updated)
+
 import { create } from "zustand";
 
 // API_URL is correctly set to https://fake-store-mathew-ritchie.onrender.com/api
@@ -7,20 +9,21 @@ const useFavouritesStore = create((set, get) => ({
   // State initialization: Start with an empty array. No localStorage used.
   favourites: [],
 
+  // ... (fetchFavourites, toggleFavourite functions are unchanged as they are not the source of the bug)
+
   /**
    * Fetch favourites from backend for logged-in user
    * Requires: User must be logged in.
    */
   fetchFavourites: async () => {
+    // ... (logic unchanged)
     const token = localStorage.getItem("token");
     if (!token) {
-      // If not logged in, state remains empty, and we exit silently.
       set({ favourites: [] });
       return;
     }
 
     try {
-      // FIX: Appending /favourites to hit the correct GET endpoint
       const res = await fetch(`${API_URL}/favourites`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -31,10 +34,7 @@ const useFavouritesStore = create((set, get) => ({
       }
 
       const data = await res.json();
-      // The backend should return { favourites: [...] }
       const favourites = Array.isArray(data) ? data : data.favourites || [];
-
-      // Update state directly from server response
       set({ favourites });
     } catch (err) {
       console.error(" Error fetching favourites:", err);
@@ -46,6 +46,7 @@ const useFavouritesStore = create((set, get) => ({
    * Requires: User must be logged in.
    */
   toggleFavourite: async (product) => {
+    // ... (logic unchanged)
     if (!product || typeof product.id === "undefined") {
       console.warn("Invalid product passed to toggleFavourite:", product);
       return;
@@ -54,11 +55,10 @@ const useFavouritesStore = create((set, get) => ({
     const token = localStorage.getItem("token");
     if (!token) {
       console.warn("Must be logged in to toggle favourites.");
-      return; // Exit if not logged in
+      return;
     }
 
     try {
-      // FIX: Appending /favourites to hit the correct POST endpoint
       const res = await fetch(`${API_URL}/favourites`, {
         method: "POST",
         headers: {
@@ -72,10 +72,8 @@ const useFavouritesStore = create((set, get) => ({
       });
 
       if (res.ok) {
-        //  Update state ONLY with the confirmed list from the server
         const data = await res.json();
         const favouritesFromServer = Array.isArray(data) ? data : data.favourites || [];
-
         set({ favourites: favouritesFromServer });
         console.log(`Favourite state synced with server.`);
       } else {
@@ -90,9 +88,13 @@ const useFavouritesStore = create((set, get) => ({
    * Check if product is currently favourited
    */
   isProductFavourite: (productId) => {
-    // Relies solely on the current state synced from the backend
+    // FIX: Convert both IDs to strings for a reliable strict comparison
+    const targetId = String(productId);
     const { favourites } = get();
-    return favourites.some((item) => item.item_id === productId || item.id === productId);
+
+    // We check against item_id (the product's actual ID from the external store)
+    // The previous check against item.id was likely comparing to the favourite record's PRIMARY KEY, which is wrong.
+    return favourites.some((item) => String(item.item_id) === targetId);
   },
 
   /**
@@ -100,18 +102,17 @@ const useFavouritesStore = create((set, get) => ({
    * Requires: User must be logged in.
    */
   removeFavourite: async (itemId) => {
+    // ... (logic unchanged)
     const token = localStorage.getItem("token");
-    if (!token) return; // Exit if not logged in
+    if (!token) return;
 
     try {
-      // The URL for DELETE ONE is already correct: /api/favourites/:itemId
       const res = await fetch(`${API_URL}/favourites/${itemId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
 
       if (res.ok) {
-        // Update state with the new list returned by the server
         const data = await res.json();
         const favouritesFromServer = Array.isArray(data) ? data : data.favourites || [];
         set({ favourites: favouritesFromServer });
@@ -126,18 +127,17 @@ const useFavouritesStore = create((set, get) => ({
    * Requires: User must be logged in.
    */
   clearFavourites: async () => {
+    // ... (logic unchanged)
     const token = localStorage.getItem("token");
-    if (!token) return; // Exit if not logged in
+    if (!token) return;
 
     try {
-      // FIX: Appending /favourites to hit the correct DELETE ALL endpoint
       const res = await fetch(`${API_URL}/favourites`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
 
       if (res.ok) {
-        // The server should return an empty array if successful
         set({ favourites: [] });
       }
     } catch (err) {
