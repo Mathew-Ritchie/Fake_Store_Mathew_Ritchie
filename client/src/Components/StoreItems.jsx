@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router";
 
 import useProductsStore from "../GlobalStore/useProductStore";
@@ -14,22 +14,30 @@ export default function StoreItems() {
   }, [fetchStoreData]);
 
   return (
-    <div className="store-items-container">
-      <div className="product-container">
+    <div className="store-items-container bg-gray-200">
+      <div className="product-container flex flex-wrap justify-center items-center gap-4 p-4 bg-gray-200">
         {loading && <h1>Items loading...</h1>}
         {error && <h1>There was an error loading data, please try again.</h1>}
         {filteredItems &&
           filteredItems.map((item) => (
-            <Link key={item.id} to={`/item/${item.id}`} className="product-link">
-              <div className="product-card">
-                <div className="product-img-div">
-                  <img className="product-img" src={item.image} />
+            <Link
+              key={item.id}
+              to={`/item/${item.id}`}
+              className="product-link no-underline text-black"
+            >
+              <div className="product-card flex flex-col justify-between items-center rounded-2xl w-48 h-86 p-2 bg-white">
+                <div className="product-img-div w-28 h-40 flex flex-col justify-center items-center">
+                  <img className="product-img w-28 h-40 object-contain" src={item.image} />
                 </div>
-                <div className="product-info-div">
-                  <h1 className="product-title">{truncateText(item.title, 50)}</h1>
+                <div className="product-info-div flex flex-col justify-between items-center h-34">
+                  <h1 className="product-title font-light text-md no-underline text-gray-800 w-48 py-2.5 text-center">
+                    {truncateText(item.title, 50)}
+                  </h1>
                   <div>
                     {" "}
-                    <p className="store-item-price">R {item.price}</p>
+                    <p className="store-item-price font-bold text-lg text-gray-800 mt-0 text-center">
+                      R {item.price}
+                    </p>
                     <div className="product-rating-div">
                       <FaStar className="faStar" />
                       <p>{`${item.rating.rate}(${item.rating.count})`}</p>

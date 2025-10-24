@@ -1,4 +1,3 @@
-import React from "react";
 import StoreItems from "../Components/StoreItems";
 import SortAndFilterHeader from "../Components/Headers_and_Footers/SortAndFilterHeader";
 
