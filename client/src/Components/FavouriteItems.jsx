@@ -140,7 +140,12 @@ export default function FavouritesPage() {
 
               <div className="favourite-remove-btn">
                 {/* AddToFavouritesBtn logic handles the toggle/remove */}
-                <AddToFavouritesBtn product={item} />
+                <AddToFavouritesBtn
+                  product={{
+                    ...item,
+                    id: item.item_id,
+                  }}
+                />
               </div>
             </div>
           </div>
