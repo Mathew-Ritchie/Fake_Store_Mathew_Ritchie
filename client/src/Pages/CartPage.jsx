@@ -18,9 +18,6 @@ export default function CartPage() {
     if (user) fetchCart();
   }, [user, fetchCart]);
 
-  // ----------------------------------------------------------------
-  // --- FIX: Caching Logic in useEffect to prevent re-fetching ---
-  // ----------------------------------------------------------------
   useEffect(() => {
     if (cart.length === 0) {
       setDetailedProducts({});
@@ -116,39 +113,48 @@ export default function CartPage() {
   }
 
   return (
-    <div className="cart-container">
-      <div className="cart-home-btn-div">
+    <div className="cart-container bg-gray-100 w-full flex flex-col items-center px-10">
+      <div className="cart-home-btn-div w-full">
         <HomeButton />
       </div>
-      <h2 className="cart-page-sub-title">Your Shopping Cart</h2>
+      <h2 className="cart-page-sub-title text-center w-full sm:w-[500px] bg-white py-8 text-3xl">
+        Your Shopping Cart
+      </h2>
 
-      <div className="cart-items-div">
+      <div className="cart-items-div w-full sm:w-[500px] bg-white">
         {cartWithDetails.map((item) => (
-          <div key={item.id} className="cart-item">
+          <div key={item.id} className="cart-item border-b-2 border-gray-300 py-4 px-4">
             {item.image ? (
               <Link to={`/item/${item.item_id}`}>
-                <img src={item.image} alt={item.title} className="cart-item-image" />
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="cart-item-image w-24 h-24 object-contain"
+                />
               </Link>
             ) : (
               <div className="cart-item-image-placeholder">No Image</div>
             )}
 
             <div className="cart-item-details">
-              <h5 className="cart-item-title">{item.title}</h5>
+              <h5 className="cart-item-title m-0">{item.title}</h5>
               {item.price !== null && item.price !== undefined ? (
-                <p className="cart-item-price">R{item.price.toFixed(2)}</p>
+                <p className="cart-item-price m-0">R{item.price.toFixed(2)}</p>
               ) : (
-                <p className="cart-item-price">R--.--</p>
+                <p className="cart-item-price m-0">R--.--</p>
               )}
 
-              <div className="cart-item-quantity-controls">
-                <button onClick={() => addToCart(item)} className="quantity-btn add-btn">
+              <div className="cart-item-quantity-controls flex items-center justify-end">
+                <button
+                  onClick={() => addToCart(item)}
+                  className="quantity-btn add-btn text-lg  w-2.5"
+                >
                   +
                 </button>
-                <p className="cart-item-quantity">{item.quantity}</p>
+                <p className="cart-item-quantity w-6 h-6 text-center">{item.quantity}</p>
                 <button
                   onClick={() => removeFromCart(item.item_id)}
-                  className="quantity-btn remove-btn"
+                  className="quantity-btn remove-btn text-lg  w-2.5"
                 >
                   -
                 </button>
@@ -158,7 +164,7 @@ export default function CartPage() {
         ))}
       </div>
 
-      <div className="cart-total">
+      <div className="cart-total text-end pr-4 py-4">
         <h3>
           Total: R
           {cartWithDetails
@@ -166,7 +172,7 @@ export default function CartPage() {
             .toFixed(2)}
         </h3>
         <div className="cart-page-clear-cheackout-btn-div">
-          <button onClick={clearCart} className="clear-btn button-style-1">
+          <button onClick={clearCart} className="clear-btn button-style-1 bg-red-800">
             Clear cart
           </button>
           <button className="checkout-btn button-style-1">Checkout</button>
