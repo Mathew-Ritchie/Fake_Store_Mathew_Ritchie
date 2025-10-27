@@ -3,7 +3,7 @@ import SortAndFilterHeader from "../Components/Headers_and_Footers/SortAndFilter
 
 export default function MainPage() {
   return (
-    <div>
+    <div className="w-full bg-gray-100 h-screen">
       <SortAndFilterHeader />
       <StoreItems />
     </div>

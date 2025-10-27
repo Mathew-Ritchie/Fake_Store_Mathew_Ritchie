@@ -3,7 +3,6 @@ import { Link } from "react-router-dom"; // Use react-router-dom for Link
 import AddToFavouritesBtn from "../Components/buttons/AddToFavouritesBtn";
 import useFavouritesStore from "../GlobalStore/useFavouritesStore";
 import useProductsStore from "../GlobalStore/useProductStore"; // <-- Import product store
-// import "./favourite-items.css";
 
 export default function FavouritesPage() {
   const { favourites, fetchFavourites } = useFavouritesStore();
@@ -112,23 +111,33 @@ export default function FavouritesPage() {
   }
 
   return (
-    <div className="favourites-list">
+    <div className="favourites-list sm:w-[500px] bg-white w-full">
       {favouritesWithDetails.map(
         (
           item // <-- Map over merged data
         ) => (
-          <div key={item.id} className="favourite-item-card">
+          <div
+            key={item.id}
+            className="favourite-item-card flex justify-start items-center p-2.5 gap-2.5 border-b-2 border-gray-300"
+          >
             <Link to={`/item/${item.item_id}`}>
               {" "}
               {/* Use item_id for product page */}
               {item.image ? (
-                <img src={item.image} alt={item.title} className="favourite-item-image" />
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="favourite-item-image w-24 h-24 object-contain"
+                />
               ) : (
                 <div className="favourite-item-image-placeholder">No Image</div>
               )}
             </Link>
-            <div className="favourite-item-details">
-              <Link className="favourite-item-link" to={`/item/${item.item_id}`}>
+            <div className="favourite-item-details w-full">
+              <Link
+                className="favourite-item-link no-underline text-black"
+                to={`/item/${item.item_id}`}
+              >
                 {" "}
                 {/* Use item_id */}
                 <h4 className="favourite-item-title">{item.title}</h4>

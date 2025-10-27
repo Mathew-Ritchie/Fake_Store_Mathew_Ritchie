@@ -1,12 +1,7 @@
-import React from "react";
-import { Link } from "react-router";
-
+//Stores
 import useFavouritesStore from "../GlobalStore/useFavouritesStore";
-
-import { IoIosArrowRoundBack } from "react-icons/io";
-
+//Components
 import FavouriteItems from "../Components/FavouriteItems";
-// import "./favourites-page.css";
 import HomeButton from "../Components/buttons/HomeButton";
 
 //Favourites layout function. If there are items in favourites then they
@@ -18,9 +13,6 @@ export default function FavouritesPage() {
     return (
       <div className="favourites-empty-message">
         <HomeButton />
-        {/* <Link to={"/"} className="product-page-header-link">
-          <IoIosArrowRoundBack className="back-arrow" />
-        </Link> */}
         <h2>Your Favourites</h2>
         <p>You haven't added any items to your favourites yet. Go explore the store!</p>
       </div>
@@ -29,14 +21,13 @@ export default function FavouritesPage() {
 
   //If there are favourites.
   return (
-    <div className="favourites-page-container">
-      <div className="favourites-page-link-title-div">
+    <div className="favourites-page-container w-full bg-gray-200 flex flex-col justify-center items-center pb-10">
+      <div className="favourites-page-link-title-div w-full flex justify-start items-center px-2.5 gap-2.5">
         <HomeButton />
-        {/* <Link to={"/"} className="product-page-header-link">
-          <IoIosArrowRoundBack className="back-arrow" />
-        </Link> */}
       </div>
-      <h2 className="cart-page-sub-title">Your Favourites</h2>
+      <h2 className="cart-page-sub-title bg-white mb-0 p-4 sm:w-[500px] w-full text-center text-3xl">
+        Your Favourites
+      </h2>
       <FavouriteItems />
     </div>
   );

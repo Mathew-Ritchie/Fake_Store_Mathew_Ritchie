@@ -5,7 +5,7 @@ import ProductPageFooter from "../Components/Headers_and_Footers/ProductPageFoot
 
 export default function ProductPage() {
   return (
-    <div className="product-page-background-div">
+    <div className="product-page-background-div min-h-screen flex flex-col items-center w-full bg-gray-100">
       <ProductPageHeader />
       <ProductDescriptionCard />
       <ProductPageFooter />
