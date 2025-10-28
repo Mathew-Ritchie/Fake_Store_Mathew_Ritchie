@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom"; // ✅ Correct import for 
 import { IoIosArrowRoundBack } from "react-icons/io";
 import HomeButton from "../Components/buttons/HomeButton";
 import { useUserStore } from "../GlobalStore/useUserStore"; // ✅ use your Zustand user store
-import "./login.css";
 
 function Login() {
   // Local form state
@@ -30,20 +29,25 @@ function Login() {
   };
 
   return (
-    <form onSubmit={handleLoginSubmit} className="login-form-wrapper">
-      <HomeButton />
+    <form
+      onSubmit={handleLoginSubmit}
+      className="login-form-wrapper w-full flex flex-col justify-start items-center bg-gray-100 p-8 text-gray-800 h-screen"
+    >
+      <div className="flex w-full justify-start items-center">
+        <HomeButton />
+      </div>
 
-      <h2 className="login-form-title">Login</h2>
+      <h2 className="login-form-title mt-0 text-3xl mb-5">Login</h2>
 
       {/* ✅ Show error messages */}
       {localError && <p style={{ color: "red" }}>{localError}</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
 
       {/* Email input */}
-      <div className="login-input-divs">
+      <div className="login-input-divs flex flex-col gap-1 mb-5">
         <label>Email:</label>
         <input
-          className="login-input"
+          className="login-input border border-gray-400 shadow-lg text-sm p-2.5 w-[300px] h-[30px] rounded-sm"
           type="email"
           placeholder="email@mail.com"
           value={email}
@@ -53,10 +57,10 @@ function Login() {
       </div>
 
       {/* Password input */}
-      <div className="login-input-divs">
+      <div className="login-input-divs flex flex-col gap-1 mb-5">
         <label>Password:</label>
         <input
-          className="login-input"
+          className="login-input border border-gray-400 shadow-lg text-sm p-2.5 w-[300px] h-[30px] rounded-sm"
           type="password"
           placeholder="xxxxxxxxxxx"
           value={password}
@@ -66,7 +70,7 @@ function Login() {
       </div>
 
       {/* Submit button */}
-      <button type="submit" className="login-submit-btn" disabled={loading}>
+      <button type="submit" className="button-style-1 my-10" disabled={loading}>
         {loading ? "Logging in..." : "Login"}
       </button>
 
