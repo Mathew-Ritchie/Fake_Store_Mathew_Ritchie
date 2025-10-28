@@ -104,17 +104,19 @@ export default function CartPage() {
 
   if (!cart || cart.length === 0) {
     return (
-      <div className="cart-empty-message">
-        <HomeButton />
-        <h2>Your Shopping Cart</h2>
-        <p>Your cart is empty. Start adding some awesome products!</p>
+      <div className="w-full">
+        <div className="w-full bg-gray-600">
+          <HomeButton />
+        </div>
+        <h2 className="text-center">Your Shopping Cart</h2>
+        <p className="text-center">Your cart is empty. Start adding some awesome products!</p>
       </div>
     );
   }
 
   return (
-    <div className="cart-container bg-gray-100 w-full flex flex-col items-center px-10">
-      <div className="cart-home-btn-div w-full">
+    <div className="cart-container bg-gray-100 w-full flex flex-col items-center">
+      <div className="cart-home-btn-div w-full bg-gray-600">
         <HomeButton />
       </div>
       <h2 className="cart-page-sub-title text-center w-full sm:w-[500px] bg-white py-8 text-3xl">

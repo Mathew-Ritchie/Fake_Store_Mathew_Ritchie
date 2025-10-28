@@ -24,14 +24,14 @@ export default function Cart() {
 
   return (
     <Link to={"/cart"}>
-      <div>
+      <div className="flex">
         {cart.length === 0 ? (
           <IoCartOutline className=" text-2xl text-white bg-transparent border-0" />
         ) : (
           <IoCartSharp className=" text-2xl text-white bg-transparent border-0" />
         )}
         {cart.length > 0 && (
-          <span className="cart-item-count bg-green-800 rounded-full text-white text-xs p-0.5 ">
+          <span className=" bg-green-800 rounded-full text-white text-xs p-0.5 ">
             {totalQuantity}
           </span>
         )}

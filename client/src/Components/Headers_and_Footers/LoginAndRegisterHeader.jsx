@@ -19,12 +19,15 @@ export default function LoginAndRegisterHeader() {
   };
 
   return (
-    <div className="login-and-register-header-div flex relative justify-end items-center gap-2.5 h-8 z-10 pr-2.5 w-full bg-gray-700">
+    <div className="login-and-register-header-div flex relative justify-between items-center gap-2.5 h-8 z-10 p-2.5 w-full bg-gray-700">
       {!isLoggedIn && <LoginRegisterBtns />}
       {isLoggedIn && (
         <>
-          <span>Welcome, {user?.username || user?.email}!</span>
-          <button onClick={handleLogoutClick} className="login-and-register-header-logout-btn">
+          <span className="text-white">Welcome, {user?.username || user?.email}!</span>
+          <button
+            onClick={handleLogoutClick}
+            className="login-and-register-header-logout-btn text-white"
+          >
             Logout
           </button>
         </>

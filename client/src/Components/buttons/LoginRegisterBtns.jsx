@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router";
+import { NavLink } from "react-router-dom";
 // import "./login-register-btns.css";
 
 export default function LoginRegisterBtns() {
