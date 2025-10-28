@@ -9,12 +9,7 @@ export default function SortingDropDown() {
   };
 
   return (
-    <select
-      id="select_zone"
-      className="sorting-dropdown dropdown"
-      value={sortOption}
-      onChange={handleSortChange}
-    >
+    <select id="select_zone" className="bg-gray-300" value={sortOption} onChange={handleSortChange}>
       <option value="none">Sort</option>
       <option value="A-Z">A-Z</option>
       <option value="Z-A">Z-A</option>

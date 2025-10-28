@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { IoCartOutline, IoCartSharp } from "react-icons/io5";
-import "./cart-btn.css";
+
 import useCartStore from "../../GlobalStore/useCartStore";
 import { useUserStore } from "../../GlobalStore/useUserStore";
 
@@ -26,11 +26,15 @@ export default function Cart() {
     <Link to={"/cart"}>
       <div>
         {cart.length === 0 ? (
-          <IoCartOutline className="cart-icon icons" />
+          <IoCartOutline className=" text-2xl text-white bg-transparent border-0" />
         ) : (
-          <IoCartSharp className="cart-icon icons" />
+          <IoCartSharp className=" text-2xl text-white bg-transparent border-0" />
         )}
-        {cart.length > 0 && <span className="cart-item-count">{totalQuantity}</span>}
+        {cart.length > 0 && (
+          <span className="cart-item-count bg-green-800 rounded-full text-white text-xs p-0.5 ">
+            {totalQuantity}
+          </span>
+        )}
       </div>
     </Link>
   );

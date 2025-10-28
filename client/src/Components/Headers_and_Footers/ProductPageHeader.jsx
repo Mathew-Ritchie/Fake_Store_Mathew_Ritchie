@@ -1,10 +1,5 @@
-import React from "react";
-import { Link } from "react-router";
 import useProductsStore from "../../GlobalStore/useProductStore";
-import truncateText from "../../Utilities/utils";
-import { IoIosArrowRoundBack } from "react-icons/io";
 import Cart from "../buttons/CartBtn";
-import "./product-page-header.css";
 import GoToFavouritesBtn from "../buttons/GoToFavouritesBtn";
 import HomeButton from "../buttons/HomeButton";
 
@@ -13,17 +8,11 @@ export default function ProductPageHeader() {
   //   console.log(productInfo);
 
   return (
-    <div className="product-page-header-div">
-      <div className="product-page-header-backbtn-title-div">
+    <div className="product-page-header-div bg-gray-700 flex justify-between items-center h-[35px] px-2.5 mb-5 w-full">
+      <div className="product-page-header-backbtn-title-div flex justify-between items-center h-[35px] gap-1">
         <HomeButton />
-        {/* <Link to={"/"} className="product-page-header-link">
-          <IoIosArrowRoundBack className="back-arrow" />
-        </Link>
-        <h3 className="product-page-header-title">
-          {productInfo.title ? truncateText(productInfo.title, 20) : "Loading..."}
-        </h3> */}
       </div>
-      <div className="product-page-header-favbtn-cartbtn-div">
+      <div className="product-page-header-favbtn-cartbtn-div flex justify-between items-center h-[35px] gap-1">
         <GoToFavouritesBtn />
         <Cart />
       </div>

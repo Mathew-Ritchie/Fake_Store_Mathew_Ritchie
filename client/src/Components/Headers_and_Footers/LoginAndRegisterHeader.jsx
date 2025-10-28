@@ -2,7 +2,6 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserStore } from "../../GlobalStore/useUserStore"; // ✅ make sure this path matches your project
 import LoginRegisterBtns from "../buttons/LoginRegisterBtns";
-import "./login-and-register-header.css";
 
 export default function LoginAndRegisterHeader() {
   // ✅ Pull everything we need from Zustand
@@ -20,7 +19,7 @@ export default function LoginAndRegisterHeader() {
   };
 
   return (
-    <div className="login-and-register-header-div">
+    <div className="login-and-register-header-div flex relative justify-end items-center gap-2.5 h-8 z-10 pr-2.5 w-full bg-gray-700">
       {!isLoggedIn && <LoginRegisterBtns />}
       {isLoggedIn && (
         <>

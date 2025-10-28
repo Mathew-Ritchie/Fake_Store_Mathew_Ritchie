@@ -11,7 +11,11 @@ export default function GoToFavouritesBtn() {
   return (
     <div>
       <Link to={"/favourites"}>
-        {hasFavourites ? <IoIosHeart className="icons" /> : <IoIosHeartEmpty className="icons" />}
+        {hasFavourites ? (
+          <IoIosHeart className="icons text-2xl text-white bg-transparent border-0" />
+        ) : (
+          <IoIosHeartEmpty className="icons text-2xl text-white bg-transparent border-0" />
+        )}
       </Link>
     </div>
   );

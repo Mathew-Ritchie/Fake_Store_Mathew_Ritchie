@@ -3,7 +3,6 @@ import { Link } from "react-router-dom"; // Make sure this matches your routing
 import { IoIosArrowRoundBack } from "react-icons/io";
 import HomeButton from "../Components/buttons/HomeButton";
 import { useUserStore } from "../GlobalStore/useUserStore";
-import "./register.css";
 
 function Register() {
   // Form states

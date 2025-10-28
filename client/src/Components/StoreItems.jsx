@@ -25,7 +25,7 @@ export default function StoreItems() {
               to={`/item/${item.id}`}
               className="product-link no-underline text-black"
             >
-              <div className="product-card flex flex-col justify-between items-center rounded-2xl w-48 h-86 p-2 bg-white shadow-xl">
+              <div className="product-card flex flex-col justify-between items-center rounded-lg w-48 h-86 p-2 bg-white shadow-xl">
                 <div className="product-img-div w-28 h-40 flex flex-col justify-center items-center">
                   <img className="product-img w-28 h-40 object-contain" src={item.image} />
                 </div>

@@ -4,12 +4,12 @@ import { NavLink } from "react-router";
 
 export default function LoginRegisterBtns() {
   return (
-    <div className="login-register-btn-div">
-      <NavLink to={"/register"} className="register-btn">
+    <div className="login-register-btn-div flex items-center justify-end gap-1 w-full">
+      <NavLink to={"/register"} className="register-btn w-10 no-underline text-white mr-5  ">
         Register
       </NavLink>
-      <p>/</p>
-      <NavLink to={"/login"} className="login-btn">
+      <p className="text-white">/</p>
+      <NavLink to={"/login"} className="login-btn w-10 no-underline text-white mr-5">
         Login
       </NavLink>
     </div>

@@ -12,7 +12,7 @@ export default function CategoryDropDown() {
 
   return (
     <select
-      className="category-dropbox dropdown"
+      className="bg-gray-300"
       id="category-dropbox"
       value={categoryOption}
       onChange={handleCategoryChange}
