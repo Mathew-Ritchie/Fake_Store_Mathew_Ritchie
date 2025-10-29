@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router";
 
+//Wake up Back end
+import useWakeServer from "./GlobalStore/useWakeServer";
+
 import { useUserStore } from "./GlobalStore/useUserStore";
 //importing new zustand stores. favourites is not currently needed here as it is not connected to firebase.
 //import useAuthStore from "./GlobalStore/useAuthStore";
@@ -38,6 +41,7 @@ import Register from "./credentialCertification/Register";
  * @returns {JSX.Element} The root React component for the application.
  */
 export default function App() {
+  useWakeServer();
   const { fetchCart } = useCartStore();
   const { fetchFavourites } = useFavouritesStore();
   const loadUserFromToken = useUserStore((state) => state.loadUserFromToken);

@@ -36,6 +36,10 @@ app.use("/api/auth", authRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/favourites", favouritesRoutes);
 
+app.get("/api/ping", (req, res) => {
+  res.json({ status: "ok", message: "Server is awake 🚀" });
+});
+
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
