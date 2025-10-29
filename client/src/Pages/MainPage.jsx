@@ -1,6 +1,6 @@
 import StoreItems from "../Components/StoreItems";
 import SortAndFilterHeader from "../Components/Headers_and_Footers/SortAndFilterHeader";
-import WelcomeModal from "../Components/modal/welcomeModal";
+import WelcomeModal from "../Components/modal/WelcomeModal";
 
 export default function MainPage() {
   return (
