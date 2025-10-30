@@ -1,7 +1,7 @@
 import useProductsStore from "../../GlobalStore/useProductStore";
-import Cart from "../buttons/CartBtn";
+import Cart from "../buttons/GoToCartBtn";
 import GoToFavouritesBtn from "../buttons/GoToFavouritesBtn";
-import HomeButton from "../buttons/HomeButton";
+import HomeButton from "../buttons/GoToHomeBtn";
 
 export default function ProductPageHeader() {
   const { productInfo } = useProductsStore();

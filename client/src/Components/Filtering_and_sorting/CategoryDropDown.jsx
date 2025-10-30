@@ -17,7 +17,7 @@ export default function CategoryDropDown() {
       value={categoryOption}
       onChange={handleCategoryChange}
     >
-      <option value="">Categories</option>
+      <option value="">All Categories</option>
       {categories.map((item) => (
         <option key={item} value={item}>
           {item}

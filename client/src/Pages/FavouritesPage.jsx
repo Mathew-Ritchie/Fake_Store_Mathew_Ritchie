@@ -2,11 +2,12 @@
 import useFavouritesStore from "../GlobalStore/useFavouritesStore";
 //Components
 import FavouriteItems from "../Components/FavouriteItems";
-import HomeButton from "../Components/buttons/HomeButton";
+import HomeButton from "../Components/buttons/GoToHomeBtn";
+import ClearAllButton from "../Components/buttons/ClearAllBtn";
 
 //Favourites layout function. If there are items in favourites then they
 export default function FavouritesPage() {
-  const { favourites } = useFavouritesStore();
+  const { favourites, clearFavourites } = useFavouritesStore();
 
   //If there is no favourites or length is equal to 0.
   if (!favourites || favourites.length === 0) {
@@ -24,13 +25,17 @@ export default function FavouritesPage() {
 
   //If there are favourites.
   return (
-    <div className="favourites-page-container w-full bg-gray-200 flex flex-col justify-center items-center pb-10">
+    <div className="w-full">
       <HomeButton />
-
-      <h2 className="cart-page-sub-title bg-white mb-0 p-4 sm:w-[500px] w-full text-center text-3xl">
-        Your Favourites
-      </h2>
-      <FavouriteItems />
+      <div className="favourites-page-container w-full h-screen bg-gray-200 flex flex-col justify-start items-center pb-10 pt-5">
+        <h2 className="cart-page-sub-title bg-white mb-0 p-4 sm:w-[500px] w-full text-center text-3xl">
+          Your Favourites
+        </h2>
+        <FavouriteItems />
+        <div className="mt-2">
+          <ClearAllButton onClick={clearFavourites} message="Remove all" />
+        </div>
+      </div>
     </div>
   );
 }

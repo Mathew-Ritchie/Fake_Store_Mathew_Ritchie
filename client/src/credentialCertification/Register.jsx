@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom"; // Make sure this matches your routing
 import { IoIosArrowRoundBack } from "react-icons/io";
-import HomeButton from "../Components/buttons/HomeButton";
+import HomeButton from "../Components/buttons/GoToHomeBtn";
 import { useUserStore } from "../GlobalStore/useUserStore";
 
 function Register() {

@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserStore } from "../../GlobalStore/useUserStore"; // ✅ make sure this path matches your project
-import LoginRegisterBtns from "../buttons/LoginRegisterBtns";
+import LoginRegisterBtns from "../buttons/GoToLoginRegisterBtns";
 
 export default function LoginAndRegisterHeader() {
   // ✅ Pull everything we need from Zustand
