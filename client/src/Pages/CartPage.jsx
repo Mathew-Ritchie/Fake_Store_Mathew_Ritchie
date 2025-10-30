@@ -15,8 +15,9 @@ export default function CartPage() {
 
   // Fetch user's cart on mount
   useEffect(() => {
-    if (user) fetchCart();
-  }, [user, fetchCart]);
+    if (!user) return;
+    fetchCart();
+  }, [user]);
 
   useEffect(() => {
     if (cart.length === 0) {
@@ -24,17 +25,14 @@ export default function CartPage() {
       return;
     }
 
-    // 1. Identify items whose details are NOT ALREADY in the cache
     const itemsToFetch = cart.filter((item) => !detailedProducts[item.item_id]);
     const uniqueItemIds = [...new Set(itemsToFetch.map((item) => item.item_id))];
 
-    // 2. If all necessary details are cached, skip the fetch and loading state.
     if (uniqueItemIds.length === 0) {
-      setIsLoadingDetails(false); // Ensure loading is false if nothing needs fetching
+      setIsLoadingDetails(false);
       return;
     }
 
-    // 3. Only set loading state if we actually need to fetch new data
     setIsLoadingDetails(true);
 
     const fetchAllDetails = async () => {
@@ -43,16 +41,9 @@ export default function CartPage() {
       const productPromises = uniqueItemIds.map(async (itemId) => {
         try {
           const info = await fetchProductInfo(itemId);
-
-          if (info === null) {
-            newDetails[itemId] = { image: null, price: null };
-            return;
-          }
-
-          newDetails[itemId] = {
-            image: info.image,
-            price: info.price,
-          };
+          newDetails[itemId] = info
+            ? { image: info.image, price: info.price }
+            : { image: null, price: null };
         } catch (error) {
           console.error(`Failed to fetch details for item ${itemId}:`, error);
           newDetails[itemId] = { image: null, price: null };
@@ -61,15 +52,19 @@ export default function CartPage() {
 
       await Promise.all(productPromises);
 
-      // Merge new details with existing details to update the cache
-      setDetailedProducts((prev) => ({ ...prev, ...newDetails }));
+      // ✅ Merge safely without retriggering
+      setDetailedProducts((prev) => {
+        const merged = { ...prev, ...newDetails };
+        return merged;
+      });
+
       setIsLoadingDetails(false);
     };
 
     fetchAllDetails();
 
-    return () => setIsLoadingDetails(false);
-  }, [cart, detailedProducts, fetchProductInfo]); // detailedProducts is now a dependency
+    // Cleanup not strictly necessary here
+  }, [cart, fetchProductInfo]); // ✅ removed detailedProducts
 
   // --- useMemo to combine cart data with fetched details ---
   const cartWithDetails = useMemo(() => {

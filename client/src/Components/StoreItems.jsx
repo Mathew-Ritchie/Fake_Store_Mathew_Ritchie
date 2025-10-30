@@ -15,7 +15,7 @@ export default function StoreItems() {
 
   return (
     <div className="store-items-container bg-gray-100">
-      <div className="product-container flex flex-wrap justify-center items-center gap-4 p-4 bg-gray-100">
+      <div className="product-container flex flex-wrap justify-center items-center gap-4 py-4 bg-gray-100">
         {loading && <h1>Items loading...</h1>}
         {error && <h1>There was an error loading data, please try again.</h1>}
         {filteredItems &&
@@ -25,9 +25,12 @@ export default function StoreItems() {
               to={`/item/${item.id}`}
               className="product-link no-underline text-black"
             >
-              <div className="product-card flex flex-col justify-between items-center rounded-lg w-48 h-86 p-2 bg-white shadow-xl">
-                <div className="product-img-div w-28 h-40 flex flex-col justify-center items-center">
-                  <img className="product-img w-28 h-40 object-contain" src={item.image} />
+              <div className="product-card flex flex-col justify-between items-center rounded-lg w-70 h-100 sm:w-48 sm:h-86 p-2 bg-white shadow-xl">
+                <div className="product-img-div w-36 h-54 sm:w-28 sm:h-40 flex flex-col justify-center items-center">
+                  <img
+                    className="product-img w-36 h-54 sm:w-28 sm:h-40 object-contain"
+                    src={item.image}
+                  />
                 </div>
                 <div className="product-info-div flex flex-col justify-between items-center h-34">
                   <h1 className="product-title font-light text-md no-underline text-gray-800 w-48 py-2.5 text-center">
