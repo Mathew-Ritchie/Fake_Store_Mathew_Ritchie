@@ -111,9 +111,8 @@ export default function CartPage() {
 
   return (
     <div className="cart-container bg-gray-100 w-full flex flex-col items-center">
-      <div className="cart-home-btn-div w-full bg-gray-600">
-        <HomeButton />
-      </div>
+      <HomeButton />
+
       <h2 className="cart-page-sub-title text-center w-full sm:w-[500px] bg-white py-8 text-3xl">
         Your Shopping Cart
       </h2>

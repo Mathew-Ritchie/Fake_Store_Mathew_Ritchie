@@ -8,10 +8,9 @@ export default function ProductPageHeader() {
   //   console.log(productInfo);
 
   return (
-    <div className="product-page-header-div bg-gray-700 flex justify-between items-center h-[35px] px-2.5 mb-5 w-full">
-      <div className="product-page-header-backbtn-title-div flex justify-between items-center h-[35px] gap-1">
-        <HomeButton />
-      </div>
+    <div className="product-page-header-div bg-gray-600 flex justify-between items-center h-[35px] px-2.5 mb-5 w-full">
+      <HomeButton />
+
       <div className="product-page-header-favbtn-cartbtn-div flex justify-between items-center h-[35px] gap-1">
         <GoToFavouritesBtn />
         <Cart />
