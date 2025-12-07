@@ -225,6 +225,18 @@ const useProductsStore = create((set, get) => ({
 
     set({ filteredItems: currentFilteredItems });
   },
+
+  setOptionsFromQuery: (params) => {
+    const { setCategoryOption, setSortOption } = get();
+
+    if (params.category !== undefined) {
+      setCategoryOption(params.category);
+    }
+
+    if (params.sort !== undefined) {
+      setSortOption(params.sort);
+    }
+  },
 }));
 
 export default useProductsStore;

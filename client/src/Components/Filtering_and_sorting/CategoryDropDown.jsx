@@ -1,11 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import { updateQuery } from "../../Utilities/QueryHelper";
 import useProductsStore from "../../GlobalStore/useProductStore";
 
 export default function CategoryDropDown() {
-  const { categories, categoryOption, setCategoryOption } = useProductsStore();
+  const { categories, categoryOption, setCategoryOption, setOptionsFromQuery } = useProductsStore();
 
-  const handleCategoryChange = (event) => {
-    setCategoryOption(event.target.value);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    const category = searchParams.get("category") || "";
+    setOptionsFromQuery({ category });
+  }, []);
+
+  const handleChange = (e) => {
+    const newCategory = e.target.value;
+
+    updateQuery(searchParams, setSearchParams, {
+      category: newCategory,
+    });
   };
 
   //   console.log(categories);
@@ -15,7 +28,7 @@ export default function CategoryDropDown() {
       className="bg-gray-300"
       id="category-dropbox"
       value={categoryOption}
-      onChange={handleCategoryChange}
+      onChange={handleChange}
     >
       <option value="">All Categories</option>
       {categories.map((item) => (
