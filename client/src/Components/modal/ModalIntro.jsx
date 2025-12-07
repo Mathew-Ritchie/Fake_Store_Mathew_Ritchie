@@ -31,7 +31,9 @@ export default function WelcomeModal() {
         <div>
           <h1 className="text-2xl font-bold mb-4">Welcome to My Fake-Store.com</h1>
           <p className="mb-3">
-            This is a full-stack web app built with the following technologies:
+            This is a full-stack web-app I built for my portfolio. Please note that the Backend
+            Server may take up to 60 seconds to boot as it is hosted on a free Render account. I
+            built this project with the following technologies:
           </p>
 
           <p className="font-semibold">Frontend:</p>
