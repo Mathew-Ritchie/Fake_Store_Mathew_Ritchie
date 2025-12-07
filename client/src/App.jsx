@@ -23,6 +23,7 @@ import FavouritesPage from "./Pages/FavouritesPage";
 import CartPage from "./Pages/CartPage";
 import Login from "./credentialCertification/LogIn";
 import Register from "./credentialCertification/Register";
+import LandingPage from "./Pages/LandingPage";
 
 /**
  * @typedef {object} UserProfile
@@ -64,6 +65,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<MainHeader />}>
           <Route index element={<MainPage />} />
+          <Route path="/landing" element={<LandingPage />} />
           <Route path="/item/:id" element={<ProductPage />} />
           <Route path="/favourites" element={<FavouritesPage />} />
           <Route path="/cart" element={<CartPage />} />
