@@ -23,7 +23,7 @@ export default function LandingPage() {
         {/* Link for all womens items */}
         <Link to="/main?category=women%27s+clothing" className="h-[400px] w-full sm:w-4/6">
           <div
-            style={{ backgroundImage: 'url("/landing-page-images/womens-bg.jpg")' }}
+            style={{ backgroundImage: 'url("/landing-page-images/womens-bg.jpeg")' }}
             className="landing-page-image-div w-full h-full bg-cover bg-center "
           >
             <button className="bg-gray-700/70 text-gray-100 font-bold text-2xl rounded-r-2xl w-[200px] mt-60 px-5 py-2.5">
@@ -35,7 +35,7 @@ export default function LandingPage() {
         {/* Link for all mens items */}
         <Link to="/main?category=men%27s+clothing" className="w-full sm:w-2/6 h-[400px]">
           <div
-            style={{ backgroundImage: 'url("/landing-page-images/mens-bg.jpg")' }}
+            style={{ backgroundImage: 'url("/landing-page-images/mens-bg.jpeg")' }}
             className="landing-page-image-div w-full h-full bg-cover bg-center "
           >
             <button className="bg-gray-700/70 text-gray-100 font-bold text-2xl rounded-r-2xl w-[200px] mt-60 px-5 py-2.5">
@@ -49,7 +49,7 @@ export default function LandingPage() {
         {/* Link for all Decor */}
         <Link to="/main?category=jewelery" className="w-full sm:w-2/6 h-[400px]">
           <div
-            style={{ backgroundImage: 'url("/landing-page-images/jewellery-bg.jpg")' }}
+            style={{ backgroundImage: 'url("/landing-page-images/jewellery-bg.jpeg")' }}
             className="landing-page-image-div w-full h-full bg-cover bg-center"
           >
             <button className="bg-gray-700/70 text-gray-100 font-bold text-2xl rounded-r-2xl w-[200px] mt-60 px-5 py-2.5">
@@ -61,7 +61,7 @@ export default function LandingPage() {
         {/* Link for all tech */}
         <Link to="/main?category=electronics" className="w-full sm:w-4/6 h-[400px]">
           <div
-            style={{ backgroundImage: 'url("/landing-page-images/tech-bg.jpg")' }}
+            style={{ backgroundImage: 'url("/landing-page-images/tech-bg.jpeg")' }}
             className="landing-page-image-div h-full w-full bg-cover bg-center"
           >
             <button className="bg-gray-700/70 text-gray-100 font-bold text-2xl rounded-r-2xl w-[200px] mt-60 px-5 py-2.5">
