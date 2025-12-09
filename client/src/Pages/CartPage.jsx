@@ -1,5 +1,5 @@
 import React from "react";
-import HomeButton from "../Components/buttons/GoToHomeBtn";
+import BackButton from "../Components/buttons/GoBackBtn";
 import CartContents from "../Components/CartContents";
 import ClearAllButton from "../Components/buttons/ClearAllBtn";
 import useCartStore from "../GlobalStore/useCartStore";
@@ -9,7 +9,7 @@ export default function CartPage() {
 
   return (
     <div className="cart-page-container bg-gray-100 w-full flex flex-col items-center">
-      <HomeButton />
+      <BackButton />
       <h2 className="cart-page-sub-title text-center w-full sm:w-[500px] bg-white py-8 text-3xl">
         Your Shopping Cart
       </h2>
