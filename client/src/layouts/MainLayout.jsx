@@ -7,10 +7,11 @@ import CartAndFavouritesLandingHeader from "../Components/Headers_and_Footers/Ca
 export default function MainLayout() {
   return (
     <div className="main-layout-div flex flex-col min-h-screen justify-between">
-      <MainHeader />
-      <LoginAndRegisterHeader />
-
-      <Outlet />
+      <div>
+        <MainHeader />
+        <LoginAndRegisterHeader />
+        <Outlet />
+      </div>
       <MainFooter />
     </div>
   );
