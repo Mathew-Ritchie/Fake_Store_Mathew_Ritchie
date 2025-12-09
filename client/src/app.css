@@ -58,3 +58,12 @@ body {
 .clear-btn {
   background-color: darkred;
 }
+
+.footer-link {
+  font-family: "Dancing Script", cursive;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  font-size: 35px;
+  color: orange;
+}
