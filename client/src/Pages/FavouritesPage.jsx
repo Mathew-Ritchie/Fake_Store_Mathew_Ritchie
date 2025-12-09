@@ -27,7 +27,7 @@ export default function FavouritesPage() {
   return (
     <div className="w-full">
       <HomeButton />
-      <div className="favourites-page-container w-full h-screen bg-gray-200 flex flex-col justify-start items-center pb-10 pt-5">
+      <div className="favourites-page-container w-full h-full bg-gray-200 flex flex-col justify-start items-center pb-10 pt-5">
         <h2 className="cart-page-sub-title bg-white mb-0 p-4 sm:w-[500px] w-full text-center text-3xl">
           Your Favourites
         </h2>
