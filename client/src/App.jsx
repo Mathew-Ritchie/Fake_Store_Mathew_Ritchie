@@ -18,12 +18,12 @@ import "./app.css";
 //Import individual page components
 import ProductPage from "./Pages/ProductPage";
 import MainPage from "./Pages/MainPage";
-import MainHeader from "./Components/Headers_and_Footers/MainHeader";
 import FavouritesPage from "./Pages/FavouritesPage";
 import CartPage from "./Pages/CartPage";
 import Login from "./credentialCertification/LogIn";
 import Register from "./credentialCertification/Register";
 import LandingPage from "./Pages/LandingPage";
+import MainLayout from "./layouts/MainLayout";
 
 /**
  * @typedef {object} UserProfile
@@ -63,7 +63,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<MainHeader />}>
+        <Route path="/" element={<MainLayout />}>
           <Route index element={<LandingPage />} />
           <Route path="/main" element={<MainPage />} />
           <Route path="/item/:id" element={<ProductPage />} />

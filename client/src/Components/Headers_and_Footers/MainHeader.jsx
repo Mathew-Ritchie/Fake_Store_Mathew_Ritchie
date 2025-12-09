@@ -2,6 +2,7 @@ import React from "react";
 import { Outlet } from "react-router";
 
 import LoginAndRegisterHeader from "./LoginAndRegisterHeader";
+import MainFooter from "./MainFooter";
 
 export default function MainHeader() {
   return (
@@ -9,8 +10,6 @@ export default function MainHeader() {
       <div className="main-header-title-div bg-gray-800 w-full text-center relative z-10">
         <h1 className="main-header-title">MY-FAKE-STORE.COM</h1>
       </div>
-      <LoginAndRegisterHeader />
-      <Outlet />
     </div>
   );
 }
