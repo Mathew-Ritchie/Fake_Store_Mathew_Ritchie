@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; // ✅ Correct import for React Router v6+
-import HomeButton from "../Components/buttons/GoBackBtn";
+import HomeButton from "../Components/buttons/NavigateButton";
+import NavigateButton from "../Components/buttons/NavigateButton";
 import { useUserStore } from "../GlobalStore/useUserStore"; // ✅ use your Zustand user store
 
 function Login() {
@@ -30,7 +31,7 @@ function Login() {
   return (
     <div className="w-full">
       <div className="flex w-full justify-start items-center">
-        <HomeButton />
+        <NavigateButton label="HOME" path={"/"} />
       </div>
       <form
         onSubmit={handleLoginSubmit}

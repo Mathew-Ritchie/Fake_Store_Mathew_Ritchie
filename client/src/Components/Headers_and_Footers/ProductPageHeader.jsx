@@ -1,7 +1,8 @@
 import useProductsStore from "../../GlobalStore/useProductStore";
 import Cart from "../buttons/GoToCartBtn";
 import GoToFavouritesBtn from "../buttons/GoToFavouritesBtn";
-import BackButton from "../buttons/GoBackBtn";
+import NavigateButton from "../buttons/NavigateButton";
+import BackButton from "../buttons/NavigateButton";
 
 export default function ProductPageHeader() {
   const { productInfo } = useProductsStore();
@@ -9,7 +10,8 @@ export default function ProductPageHeader() {
 
   return (
     <div className="product-page-header-div bg-gray-600 flex justify-between items-center h-[35px] px-2.5 mb-5 w-full">
-      <BackButton />
+      {/* Btn receives a label and a path */}
+      <NavigateButton label="BACK" path={-1} />
 
       <div className="product-page-header-favbtn-cartbtn-div flex justify-between items-center h-[35px] gap-1">
         <GoToFavouritesBtn />

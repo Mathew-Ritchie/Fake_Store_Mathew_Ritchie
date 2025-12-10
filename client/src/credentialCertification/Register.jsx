@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom"; // Make sure this matches your routing
 import { IoIosArrowRoundBack } from "react-icons/io";
-import HomeButton from "../Components/buttons/GoBackBtn";
+import HomeButton from "../Components/buttons/NavigateButton";
 import { useUserStore } from "../GlobalStore/useUserStore";
+import NavigateButton from "../Components/buttons/NavigateButton";
 
 function Register() {
   // Form states
@@ -32,7 +33,7 @@ function Register() {
     <div className="w-full">
       <div className="w-full">
         {" "}
-        <HomeButton />
+        <NavigateButton label="HOME" path={"/"} />
       </div>
 
       <form

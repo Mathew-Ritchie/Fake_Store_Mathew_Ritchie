@@ -2,8 +2,9 @@
 import useFavouritesStore from "../GlobalStore/useFavouritesStore";
 //Components
 import FavouriteItems from "../Components/FavouriteItems";
-import BackButton from "../Components/buttons/GoBackBtn";
+import BackButton from "../Components/buttons/NavigateButton";
 import ClearAllButton from "../Components/buttons/ClearAllBtn";
+import NavigateButton from "../Components/buttons/NavigateButton";
 
 //Favourites layout function. If there are items in favourites then they
 export default function FavouritesPage() {
@@ -13,7 +14,7 @@ export default function FavouritesPage() {
   if (!favourites || favourites.length === 0) {
     return (
       <div className="favourites-empty-message w-full">
-        <BackButton />
+        <NavigateButton label="BACK" path={-1} />
 
         <h2 className="text-center">Your Favourites</h2>
         <p className="text-center">
