@@ -13,6 +13,7 @@ export default function ProductDescriptionCard() {
     if (id) {
       fetchProductInfo(id);
     }
+    console.log(productInfo);
   }, [id]);
 
   //   console.log(productInfo);

@@ -10,6 +10,9 @@ export default function MainFooter() {
           mathewritchie.netlify.app
         </a>
       </p>
+      <p className="text-white text-xs">
+        Images sourced from <a href="https://www.freepik.com/">freepik.com</a>{" "}
+      </p>
       <p className="text-white text-xs">© 2025 Fake Store. All rights reserved.</p>
     </div>
   );

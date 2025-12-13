@@ -24,8 +24,8 @@ export default function SortDropDown() {
   };
 
   return (
-    <select className="bg-gray-300" value={sortOption} onChange={handleChange}>
-      <option value="">Sort...</option>
+    <select className="bg-gray-300 rounded-2xl p-1 pl-3" value={sortOption} onChange={handleChange}>
+      <option value="">Sort</option>
       <option value="A-Z">A → Z</option>
       <option value="Z-A">Z → A</option>
       <option value="Lowest">Lowest Price</option>
